@@ -1,0 +1,150 @@
+{
+ "reits": {
+  "293940": {
+   "name": "신한알파리츠",
+   "asset_type": "오피스",
+   "corp_code": "01276594",
+   "dart_name": "신한알파리츠"
+  },
+  "088260": {
+   "name": "이리츠코크렙",
+   "asset_type": "리테일",
+   "corp_code": "00544452",
+   "dart_name": "이리츠코크렙"
+  },
+  "330590": {
+   "name": "롯데리츠",
+   "asset_type": "리테일",
+   "corp_code": "01363818",
+   "dart_name": "롯데리츠"
+  },
+  "338100": {
+   "name": "NH프라임리츠",
+   "asset_type": "오피스·재간접",
+   "corp_code": "01391033",
+   "dart_name": "NH프라임리츠"
+  },
+  "334890": {
+   "name": "이지스밸류리츠",
+   "asset_type": "오피스·리테일",
+   "corp_code": "01394377",
+   "dart_name": "이지스밸류플러스리츠"
+  },
+  "350520": {
+   "name": "이지스레지던스리츠",
+   "asset_type": "주거",
+   "corp_code": "01436628",
+   "dart_name": "이지스레지던스리츠"
+  },
+  "357250": {
+   "name": "미래에셋맵스리츠",
+   "asset_type": "리테일",
+   "corp_code": "01437292",
+   "dart_name": "미래에셋맵스리츠"
+  },
+  "348950": {
+   "name": "제이알글로벌리츠",
+   "asset_type": "해외 오피스",
+   "corp_code": "01415892",
+   "dart_name": "제이알글로벌리츠"
+  },
+  "357120": {
+   "name": "코람코라이프인프라리츠",
+   "asset_type": "리테일·인프라",
+   "corp_code": "01430475",
+   "dart_name": "코람코라이프인프라리츠"
+  },
+  "365550": {
+   "name": "ESR켄달스퀘어리츠",
+   "asset_type": "물류",
+   "corp_code": "01437186",
+   "dart_name": "ESR켄달스퀘어리츠"
+  },
+  "377190": {
+   "name": "디앤디플랫폼리츠",
+   "asset_type": "복합",
+   "corp_code": "01475609",
+   "dart_name": "디앤디플랫폼리츠"
+  },
+  "395400": {
+   "name": "SK리츠",
+   "asset_type": "복합",
+   "corp_code": "01535150",
+   "dart_name": "SK리츠"
+  },
+  "400760": {
+   "name": "NH올원리츠",
+   "asset_type": "복합",
+   "corp_code": "01480780",
+   "dart_name": "NH올원리츠"
+  },
+  "396690": {
+   "name": "미래에셋글로벌리츠",
+   "asset_type": "해외 물류",
+   "corp_code": "01576102",
+   "dart_name": "미래에셋글로벌리츠"
+  },
+  "404990": {
+   "name": "신한서부티엔디리츠",
+   "asset_type": "호텔·리테일",
+   "corp_code": "01436558",
+   "dart_name": "신한서부티엔디리츠"
+  },
+  "417310": {
+   "name": "코람코더원리츠",
+   "asset_type": "오피스",
+   "corp_code": "01180118",
+   "dart_name": "코람코더원리츠"
+  },
+  "357430": {
+   "name": "마스턴프리미어리츠",
+   "asset_type": "해외·복합",
+   "corp_code": "01442966",
+   "dart_name": "마스턴프리미어리츠"
+  },
+  "432320": {
+   "name": "KB스타리츠",
+   "asset_type": "해외 오피스",
+   "corp_code": "01622720",
+   "dart_name": "KB스타리츠"
+  },
+  "451800": {
+   "name": "한화리츠",
+   "asset_type": "오피스",
+   "corp_code": "01669226",
+   "dart_name": "한화리츠"
+  },
+  "448730": {
+   "name": "삼성FN리츠",
+   "asset_type": "오피스",
+   "corp_code": "01688896",
+   "dart_name": "삼성FN리츠"
+  },
+  "481850": {
+   "name": "신한글로벌액티브리츠",
+   "asset_type": "해외·재간접",
+   "corp_code": "01714997",
+   "dart_name": "신한글로벌액티브리츠"
+  },
+  "0030R0": {
+   "name": "대신밸류리츠",
+   "asset_type": "오피스",
+   "corp_code": "01885222",
+   "dart_name": "대신밸류리츠"
+  },
+  "145270": {
+   "name": "케이탑리츠",
+   "asset_type": "오피스·자기관리",
+   "corp_code": "00861076",
+   "dart_name": "케이탑리츠"
+  },
+  "140910": {
+   "name": "에이리츠",
+   "asset_type": "개발·자기관리",
+   "corp_code": "00860730",
+   "dart_name": "에이자기관리부동산투자회사"
+  }
+ },
+ "missing": [],
+ "total_listed_in_dart": 3978
+}

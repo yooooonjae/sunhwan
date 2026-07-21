@@ -1,0 +1,4 @@
+config.json
+data/raw/
+__pycache__/
+*.pyc
