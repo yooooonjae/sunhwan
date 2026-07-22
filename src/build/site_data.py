@@ -189,6 +189,70 @@ def operating_block():
     return {"latest": latest, "trend_vac": trend_vac, "trend_rent": trend_rent, "kpi": kpi}
 
 
+def linkage_block():
+    """Ⅴ장 연결 — 세 시장 단계를 잇는 다리(전부 자체 보유 데이터)."""
+    det = json.load(open(D / "cheongyak" / "apt_detail.json"))
+    hug = json.load(open(D / "hug_initial_rate.json"))
+    tre = json.load(open(D / "treasury10y.json"))["series"]
+    C = json.load(open("/Users/iseul/개발/data/rone_commercial.json"))
+    P = json.load(open(D / "reits_price.json"))["prices"]
+    F = json.load(open(D / "reits_fin.json"))
+    R = json.load(open(D / "reits_corp.json"))["reits"]
+
+    def q_of(ym): return f"{ym[:4]}Q{(int(ym[4:6]) - 1) // 3 + 1}"
+    def q_idx(q): return int(q[:4]) * 4 + int(q[5]) - 1
+    def corr(a, b):
+        n = len(a); ma, mb = sum(a) / n, sum(b) / n
+        return (sum((x - ma) * (y - mb) for x, y in zip(a, b))
+                / (sum((x - ma) ** 2 for x in a) ** .5 * sum((y - mb) ** 2 for y in b) ** .5))
+
+    # A. t 시점에 공고로 알려진 향후 8분기 입주예정 물량 vs 전국 초기분양률
+    notices = []
+    for d in det:
+        dt_, mvn, sup = d.get("RCRIT_PBLANC_DE") or "", d.get("MVN_PREARNGE_YM") or "", d.get("TOT_SUPLY_HSHLDCO") or 0
+        if len(dt_) >= 7 and len(mvn) == 6 and sup:
+            notices.append((q_idx(q_of(dt_[:4] + dt_[5:7])), q_idx(q_of(mvn)), sup))
+    nat = {x["q"]: x["rate"] for x in hug["전국"]}
+    qs = sorted(q for q in nat if "2021Q1" <= q <= "2026Q1")
+    supply_link = []
+    for q in qs:
+        t = q_idx(q)
+        pipe = sum(s_ for (a_, m_, s_) in notices if a_ <= t and t < m_ <= t + 8)
+        supply_link.append({"q": q, "pipe": pipe, "rate": nat[q]})
+    r_a = round(corr([x["pipe"] for x in supply_link], [x["rate"] for x in supply_link]), 2)
+
+    # B. 서울 오피스 운영 스프레드 = 소득수익률 연환산 − 국고10y(분기평균)
+    t10q = defaultdict(list)
+    for x in tre:
+        t10q[q_of(x["ym"])].append(x["rate"])
+    ops_spread = [{"q": y["yq"], "v": round(y["income"] * 4 - statistics.mean(t10q[y["yq"]]), 2)}
+                  for y in C["office_yield"]["서울"] if y["yq"] in t10q]
+
+    # C. 국내 오피스 리츠 합산 P/BV(분기말) vs 서울 오피스 공실률
+    REPRT_Q = {"1분기": 1, "반기": 2, "3분기": 3, "사업": 4}
+    office = [t for t, m in R.items() if "오피스" in m["asset_type"] and "해외" not in m["asset_type"]]
+    def pbv_at(qidx):
+        tm = te = 0
+        for t in office:
+            pr = [p_ for p_ in P.get(t, []) if q_idx(q_of(p_["d"][:6])) <= qidx]
+            eqs = [(e["year"] * 4 + REPRT_Q[e["reprt"]] - 1, e["equity"]) for e in F[t]["equity"]]
+            eqs = [e for e in eqs if e[0] <= qidx]
+            if pr and eqs:
+                tm += pr[-1]["mcap"]; te += max(eqs)[1]
+        return tm / te if te else None
+    vac_s = {x["yq"]: x["value"] for x in C["office_vacancy"]["서울"]}
+    cap_link = []
+    for q in sorted(vac_s):
+        if "2023Q1" <= q <= "2026Q1" and (pb := pbv_at(q_idx(q))):
+            cap_link.append({"q": q, "pbv": round(pb, 3), "vac": round(vac_s[q], 1)})
+    r_c = round(corr([x["pbv"] for x in cap_link], [x["vac"] for x in cap_link]), 2)
+
+    return {"supply_link": supply_link, "r_supply": r_a,
+            "ops_spread": ops_spread,
+            "cap_link": cap_link, "r_cap": r_c,
+            "office_n": len(office)}
+
+
 def reits_block():
     P = json.load(open(D / "reits_price.json"))["prices"]
     F = json.load(open(D / "reits_fin.json"))
@@ -254,6 +318,7 @@ def main():
         "bunyang": bunyang_block(),
         "jeongbi": jeongbi_block(),
         "operating": operating_block(),
+        "linkage": linkage_block(),
         "reits": reits_block(),
         "counters": {},
     }

@@ -8,7 +8,7 @@
   /* ---------- 라우터 ---------- */
   const VIEWS = ["home", "ch1", "ch2", "ch3", "ch4"];
   function route() {
-    const m = /^#\/(ch[1-5])$/.exec(location.hash);
+    const m = /^#\/(ch[1-6])$/.exec(location.hash);
     const view = m ? m[1] : "home";
     document.querySelectorAll("[data-view-root]").forEach(el => {
       el.hidden = view === "home" ? false : el.dataset.viewRoot !== view;
@@ -163,6 +163,35 @@
         labelW: 60, width: 1160, rowH: 27, aria: "시도별 소득수익률 연환산" });
   }
 
+  /* ---------- Ⅴ. 연결 ---------- */
+  function renderLinkage() {
+    const L = B.linkage;
+    if (!L || !$("#l-kpis")) return;
+    $("#l-kpis").innerHTML = [
+      [`r = ${L.r_supply}`, `공급 파이프라인 ↔ 초기분양률 (분기 ${L.supply_link.length}개) — 물량이 쌓이면 분양률이 낮아지는 방향`],
+      [`+3.0 → ${L.ops_spread[L.ops_spread.length - 1].v}%p`, "서울 운영 스프레드 (2016 → 현재) — 금리가 삼킨 임대 프리미엄"],
+      [`r = ${L.r_cap}`, `서울 공실률 ↔ 오피스 리츠 P/BV (분기 ${L.cap_link.length}개·국내 ${L.office_n}종) — 공실이 줄자 할인이 풀렸다`],
+    ].map(([v, k]) => `<div class="kpi"><div class="v gold">${v}</div><div class="k">${k}</div></div>`).join("");
+
+    const mkq = (arr, key) => arr.map((p, i) => ({ x: i, label: p.q.replace("Q", " Q"), y: p[key] }));
+    C.line($("#l-pipe"), [{ name: "파이프라인", color: "--s2", emph: true,
+      points: L.supply_link.map((p, i) => ({ x: i, label: p.q.replace("Q", " Q"), y: p.pipe / 1e4 })) }],
+      { aria: "알려진 입주예정 파이프라인", yFmt: v => v.toFixed(0) + "만", width: 560, height: 290, rightPad: 70 });
+    C.line($("#l-rate"), [{ name: "초기분양률", color: "--s1", emph: true, points: mkq(L.supply_link, "rate") }],
+      { aria: "전국 초기분양률", yFmt: v => v.toFixed(0) + "%", width: 560, height: 290, rightPad: 74 });
+    C.line($("#l-spread"), [{ name: "스프레드", color: "--s3", emph: true, points: mkq(L.ops_spread, "v") }],
+      { aria: "서울 오피스 운영 스프레드", yFmt: v => (v >= 0 ? "+" : "") + v.toFixed(1) + "%p", width: 1160, height: 300, rightPad: 78 });
+    C.line($("#l-vac"), [{ name: "공실률", color: "--s2", emph: true, points: mkq(L.cap_link, "vac") }],
+      { aria: "서울 오피스 공실률", yFmt: v => v.toFixed(0) + "%", width: 560, height: 290, rightPad: 62 });
+    C.line($("#l-pbv"), [{ name: "P/BV", color: "--s1", emph: true, points: mkq(L.cap_link, "pbv") }],
+      { aria: "오피스 리츠 합산 P/BV", yFmt: v => v.toFixed(2), width: 560, height: 290, rightPad: 60 });
+
+    $("#l-notes").innerHTML =
+      "· 다리 ①의 파이프라인은 <b>청약홈 공고 기반(2020-02~)</b>만 집계 — 공고 없이 입주하는 물량은 빠져 있어 절대량이 아니라 방향으로 읽는다.<br>" +
+      "· 다리 ③은 분기 " + L.cap_link.length + "개·국내 오피스 리츠 " + L.office_n + "종의 짧은 표본 — 강한 상관(r=" + L.r_cap + ")이지만 두 변수 모두 금리라는 공통 원인의 영향을 받는다.<br>" +
+      "· 세 다리 전부 상관 관측이다. 선행·후행(그레인저류) 검정과 시군구 단위 연결은 후속 고도화 대상이다.";
+  }
+
   /* ---------- Ⅳ. 자본 ---------- */
   function renderReits() {
     const R = B.reits, K = R.kpi;
@@ -246,7 +275,7 @@
     ].map(([t, v, k, on]) => `<div class="kpi"><div class="k" style="margin:0 0 4px">${t} — 지금</div><div class="v${on ? " gold" : ""}">${v}</div><div class="k">${k}</div></div>`).join("");
   }
 
-  function renderAll() { counters(); pulseNow(); renderSupply(); renderBunyang(); renderOperating(); renderReits(); }
+  function renderAll() { counters(); pulseNow(); renderSupply(); renderBunyang(); renderOperating(); renderReits(); renderLinkage(); }
 
   route();
   renderAll();
