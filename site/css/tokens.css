@@ -24,6 +24,12 @@
   --s3: #c25a2a;
   --s4: #3f7d68;
   --s5: #8b5e83;
+  /* 단계 의미색 — 궤도 등 단계 사용처 전용. 값은 차트 --s*와 동일(시각 불변)하되 의미를 분리 고정.
+     매핑: 공급=--s1 · 분양=--s2 · 운영=--s4 · 자본=--s3 */
+  --stage-supply: #b8860b;
+  --stage-sale: #2f66ad;
+  --stage-operation: #3f7d68;
+  --stage-capital: #c25a2a;
   --pos: #2e7d54;
   --neg: #b5453c;
   --seq-100: #f6ecd3; --seq-200: #ecd9a8; --seq-300: #ddc077;
@@ -64,6 +70,10 @@
   --s3: #e0774a;                 /* 버밀리언 */
   --s4: #8fb8a8;                 /* 세이지 청록 */
   --s5: #b48ead;                 /* 모브 */
+  --stage-supply: #d9ae52;       /* = --s1 (금) */
+  --stage-sale: #6b9bd8;         /* = --s2 (청람) */
+  --stage-operation: #8fb8a8;    /* = --s4 (세이지) */
+  --stage-capital: #e0774a;      /* = --s3 (버밀리언) */
   --pos: #5fb388;
   --neg: #d96a5f;
   --seq-100: #3a3010; --seq-200: #57431a; --seq-300: #7a5c22;
