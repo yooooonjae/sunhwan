@@ -841,38 +841,85 @@
   }
 
   /* ---------- 대한민국 시도 코로플레스 (초기분양률) ---------- */
-  // geo: [{name, d(svg path)}] (window.__KOREA__) · data: {시도명:{q,rate,prev_q,prev_rate,delta}}
-  // 채색 = --seq-100..700 순차 램프(높을수록 진하게) · 자료 없는 시도 = 중성(점선) · 탭 → 외곽선+판독.
-  // 순환 tip 시스템(bindTip) 재사용. 선택 상태는 root._mapSel 에 영속(테마 재렌더 방어).
+  // geo: [{name, d(svg path)}] (window.__KOREA__)
+  // data: {시도명:{q,rate,prev_q,prev_rate,delta, common_rate,common_prev_q,common_delta}}
+  // 시점 모드 2가지 — 상단 .btn-sm 토글:
+  //   "공통 기준분기"(기본): opts.common.q(유효 커버리지 80%+ 최신 분기) 값으로만 채색, 결측 = 회색(0 대체 금지).
+  //   "지역별 최신": 각 시도 최신 가용 분기로 채색 · 공통 기준분기보다 2분기+ 과거인 지역은 사선(패턴).
+  // 채색 = --seq-100..700 순차 램프(높을수록 진하게) · 탭 → 외곽선+판독 · bindTip 재사용.
+  // 선택은 root._mapSel, 모드는 root._mapMode 에 영속(테마 재렌더 방어).
   function koreaMap(root, geo, data, opts) {
     opts = opts || {};
-    root.innerHTML = "";
+    const common = opts.common || {};
     const SEQ = ["--seq-100", "--seq-200", "--seq-300", "--seq-400", "--seq-500", "--seq-600", "--seq-700"];
     const THRESH = [30, 45, 60, 75, 85, 95];               // 6 컷 → 7 구간 (분양률 %)
     const binOf = r => { let i = 0; while (i < THRESH.length && r >= THRESH[i]) i++; return i; };
     const fq = q => (q ? q.replace("Q", " Q") : "");
+    const qi = q => (q ? parseInt(q.slice(0, 4), 10) * 4 + parseInt(q.slice(5), 10) : null);
+    const covPct = common.coverage != null ? Math.round(common.coverage * 100) : null;
     const delTag = d => d == null ? "" : d > 0 ? "▲ +" + d.toFixed(1) + "%p"
       : d < 0 ? "▼ " + Math.abs(d).toFixed(1) + "%p" : "± 0.0%p";
     const delCol = d => d == null ? css("--ink-3") : d > 0 ? css("--pos") : d < 0 ? css("--neg") : css("--ink-3");
 
+    // 시점 모드 — 기본 "공통 기준분기". 테마 재렌더에도 root._mapMode 로 유지.
+    const mode = root._mapMode === "latest" ? "latest" : (root._mapMode = "common", "common");
+    const rateOf = m => mode === "common" ? m.common_rate : m.rate;   // 모드별 값·분기·직전대비
+    const qOf = m => mode === "common" ? common.q : m.q;
+    const prevQOf = m => mode === "common" ? m.common_prev_q : m.prev_q;
+    const deltaOf = m => mode === "common" ? m.common_delta : m.delta;
+    const staleOf = m => mode === "latest" && common.q && m.q && (qi(common.q) - qi(m.q)) >= 2;
+
+    root.innerHTML = "";
+
+    // ── 시점 모드 토글 (.btn-sm 2개) ──
+    const modebar = document.createElement("div"); modebar.className = "map-mode";
+    modebar.setAttribute("role", "group"); modebar.setAttribute("aria-label", "지도 시점 모드");
+    [["common", "공통 기준분기"], ["latest", "지역별 최신"]].forEach(([key, label]) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "btn-sm"; b.textContent = label;
+      b.setAttribute("aria-pressed", String(mode === key));
+      b.addEventListener("click", () => {
+        if (root._mapMode === key) return;
+        root._mapMode = key;
+        koreaMap(root, geo, data, opts);       // 자체 재렌더 (선택 root._mapSel 은 영속)
+      });
+      modebar.appendChild(b);
+    });
+    root.appendChild(modebar);
+
     const wrap = document.createElement("div"); wrap.className = "korea-map"; root.appendChild(wrap);
     const svg = el("svg", { viewBox: opts.viewBox || "0 0 520 690", role: "img",
-      "aria-label": opts.aria || "대한민국 시도별 최신 분기 초기분양률 지도" }, wrap);
+      "aria-label": (opts.aria || "대한민국 시도별 초기분양률 지도")
+        + (mode === "common" ? " · 공통 기준분기 " + fq(common.q) : " · 지역별 최신 가용 분기") }, wrap);
+    // 사선 패턴 (지역별 최신 모드에서 공통보다 2분기+ 과거 표시)
+    const pat = el("pattern", { id: "kr-hatch", width: 7, height: 7, patternUnits: "userSpaceOnUse",
+      patternTransform: "rotate(45)" }, el("defs", {}, svg));
+    el("line", { x1: 0, y1: 0, x2: 0, y2: 7, stroke: css("--ink-2"), "stroke-width": 1.3, "stroke-opacity": .5 }, pat);
     const read = document.createElement("div"); read.className = "korea-read";
     const paths = {}; let overlay = null;
 
     function readHTML(name) {
       if (!name) {
         let lo = null;
-        geo.forEach(g => { const r = data[g.name]; if (r && r.rate != null && (!lo || r.rate < lo.rate)) lo = { name: g.name, ...r }; });
-        return '<span class="kr-hint">지역을 클릭·탭하면 최신 분기 초기분양률이 여기 표시된다.</span>'
-          + (lo ? ' <span class="kr-low">현재 최저 <b>' + lo.name + " " + lo.rate.toFixed(1) + "%</b> (" + fq(lo.q) + ")</span>" : "");
+        geo.forEach(g => { const m = data[g.name], v = m && rateOf(m); if (v != null && (!lo || v < lo.v)) lo = { name: g.name, v }; });
+        if (mode === "common") {
+          return '<span class="kr-hint">공통 기준분기 <b>' + fq(common.q) + "</b> · 유효 <b>"
+            + (common.valid || 0) + "/" + (common.total || 17) + "</b> · 커버리지 <b>"
+            + (covPct == null ? "—" : covPct + "%") + "</b> — 지역을 클릭·탭하면 그 분기 값이 여기 표시된다.</span>"
+            + (lo ? ' <span class="kr-low">최저 <b>' + lo.name + " " + lo.v.toFixed(1) + "%</b></span>" : "");
+        }
+        return '<span class="kr-hint">지역을 클릭·탭하면 최신 분기 초기분양률이 여기 표시된다. 사선 = 공통 기준분기('
+          + fq(common.q) + ")보다 2분기+ 과거.</span>"
+          + (lo ? ' <span class="kr-low">현재 최저 <b>' + lo.name + " " + lo.v.toFixed(1) + "%</b></span>" : "");
       }
-      const r = data[name];
-      if (!r || r.rate == null) return "<b>" + name + "</b> — 최신 가용 분기 자료 없음";
-      return "<b>" + name + " · " + fq(r.q) + "</b> — 초기분양률 <b class='num'>" + r.rate.toFixed(1) + "%</b>"
-        + (r.delta == null ? ' <span class="kr-hint">(직전 관측 없음)</span>'
-          : ' <span style="color:' + delCol(r.delta) + '">· 직전(' + fq(r.prev_q) + ") 대비 " + delTag(r.delta) + "</span>");
+      const m = data[name], v = m && rateOf(m);
+      if (v == null) return "<b>" + name + "</b> — " + (mode === "common"
+        ? "공통 기준분기(" + fq(common.q) + ") 자료 없음" : "최신 가용 분기 자료 없음");
+      const d = deltaOf(m);
+      return "<b>" + name + " · " + fq(qOf(m)) + "</b> — 초기분양률 <b class='num'>" + v.toFixed(1) + "%</b>"
+        + (d == null ? ' <span class="kr-hint">(직전 관측 없음)</span>'
+          : ' <span style="color:' + delCol(d) + '">· 직전(' + fq(prevQOf(m)) + ") 대비 " + delTag(d) + "</span>")
+        + (staleOf(m) ? ' <span class="kr-hint">· 공통 기준분기보다 오래됨(사선)</span>' : "");
     }
     function setSel(name) {
       root._mapSel = name || null;
@@ -885,32 +932,39 @@
     }
 
     geo.forEach(g => {
-      const r = data[g.name], has = r && r.rate != null;
-      const p = el("path", { d: g.d, fill: has ? css(SEQ[binOf(r.rate)]) : css("--surface-2"),
+      const m = data[g.name] || {}, v = rateOf(m), has = v != null;
+      const p = el("path", { d: g.d, fill: has ? css(SEQ[binOf(v)]) : css("--surface-2"),
         stroke: has ? css("--surface") : css("--hairline-2"), "stroke-width": 1, "stroke-linejoin": "round" }, svg);
       if (!has) p.setAttribute("stroke-dasharray", "3 3");
       p.classList.add("kr-prov");
       p.setAttribute("tabindex", "0"); p.setAttribute("role", "button");
-      p.setAttribute("aria-label", g.name + (has ? " 초기분양률 " + r.rate.toFixed(0) + "퍼센트 · " + fq(r.q) : " 자료 없음"));
+      p.setAttribute("aria-label", g.name + (has ? " 초기분양률 " + v.toFixed(0) + "퍼센트 · " + fq(qOf(m))
+        + (staleOf(m) ? " · 공통 기준분기보다 과거" : "") : " 자료 없음"));
       paths[g.name] = p;
+      // 지역별 최신 모드: 공통보다 2분기+ 과거 → 사선 오버레이(이벤트 통과, 아래 채색 path 로 전달)
+      if (has && staleOf(m)) el("path", { d: g.d, fill: "url(#kr-hatch)", stroke: "none", "pointer-events": "none" }, svg);
       bindTip(p, () => has
-        ? "<div class='t-title'>" + g.name + " · " + fq(r.q) + "</div>초기분양률 <b class='num'>" + r.rate.toFixed(1) + "%</b>"
-          + (r.delta == null ? "<br><span style='opacity:.7'>직전 관측 없음</span>"
-            : "<br><span style='color:" + delCol(r.delta) + "'>직전(" + fq(r.prev_q) + ") 대비 " + delTag(r.delta) + "</span>")
-        : "<div class='t-title'>" + g.name + "</div>최신 가용 분기 자료 없음");
+        ? "<div class='t-title'>" + g.name + " · " + fq(qOf(m)) + "</div>초기분양률 <b class='num'>" + v.toFixed(1) + "%</b>"
+          + (deltaOf(m) == null ? "<br><span style='opacity:.7'>직전 관측 없음</span>"
+            : "<br><span style='color:" + delCol(deltaOf(m)) + "'>직전(" + fq(prevQOf(m)) + ") 대비 " + delTag(deltaOf(m)) + "</span>")
+          + (staleOf(m) ? "<br><span style='opacity:.7'>공통 기준분기(" + fq(common.q) + ")보다 2분기+ 과거 · 사선</span>" : "")
+        : "<div class='t-title'>" + g.name + "</div>" + (mode === "common"
+          ? "공통 기준분기(" + fq(common.q) + ") 자료 없음" : "최신 가용 분기 자료 없음"));
       const pick = () => setSel(root._mapSel === g.name ? null : g.name);   // 재탭 = 해제
       p.addEventListener("click", pick);
       p.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
     });
 
-    // 범례 (낮음→높음 램프 + 자료 없음)
+    // 범례 (낮음→높음 램프 + 자료 없음 [+ 지역별 최신: 사선])
     const legend = document.createElement("div"); legend.className = "korea-legend";
     legend.innerHTML = '<span class="kl-lab">낮음</span><div class="kl-ramp">'
       + SEQ.map(s => '<i style="background:' + css(s) + '"></i>').join("")
-      + '</div><span class="kl-lab">높음 (분양률 %)</span><span class="kl-na"><i></i>자료 없음</span>';
+      + '</div><span class="kl-lab">높음 (분양률 %)</span><span class="kl-na"><i></i>자료 없음</span>'
+      + (mode === "latest" ? '<span class="kl-hatch"><i></i>공통보다 2분기+ 과거</span>' : "");
     wrap.appendChild(legend);
     root.appendChild(read);
     setSel(root._mapSel || null);   // 이전 선택 복원 (없으면 기본 판독)
+    if (opts.onMode) opts.onMode(mode);   // 캡션·부제 갱신은 호출측에 위임
     return svg;
   }
 

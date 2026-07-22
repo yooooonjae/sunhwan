@@ -71,25 +71,48 @@ def bunyang_block():
     latest = [{"name": s, "value": next((x["rate"] for x in hug[s] if x["q"] == latest_q), None)}
               for s in sidos]
 
-    # ⑦ 지도 채색용: 각 시도의 "지역별 최신 가용 분기" 초기분양률 + 직전 관측 대비.
+    # ⑦ 지도 채색용: 각 시도의 "지역별 최신 가용 분기" + "공통 기준분기" 초기분양률.
     #    집계 키(전국·수도권·지방·광역시 계열)는 지도에서 제외 — SIDO_ORDER 의 실제 17개 시도만.
     def _qk(q):  # "2026Q1" → 정렬 키
         return (int(q[:4]), int(q[5]))
+    real_sidos = [s for s in SIDO_ORDER if s != "전국"]        # 17개 시도
+    # 공통 기준분기 = 유효 지역 커버리지 80% 이상인 분기 중 가장 최신 (없으면 최대 커버리지·최신 폴백)
+    q_valid = defaultdict(int)
+    for s in real_sidos:
+        for x in hug.get(s, []):
+            if x.get("rate") is not None:
+                q_valid[x["q"]] += 1
+    total_sido = len(real_sidos)
+    elig = [q for q in q_valid if q_valid[q] / total_sido >= 0.8]
+    common_q = (max(elig, key=_qk) if elig
+                else max(q_valid, key=lambda q: (q_valid[q], _qk(q))) if q_valid else None)
+    common = {"q": common_q, "valid": q_valid.get(common_q, 0), "total": total_sido,
+              "coverage": round(q_valid.get(common_q, 0) / total_sido, 4) if common_q else 0}
+
     geo_map = []
-    for s in SIDO_ORDER:
-        if s == "전국":
-            continue
+    for s in real_sidos:
         ser = sorted(hug.get(s, []), key=lambda x: _qk(x["q"]))
         if not ser:
             geo_map.append({"name": s, "q": None, "rate": None,
-                            "prev_q": None, "prev_rate": None, "delta": None})
+                            "prev_q": None, "prev_rate": None, "delta": None,
+                            "common_rate": None, "common_prev_q": None, "common_delta": None})
             continue
         last = ser[-1]
         prev = ser[-2] if len(ser) >= 2 else None
+        # 공통 기준분기 값 + 직전 관측 대비 (없으면 결측 — 0 대체 금지)
+        cr = cpq = cprev = None
+        for i, x in enumerate(ser):
+            if x["q"] == common_q:
+                cr = x["rate"]
+                if i > 0:
+                    cpq, cprev = ser[i - 1]["q"], ser[i - 1]["rate"]
+                break
         geo_map.append({"name": s, "q": last["q"], "rate": last["rate"],
                         "prev_q": prev["q"] if prev else None,
                         "prev_rate": prev["rate"] if prev else None,
-                        "delta": round(last["rate"] - prev["rate"], 1) if prev else None})
+                        "delta": round(last["rate"] - prev["rate"], 1) if prev else None,
+                        "common_rate": cr, "common_prev_q": cpq,
+                        "common_delta": round(cr - cprev, 1) if (cr is not None and cprev is not None) else None})
 
     # ⑥ 분양가 프리미엄 × 경쟁률 산점 — 시세 = 수지 RTMS 시도 대표구 중위(공고월)
     prem_pts, n_drop = [], 0
@@ -124,7 +147,7 @@ def bunyang_block():
 
     return {"heat": heat, "ladder": ladder, "price_cap": price_cap,
             "pulse": pulse, "latest": {"q": latest_q, "rows": latest},
-            "map": geo_map, "premium": premium, "meta": ds["meta"]}
+            "map": geo_map, "map_common": common, "premium": premium, "meta": ds["meta"]}
 
 
 def jeongbi_block():

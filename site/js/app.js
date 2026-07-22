@@ -129,21 +129,46 @@
       labelW: 60, width: 1160, rowH: 27, aria: "시도별 초기분양률 최신 분기" });
     $("#b-cap-latest").textContent = "결측 시도는 해당 분기 30세대 이상 민간분양 실적이 없는 곳 — 공급 자체가 멈춘 시장이다.";
 
-    // ④-2 지도 코로플레스 (지역별 최신 가용 분기) — 기존 비교 막대와 병행. 집계 키는 D.map 단계에서 이미 제외.
+    // ④-2 지도 코로플레스 — 시점 모드 토글(공통 기준분기 / 지역별 최신). 집계 키는 D.map 단계에서 이미 제외.
     if (window.__KOREA__ && $("#b-koreamap")) {
       const mrows = (D.map || []).reduce((o, m) => (o[m.name] = m, o), {});
-      C.koreaMap($("#b-koreamap"), window.__KOREA__, mrows, { aria: "시도별 최신 분기 초기분양률 지도" });
-      const wr = (D.map || []).filter(m => m.rate != null);
-      if (wr.length) {
-        const lo = wr.reduce((a, b) => (b.rate < a.rate ? b : a), wr[0]);
-        const hi = wr.reduce((a, b) => (b.rate > a.rate ? b : a), wr[0]);
-        const hiNames = wr.filter(m => m.rate >= hi.rate - 1e-9).map(m => m.name);
-        $("#b-cap-map").textContent =
-          "채색 = 각 시도 최신 가용 분기의 민간아파트 평균 초기분양률(지역 평균 — 개별 단지가 아니다). " +
-          "최고 " + hi.rate.toFixed(1) + "%(" + hiNames.join("·") + ")와 최저 " + lo.rate.toFixed(1) +
-          "%(" + lo.name + " " + lo.q.replace("Q", " Q") + ")가 각 지역 최신 가용 분기 기준 약 " +
-          Math.round(hi.rate / lo.rate) + "배 벌어진다 — 색이 옅을수록(낮을수록) 초기 소진이 더딘 시장이다.";
-      }
+      const mc = D.map_common || {};
+      const fqq = q => (q ? q.replace("Q", " Q") : "");
+      const covPct = mc.coverage != null ? Math.round(mc.coverage * 100) : null;
+      const wr = (D.map || []).filter(m => m.rate != null);          // 지역별 최신 채색 대상
+      const cw = (D.map || []).filter(m => m.common_rate != null);   // 공통 기준분기 채색 대상
+      const unitEl = $("#b-map-unit"), capEl = $("#b-cap-map");
+      const setCap = mode => {   // koreaMap 이 모드 렌더 후 호출 — 부제·캡션 갱신
+        if (mode === "common") {
+          if (unitEl) unitEl.textContent = "% · 공통 기준분기 " + fqq(mc.q) + " · 클릭·탭하여 판독";
+          let ext = "";
+          if (cw.length) {
+            const hi = cw.reduce((a, b) => (b.common_rate > a.common_rate ? b : a), cw[0]);
+            const lo = cw.reduce((a, b) => (b.common_rate < a.common_rate ? b : a), cw[0]);
+            ext = " (최고 " + hi.name + " " + hi.common_rate.toFixed(1) + "% · 최저 " + lo.name + " " + lo.common_rate.toFixed(1) + "%)";
+          }
+          capEl.textContent =
+            "채색 = 공통 기준분기 " + fqq(mc.q) + " 의 시도별 평균 초기분양률 — 유효 지역 커버리지 80% 이상인 가장 최신 분기다. " +
+            "유효 " + (mc.valid || 0) + "/" + (mc.total || 17) + " · 커버리지 " + (covPct == null ? "—" : covPct + "%") + ". " +
+            "결측 " + ((mc.total || 17) - (mc.valid || 0)) + "개 지역은 회색(자료 없음)으로 두며 0으로 대체하지 않는다" + ext +
+            ". 모든 지역이 같은 분기라 지역 간 직접 비교가 가능하다.";
+        } else {
+          if (unitEl) unitEl.textContent = "% · 지역별 최신 가용 분기 · 클릭·탭하여 판독";
+          if (wr.length) {
+            const lo = wr.reduce((a, b) => (b.rate < a.rate ? b : a), wr[0]);
+            const hi = wr.reduce((a, b) => (b.rate > a.rate ? b : a), wr[0]);
+            const hiNames = wr.filter(m => m.rate >= hi.rate - 1e-9).map(m => m.name);
+            capEl.textContent =
+              "채색 = 각 시도 최신 가용 분기의 민간아파트 평균 초기분양률(지역 평균 — 개별 단지가 아니다). " +
+              "최고 " + hi.rate.toFixed(1) + "%(" + hiNames.join("·") + ")와 최저 " + lo.rate.toFixed(1) +
+              "%(" + lo.name + " " + fqq(lo.q) + ")가 각 지역 최신 가용 분기 기준 약 " +
+              Math.round(hi.rate / lo.rate) + "배 벌어진다. 공통 기준분기(" + fqq(mc.q) +
+              ")보다 2분기 이상 과거인 지역은 사선으로 표시하고, 툴팁에 그 지역 기준 분기를 밝힌다.";
+          }
+        }
+      };
+      C.koreaMap($("#b-koreamap"), window.__KOREA__, mrows,
+        { aria: "시도별 초기분양률 지도", common: mc, onMode: setCap });
     }
   }
 
