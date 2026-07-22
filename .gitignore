@@ -1,4 +1,6 @@
 config.json
+.env
+web.tmp/
 data/raw/
 __pycache__/
 *.pyc

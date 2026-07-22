@@ -1,0 +1,71 @@
+{
+ "generated": "2026-07-23",
+ "cutoff": "2026-07-20",
+ "note": "observed_through=관측 종료(자료 기준) · collected_at=수집일(원본 캐시 기준). cutoff=관측 종료 중 최신.",
+ "sources": [
+  {
+   "key": "cheongyak",
+   "source": "한국부동산원 청약홈 (분양공고·경쟁률·가점·무순위)",
+   "observed_through": "2026-07-16",
+   "collected_at": "2026-07-22",
+   "rows": 101904,
+   "coverage": "경쟁률 85% · 분양가 98% (공고 2,828건 기준)"
+  },
+  {
+   "key": "hug_rate",
+   "source": "HUG 민간아파트 평균 초기분양률 (KOSIS)",
+   "observed_through": "2026Q1",
+   "collected_at": "2026-07-22",
+   "rows": 846,
+   "coverage": "23개 지역 · 관측 있는 분기만 (2014Q3~)"
+  },
+  {
+   "key": "reits_fin",
+   "source": "DART OpenAPI 리츠 재무 (재무상태·배당)",
+   "observed_through": "2026-04-30",
+   "collected_at": "2026-07-22",
+   "rows": 408,
+   "coverage": "재무 24/24 · 배당 240결산기 · 부채비율 24/24"
+  },
+  {
+   "key": "reits_price",
+   "source": "금융위 주식시세 (리츠 일별 종가·시가총액)",
+   "observed_through": "2026-07-20",
+   "collected_at": "2026-07-22",
+   "rows": 29371,
+   "coverage": "상장 24/24종 · 상장일~"
+  },
+  {
+   "key": "treasury10y",
+   "source": "한국은행 ECOS 국고채 10년 (월평균)",
+   "observed_through": "2026-06",
+   "collected_at": "2026-07-22",
+   "rows": 150,
+   "coverage": "150개월 연속 (2014-01~)"
+  },
+  {
+   "key": "jeongbi",
+   "source": "시도별 정비사업 (대구·경기·부산)",
+   "observed_through": "현황 스냅샷 (관측 이력 지역별 상이)",
+   "collected_at": "2026-07-22",
+   "rows": 1061,
+   "coverage": "대구 188 · 경기 533 · 부산 340 (대구·경기 이력 / 부산 스냅샷)"
+  },
+  {
+   "key": "operating",
+   "source": "한국부동산원 상업용 임대동향 R-ONE (수지 재사용)",
+   "observed_through": "2026Q1",
+   "collected_at": "2026-07-21",
+   "rows": 663,
+   "coverage": "오피스 공실·임대·수익률 16개 시도 (2016Q3~)"
+  },
+  {
+   "key": "rtms",
+   "source": "국토부 실거래가 RTMS (분양가 프리미엄 분모 프록시 · 수지 재사용)",
+   "observed_through": "2026-07",
+   "collected_at": "2026-07-21",
+   "rows": 684,
+   "coverage": "17개 시도 대표 시군구 프록시 (단지 시세 아님)"
+  }
+ ]
+}

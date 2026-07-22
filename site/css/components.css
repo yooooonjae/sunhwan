@@ -200,6 +200,22 @@ figure.viz svg { width: 100%; height: auto; display: block; }
 .tag { display: inline-block; font-size: 10.5px; padding: 1px 7px; border-radius: 99px; margin-left: 6px;
   border: 1px solid var(--seal); color: var(--seal); vertical-align: 1px; }
 
+/* 증거 등급 배지 — 관측·통계적 관계·해석·미검증 4단 (범례는 Ⅵ 방법론) */
+.ev-badge {
+  display: inline-block; vertical-align: 1px; white-space: nowrap;
+  font-size: 10.5px; font-weight: 800; letter-spacing: .03em; line-height: 1.5;
+  padding: 1px 8px; border-radius: 99px; border: 1px solid currentColor; margin-right: 3px;
+}
+.ev-badge.ev-obs { color: var(--ink-2); border-color: var(--hairline-2); background: var(--surface-2); }
+.ev-badge.ev-stat { color: var(--s2);
+  background: color-mix(in srgb, var(--s2) 12%, transparent);
+  border-color: color-mix(in srgb, var(--s2) 48%, transparent); }
+.ev-badge.ev-interp { color: var(--s5);
+  background: color-mix(in srgb, var(--s5) 14%, transparent);
+  border-color: color-mix(in srgb, var(--s5) 48%, transparent); }
+.ev-badge.ev-unver { color: var(--muted); background: transparent;
+  border-style: dashed; border-color: var(--hairline-2); }
+
 /* 모바일: 밀집 차트 자체 스크롤 */
 @media (max-width: 600px) {
   #b-heat, #r-pnav, #r-dy { overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -221,6 +237,10 @@ figure.viz svg { width: 100%; height: auto; display: block; }
 footer.colophon { border-top: 1px solid var(--hairline); padding: var(--sp-5) 0; margin-top: var(--sp-5);
   text-align: center; font-size: 12.5px; color: var(--muted); line-height: 2; }
 footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprint); }
+/* 빌드 스탬프 — 커밋 短해시·데이터 컷오프·빌드일 */
+footer.colophon .build-stamp { font-size: 11.5px; color: var(--ink-3); letter-spacing: .02em; }
+footer.colophon code { font-family: var(--font-num); font-size: 11px; padding: 0 5px;
+  border: 1px solid var(--hairline); border-radius: 4px; background: var(--surface-2); color: var(--ink-2); }
 
 /* 모바일: 히어로 1열 스택 (2열 유지 시 글자 세로낙하 — 실측 검증) */
 @media (max-width: 880px) {

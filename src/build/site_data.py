@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[2]
 D = ROOT / "data"
 OUT = ROOT / "out"
 # 수지(收支) 저장소 위치 — 기본 ~/개발, SUJI_DIR 로 재정의(이식성).
-SUJI = Path(os.environ.get("SUJI_DIR", str(Path.home() / "개발")))
+SUJI = Path(os.path.expanduser(os.environ.get("SUJI_DIR", str(Path.home() / "개발"))))
 
 REPRT_ORD = {"1분기": 1, "반기": 2, "3분기": 3, "사업": 4}
 SIDO_ORDER = ["전국", "서울", "경기", "인천", "부산", "대구", "광주", "대전", "울산",
@@ -373,8 +373,10 @@ def reits_block():
 
 def main():
     OUT.mkdir(exist_ok=True)
+    import manifest  # 동일 디렉토리(src/build) — 스크립트 실행 시 sys.path[0] 에 포함
     bundle = {
         "built_at": datetime.date.today().isoformat(),
+        "manifest": manifest.generate(write=True),   # DATA_MANIFEST.json 생성 + 번들 동봉(빌드 통합)
         "bunyang": bunyang_block(),
         "jeongbi": jeongbi_block(),
         "operating": operating_block(),

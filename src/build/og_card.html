@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<style>
+  /* 순환 OG 카드 1200×630 — 한밤의 관측지(딥 청람 + 금 循環 궤도).
+     재생성: make og  (Chrome 헤드리스 스크린샷 → sips 1200×630) */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; }
+  :root {
+    --ground: #0c1524; --surface: #132033;
+    --gold: #d9ae52; --gold2: #e7c47a;
+    --azure: #6b9bd8; --sage: #8fb8a8; --verm: #e0774a; --mauve: #b48ead;
+    --ink: #eaf0f8; --ink2: #aebccf; --ink3: #75879f;
+    --serif: "Songti SC", "Songti TC", "AppleMyungjo", "Noto Serif KR", serif;
+    --body: "Apple SD Gothic Neo", "Pretendard", -apple-system, sans-serif;
+    --num: "Avenir Next", "Helvetica Neue", sans-serif;
+  }
+  body {
+    position: relative; overflow: hidden; font-family: var(--body); color: var(--ink);
+    background:
+      radial-gradient(60% 80% at 82% 22%, rgba(217,174,82,.16), transparent 62%),
+      radial-gradient(52% 70% at 12% 84%, rgba(107,155,216,.14), transparent 60%),
+      linear-gradient(150deg, #0a1220 0%, #0c1524 46%, #101d31 100%);
+  }
+  /* 미세 격자(관측지 눈금) */
+  body::before {
+    content: ""; position: absolute; inset: 0; opacity: .35; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(120,150,190,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(120,150,190,.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .frame { position: absolute; inset: 30px; border: 1px solid rgba(180,200,230,.14); border-radius: 18px; }
+  .wrap { position: absolute; inset: 0; display: flex; align-items: center; padding: 78px 74px; gap: 30px; }
+
+  .left { width: 660px; }
+  .kicker { color: var(--gold); font-size: 20px; font-weight: 800; letter-spacing: .34em; margin-bottom: 26px; }
+  .titline { display: flex; align-items: baseline; gap: 22px; }
+  .hanja { font-family: var(--serif); font-size: 132px; line-height: .9; color: var(--gold);
+           text-shadow: 0 2px 30px rgba(217,174,82,.28); }
+  .ko { font-size: 62px; font-weight: 800; letter-spacing: .04em; color: var(--ink); }
+  .sub { margin-top: 26px; font-size: 27px; font-weight: 600; color: var(--ink2); letter-spacing: .01em; }
+
+  .flow { margin-top: 30px; display: flex; align-items: center; gap: 12px; font-size: 23px; font-weight: 800; }
+  .flow .s1 { color: var(--gold); } .flow .s2 { color: var(--azure); }
+  .flow .s3 { color: var(--sage); } .flow .s4 { color: var(--verm); }
+  .flow .ar { color: var(--ink3); font-weight: 500; }
+
+  .stats { margin-top: 34px; display: flex; gap: 34px; }
+  .stat b { display: block; font-family: var(--num); font-size: 34px; font-weight: 700; color: var(--ink); letter-spacing: -.01em; }
+  .stat b .u { font-size: 18px; color: var(--ink3); font-weight: 500; margin-left: 3px; }
+  .stat span { display: block; font-size: 14.5px; color: var(--ink3); margin-top: 5px; letter-spacing: .02em; }
+
+  .url { position: absolute; left: 74px; bottom: 60px; font-family: var(--num); font-size: 19px;
+         letter-spacing: .1em; color: var(--gold2); font-weight: 600; }
+  .foot { position: absolute; right: 74px; bottom: 60px; font-size: 15px; color: var(--ink3); letter-spacing: .04em; }
+
+  /* 궤도 */
+  .orbit { position: absolute; right: 62px; top: 50%; transform: translateY(-50%); width: 380px; height: 380px; }
+</style>
+</head>
+<body>
+  <div class="frame"></div>
+  <div class="wrap">
+    <div class="left">
+      <div class="kicker">CAPITAL CYCLE OBSERVATORY</div>
+      <div class="titline"><span class="hanja">循環</span><span class="ko">순환</span></div>
+      <div class="sub">부동산 자본의 생애주기 관측</div>
+      <div class="flow">
+        <span class="s1">공급</span><span class="ar">→</span><span class="s2">분양</span><span class="ar">→</span><span class="s3">운영</span><span class="ar">→</span><span class="s4">자본</span>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>1,061<span class="u">구역</span></b><span>정비 파이프라인</span></div>
+        <div class="stat"><b>24<span class="u">종</span></b><span>상장 리츠 전수</span></div>
+        <div class="stat"><b>r=−0.73</b><span>공실 ↔ 리츠 P/BV</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="url">sunhwan.pages.dev</div>
+  <div class="foot">공공 데이터 · 상관 ≠ 인과</div>
+
+  <svg class="orbit" viewBox="0 0 420 420" fill="none">
+    <circle cx="210" cy="210" r="192" stroke="rgba(180,200,230,.16)" stroke-width="1" stroke-dasharray="2 14"/>
+    <circle cx="210" cy="210" r="150" stroke="rgba(180,200,230,.10)" stroke-width="1" stroke-dasharray="1 10"/>
+    <!-- 4색 궤도 호 (각 노드에서 ±10° 띄움) -->
+    <path d="M239.5 42.6 A170 170 0 0 1 377.4 180.5" stroke="#d9ae52" stroke-width="3" stroke-linecap="round"/>
+    <path d="M377.4 239.5 A170 170 0 0 1 239.5 377.4" stroke="#6b9bd8" stroke-width="3" stroke-linecap="round"/>
+    <path d="M180.5 377.4 A170 170 0 0 1 42.6 239.5" stroke="#8fb8a8" stroke-width="3" stroke-linecap="round"/>
+    <path d="M42.6 180.5 A170 170 0 0 1 180.5 42.6" stroke="#e0774a" stroke-width="3" stroke-linecap="round"/>
+    <!-- 노드 -->
+    <g font-family="Apple SD Gothic Neo, sans-serif" font-size="15" font-weight="800" text-anchor="middle">
+      <circle cx="210" cy="40" r="27" fill="#132033" stroke="#d9ae52" stroke-width="2"/>
+      <text x="210" y="35" fill="#75879f" font-size="11">Ⅰ</text><text x="210" y="51" fill="#eaf0f8">공급</text>
+      <circle cx="380" cy="210" r="27" fill="#132033" stroke="#6b9bd8" stroke-width="2"/>
+      <text x="380" y="205" fill="#75879f" font-size="11">Ⅱ</text><text x="380" y="221" fill="#eaf0f8">분양</text>
+      <circle cx="210" cy="380" r="27" fill="#132033" stroke="#8fb8a8" stroke-width="2"/>
+      <text x="210" y="375" fill="#75879f" font-size="11">Ⅲ</text><text x="210" y="391" fill="#eaf0f8">운영</text>
+      <circle cx="40" cy="210" r="27" fill="#132033" stroke="#e0774a" stroke-width="2"/>
+      <text x="40" y="205" fill="#75879f" font-size="11">Ⅳ</text><text x="40" y="221" fill="#eaf0f8">자본</text>
+    </g>
+    <text x="210" y="222" text-anchor="middle" font-size="64" fill="#d9ae52" font-family="Songti SC, AppleMyungjo, serif">循環</text>
+    <text x="210" y="250" text-anchor="middle" font-size="11" fill="#75879f" letter-spacing="4">CAPITAL CYCLE</text>
+  </svg>
+</body>
+</html>
