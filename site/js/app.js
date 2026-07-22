@@ -31,6 +31,7 @@
 
   /* ---------- 홈 계기판 ---------- */
   function counters() {
+    if (!$("#counters")) return;   // 홈 재구성: 계기판 행 제거 — 6개 수치는 단계 카드로 흡수
     const c = B.counters;
     const items = [
       [c.jeongbi_zones, "구역", "정비 파이프라인 (3개 시도)"],
@@ -166,12 +167,7 @@
   /* ---------- Ⅴ. 연결 ---------- */
   function renderLinkage() {
     const L = B.linkage;
-    if (!L || !$("#l-kpis")) return;
-    $("#l-kpis").innerHTML = [
-      [`r = ${L.r_supply}`, `공급 파이프라인 ↔ 초기분양률 (분기 ${L.supply_link.length}개) — 물량이 쌓이면 분양률이 낮아지는 방향`],
-      [`+3.0 → ${L.ops_spread[L.ops_spread.length - 1].v}%p`, "서울 운영 스프레드 (2016 → 현재) — 금리가 삼킨 임대 프리미엄"],
-      [`r = ${L.r_cap}`, `서울 공실률 ↔ 오피스 리츠 P/BV (분기 ${L.cap_link.length}개·국내 ${L.office_n}종) — 공실이 줄자 할인이 풀렸다`],
-    ].map(([v, k]) => `<div class="kpi"><div class="v gold">${v}</div><div class="k">${k}</div></div>`).join("");
+    if (!L || !$("#l-spread")) return;   // #l-kpis 제거 — 3개 다리 카드가 정적 마크업으로 대체(수치 직접)
 
     const mkq = (arr, key) => arr.map((p, i) => ({ x: i, label: p.q.replace("Q", " Q"), y: p[key] }));
     C.line($("#l-pipe"), [{ name: "파이프라인", color: "--s2", emph: true,

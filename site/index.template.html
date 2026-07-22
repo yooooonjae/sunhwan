@@ -75,24 +75,71 @@
     </div>
   </div>
   <div class="wrap">
-    <div class="kpi-row" id="pulse-now" style="margin-top:var(--sp-5)"></div>
-    <div class="gauge-row" id="counters" style="margin-top:var(--sp-3)">
-      <div class="gauge"><div class="v">1,061<small>구역</small></div><div class="k">정비 파이프라인 (3개 시도)</div></div>
-      <div class="gauge"><div class="v">101,904<small>행</small></div><div class="k">청약 데이터 수집</div></div>
-      <div class="gauge"><div class="v">2,828<small>건</small></div><div class="k">분양 공고 (2020~)</div></div>
-      <div class="gauge"><div class="v">846<small>개</small></div><div class="k">지역·분기 초기분양률 관측값 (12년)</div></div>
-      <div class="gauge"><div class="v">24<small>종</small></div><div class="k">상장 리츠 전수</div></div>
-      <div class="gauge"><div class="v">150<small>개월</small></div><div class="k">국고 10년 금리</div></div>
+    <div class="home-band">
+      <div class="home-label">지금 — 순환의 네 지점</div>
+      <div class="kpi-row" id="pulse-now"></div>
     </div>
-    <div class="gates">
-      <a class="gate" href="#/ch1"><span class="st on">가동 중</span><div class="no">Ⅰ</div>
-        <h4>공급 — 정비의 파이프라인</h4><p>대구·경기 단계 이력 + 부산 스냅샷, 1,061개 구역. 조합설립→사업시행 중위 3~4년의 실측.</p></a>
-      <a class="gate" href="#/ch2"><span class="st on">가동 중</span><div class="no">Ⅱ</div>
-        <h4>분양 — 청약의 성적표</h4><p>공고 2,828건 · 경쟁률 5만 행 · 초기분양률 12년. 경쟁률 구간과 다음 분기 지역 분양률의 관계를 분석했다.</p></a>
-      <a class="gate" href="#/ch3"><span class="st on">가동 중</span><div class="no">Ⅲ</div>
-        <h4>운영 — 임대시장의 체온</h4><p>오피스 공실률·임대지수·소득수익률 — 배당과 매각가치가 태어나는 곳.</p></a>
-      <a class="gate" href="#/ch4"><span class="st on">가동 중</span><div class="no">Ⅳ</div>
-        <h4>자본 — 리츠의 가격표</h4><p>상장 리츠 24종의 P/BV·배당 — 자산가치·부채 구조·배당 지속성에 대한 자본시장의 평가.</p></a>
+
+    <div class="home-band">
+      <div class="home-label">시장 순환 — 공급에서 자본으로</div>
+      <div class="cycle-flow">
+        <a class="stage-card" href="#/ch1">
+          <div class="sc-top"><span class="sc-no">Ⅰ</span><span class="st on">가동 중</span></div>
+          <h4>공급 — 정비의 파이프라인</h4>
+          <p>대구·경기 단계 이력 + 부산 스냅샷. 조합설립→사업시행 중위 3~4년의 실측.</p>
+          <div class="sc-stats">
+            <div class="sstat"><b>1,061</b><span>정비구역</span></div>
+            <div class="sstat"><b>3</b><span>개 시도</span></div>
+          </div>
+        </a>
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <a class="stage-card" href="#/ch2">
+          <div class="sc-top"><span class="sc-no">Ⅱ</span><span class="st on">가동 중</span></div>
+          <h4>분양 — 청약의 성적표</h4>
+          <p>경쟁률 구간과 다음 분기 지역 분양률의 관계를 분석했다.</p>
+          <div class="sc-stats">
+            <div class="sstat"><b>2,828</b><span>분양 공고</span></div>
+            <div class="sstat"><b>101,904</b><span>청약 행</span></div>
+            <div class="sstat"><b>846</b><span>지역·분기 관측</span></div>
+          </div>
+        </a>
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <a class="stage-card" href="#/ch3">
+          <div class="sc-top"><span class="sc-no">Ⅲ</span><span class="st on">가동 중</span></div>
+          <h4>운영 — 임대시장의 체온</h4>
+          <p>오피스 공실률·임대지수·소득수익률 — 배당과 매각가치가 태어나는 곳.</p>
+          <div class="sc-stats">
+            <div class="sstat"><b>17</b><span>개 시도</span></div>
+            <div class="sstat"><b>’16 Q3~</b><span>분기 관측</span></div>
+          </div>
+        </a>
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <a class="stage-card" href="#/ch4">
+          <div class="sc-top"><span class="sc-no">Ⅳ</span><span class="st on">가동 중</span></div>
+          <h4>자본 — 리츠의 가격표</h4>
+          <p>P/BV·배당 — 자산가치·부채 구조·배당 지속성에 대한 자본시장의 평가.</p>
+          <div class="sc-stats">
+            <div class="sstat"><b>24</b><span>상장 리츠</span></div>
+            <div class="sstat"><b>150</b><span>개월 금리</span></div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="home-band">
+      <div class="home-label">연구 검증 — 순환을 잇는 두 장</div>
+      <div class="research-row">
+        <a class="research-card" href="#/ch5">
+          <div class="rc-top"><span class="rc-no">Ⅴ</span>교차 검증</div>
+          <h4>연결 — 순환은 실제로 도는가</h4>
+          <p>단계 간 교차관계를 실측한다 — 공급↔분양률, 금리↔운영, 공실↔P/BV. 상관 관측이며 인과가 아니다.</p>
+        </a>
+        <a class="research-card" href="#/ch6">
+          <div class="rc-top"><span class="rc-no">Ⅵ</span>기록·규약</div>
+          <h4>방법론 — 출처·정의·한계</h4>
+          <p>출처·커버리지·정의·한계를 한자리에. 모든 수치의 재현 경로를 남긴다.</p>
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -124,8 +171,9 @@
       <div style="overflow-x:auto"><table id="j-regions" style="width:100%"></table></div>
       <figcaption>부산은 이력 일자가 없는 현황 스냅샷 — 단계 소요기간 계산에서 제외된다. 서울(정보몽땅 크롤링)·인천·울산이 다음 확장 대상.</figcaption>
     </figure>
-    <figure class="viz">
-      <div class="viz-head"><div class="viz-title">부록 — 소스 지도와 수집 난이도</div><div class="viz-unit">2026-07 소스 조사 · 16개 중 핵심 6</div></div>
+    <details class="viz-details">
+      <summary><b>부록 — 소스 지도와 수집 난이도</b><span class="det-meta">2026-07 소스 조사 · 16개 소스 중 핵심 6개 · 표 6행</span></summary>
+      <div class="det-body">
       <div style="overflow-x:auto"><table>
         <thead><tr><th>소스</th><th>제공 방식</th><th>단계 이력</th><th>난도</th><th>비고</th></tr></thead>
         <tbody>
@@ -140,7 +188,8 @@
       <figcaption>수집 순서: API → 정형 파일 → HTML 크롤링 → PDF(보충). 모든 소스는 대구 스키마
       (예정구역고시 → 구역지정 → 추진위 → 조합설립 → 사업시행 → 관리처분 → 착공 → 일반분양 → 준공)로 정규화한다.
       수집·정합성 이슈 10건 목록화: 스냅샷↔이력 혼동 금지, 소규모주택정비(별도 법) 분리, 비대상 데이터 혼입 차단 등.</figcaption>
-    </figure>
+      </div>
+    </details>
   </div>
 </section>
 
@@ -154,15 +203,15 @@
     공고 2,828건과 경쟁률 5만여 행을 HUG 초기분양률 12년 치에 이어 붙여 이 관계를 데이터로 검증했다.
     경쟁률 5:1 이상을 기록한 지역·분기는 다음 분기 초기분양률이 중위 99%에 달했고, 미달 지역·분기는 중위 73%에 그쳤다 — 상관 관측이며 개별 단지의 완판 예측이 아니다.</p>
     <div class="kpi-row" id="b-kpis"></div>
+    <figure class="viz viz-hero">
+      <div class="viz-head"><div class="viz-title">싸게 내놓으면 더 몰리는가 — 분양가 프리미엄 × 경쟁률</div><div class="viz-unit">가로 = 분양가 ÷ 시도 시세(1.0 = 동가) · 세로 = 경쟁률(40:1 상한 표기) · 원 = 공급세대</div></div>
+      <div id="b-prem"></div>
+      <figcaption id="b-prem-cap"></figcaption>
+    </figure>
     <figure class="viz">
       <div class="viz-head"><div class="viz-title">청약 경쟁률은 무엇을 말해주는가 — 구간별 다음 분기 초기분양률</div><div class="viz-unit">공고분기 경쟁률 → 다음 분기 시도 초기분양률 중위</div></div>
       <div id="b-ladder"></div>
       <figcaption id="b-ladder-cap"></figcaption>
-    </figure>
-    <figure class="viz">
-      <div class="viz-head"><div class="viz-title">싸게 내놓으면 더 몰리는가 — 분양가 프리미엄 × 경쟁률</div><div class="viz-unit">가로 = 분양가 ÷ 시도 시세(1.0 = 동가) · 세로 = 경쟁률(40:1 상한 표기) · 원 = 공급세대</div></div>
-      <div id="b-prem"></div>
-      <figcaption id="b-prem-cap"></figcaption>
     </figure>
     <figure class="viz">
       <div class="viz-head"><div class="viz-title">지역·분기 초기분양률 히트맵 — 시도 × 최근 12분기</div><div class="viz-unit">% · 기준선 80% (금=상회, 청=하회)</div></div>
@@ -251,23 +300,21 @@
     </figure>
     <div class="two-col">
       <figure class="viz">
-        <div class="viz-head"><div class="viz-title">국고채 10년 — 스프레드의 기준선</div><div class="viz-unit">% · 월평균</div></div>
-        <div id="r-t10"></div>
-        <figcaption id="r-t10-cap"></figcaption>
-      </figure>
-      <figure class="viz">
         <div class="viz-head"><div class="viz-title">부채는 어디가 무거운가 — 장부상 부채비율</div><div class="viz-unit">부채총계 ÷ 자산총계 (회계 기준)</div></div>
         <div id="r-ltv"></div>
         <figcaption>회계상 레버리지 지표(비금융부채 포함) — 담보대출÷감정가 기준의 실무 LTV와 다르다. 만기 구조·금리는 후속 수집.</figcaption>
       </figure>
-    </div>
-    <div class="two-col">
       <figure class="viz">
         <div class="viz-head"><div class="viz-title">섹터별 요약</div><div class="viz-unit">중위값</div></div>
         <div style="overflow-x:auto"><table id="r-sector"></table></div>
         <figcaption>섹터는 주 자산 기준 단순 분류. 재간접·복합은 성격이 섞여 있어 해석에 주의.</figcaption>
       </figure>
     </div>
+    <figure class="viz">
+      <div class="viz-head"><div class="viz-title">국고채 10년 — 스프레드의 기준선</div><div class="viz-unit">% · 월평균 · 밸류에이션의 기준선</div></div>
+      <div id="r-t10"></div>
+      <figcaption id="r-t10-cap"></figcaption>
+    </figure>
   </div>
 </section>
 
@@ -277,13 +324,49 @@
   <div class="wrap">
     <div class="tobira"><div class="no">Ⅴ</div><h2>연결 — 순환은 실제로 도는가</h2>
       <div class="meta">방법 <b>단계 간 교차 상관</b><br>주의 <b>상관 ≠ 인과 · 표본 작음</b></div></div>
-    <p class="lede">이 사이트의 이름값을 검증하는 장이다. 공급·분양·운영·자본이 정말 이어져 있다면
-    데이터에 흔적이 남아야 한다 — <b>세 개의 다리</b>를 자체 보유 데이터만으로 놓아 보았다.
-    전부 상관 관측이며 인과 주장이 아니다. 표본이 작은 다리는 그 사실을 함께 표기한다.
-    실측: 다리 ① r = -0.43(분기 21개, 2021Q1~2026Q1) · 다리 ② +3.0%p → +0.2%p(2016Q3~2026Q1) · 다리 ③ r = -0.73(분기 13개, 2023Q1~2026Q1, 국내 오피스 리츠 8종 시가총액 가중 합산).
-    강건성 검증: 다리 ③은 국고10년을 통제한 부분상관에서도 r = -0.70으로 유지되나 분기 차분에서는 소멸(r = +0.11) —
-    수준(level)의 관계다. 다리 ①은 분기 차분에서 약해지고(r = -0.13) 연간 변화에서는 유지된다(r = -0.38).</p>
-    <div class="kpi-row" id="l-kpis"></div>
+    <p class="lede">이 사이트의 이름값을 검증하는 장이다. 공급·분양·운영·자본이 정말 이어져 있다면 데이터에 흔적이 남아야 한다 —
+    자체 보유 데이터만으로 <b>세 개의 다리</b>를 실측했다. 전부 상관 관측이며 인과 주장이 아니다 — 표본이 작은 다리는 그 사실을 함께 표기한다.</p>
+    <div class="bridge-grid">
+      <article class="bridge-card">
+        <div class="bridge-head"><span class="bridge-no">다리 ①</span><span class="bridge-tag">공급 → 분양</span></div>
+        <p class="bridge-q">향후 공급물량이 많을수록 분양률이 낮아지는가</p>
+        <div class="bridge-result">
+          <div class="bridge-sec-label">핵심 결과</div>
+          <div class="bridge-stat"><b>r = -0.43</b><span>분기 21개 · 2021Q1~2026Q1</span></div>
+          <p>강건성 — 분기 차분에서 약해지고(r = -0.13) 연간 변화에서는 유지(r = -0.38). 단기 잡음이 아닌 중기 수급 수준의 관계.</p>
+        </div>
+        <div class="bridge-caution">
+          <div class="bridge-sec-label">주의할 점</div>
+          <p>파이프라인은 청약홈 공고(2020-02~) 기반이라 절대량이 아닌 방향으로 읽는다. 시도·분기 평균의 상관이며 개별 단지 예측이 아니다.</p>
+        </div>
+      </article>
+      <article class="bridge-card">
+        <div class="bridge-head"><span class="bridge-no">다리 ②</span><span class="bridge-tag">금리 → 운영</span></div>
+        <p class="bridge-q">금리가 오르면 운영이 벌던 프리미엄이 사라지는가</p>
+        <div class="bridge-result">
+          <div class="bridge-sec-label">핵심 결과</div>
+          <div class="bridge-stat"><b>+3.0%p → +0.2%p</b><span>2016Q3 → 2026Q1</span></div>
+          <p>서울 오피스 소득수익률 연환산 − 국고10년. 임대 프리미엄이 금리 상승과 함께 0 부근까지 좁혀졌다 — 리츠 할인(Ⅳ장)의 거시 배경.</p>
+        </div>
+        <div class="bridge-caution">
+          <div class="bridge-sec-label">주의할 점</div>
+          <p>두 시계열의 차이(수준)를 관측한 것으로, 별도의 시점 상관계수를 산출하지 않았다. 방향과 크기로만 읽는다.</p>
+        </div>
+      </article>
+      <article class="bridge-card">
+        <div class="bridge-head"><span class="bridge-no">다리 ③</span><span class="bridge-tag">운영 → 자본</span></div>
+        <p class="bridge-q">오피스 공실이 깊어지면 리츠가 장부가 대비 더 할인되는가</p>
+        <div class="bridge-result">
+          <div class="bridge-sec-label">핵심 결과</div>
+          <div class="bridge-stat"><b>r = -0.73</b><span>분기 13개 · 2023Q1~2026Q1 · 국내 오피스 리츠 8종 시총 가중</span></div>
+          <p>강건성 — 국고10년 통제 부분상관 r = -0.70(유지), 분기 차분에서는 소멸(r = +0.11). 수준(level)의 관계.</p>
+        </div>
+        <div class="bridge-caution">
+          <div class="bridge-sec-label">주의할 점</div>
+          <p>표본 13개로 단정할 수 없다. 두 변수 모두 금리라는 공통 원인의 영향을 받는다.</p>
+        </div>
+      </article>
+    </div>
     <div class="two-col">
       <figure class="viz">
         <div class="viz-head"><div class="viz-title">다리 ① 공급 → 분양: 공고 기준 향후 8분기 입주예정 물량</div><div class="viz-unit">만 세대 · 각 분기 시점에 공고로 확인 가능한 물량</div></div>
@@ -323,8 +406,9 @@
   <div class="wrap">
     <div class="tobira"><div class="no">Ⅵ</div><h2>방법론 — 출처, 정의, 그리고 한계</h2>
       <div class="meta">갱신 <b>수집기 재실행 시</b><br>원본 <b>전량 캐시</b></div></div>
-    <figure class="viz">
-      <div class="viz-head"><div class="viz-title">데이터 출처</div></div>
+    <details class="viz-details">
+      <summary><b>데이터 출처</b><span class="det-meta">6개 원천 · 표 6행</span></summary>
+      <div class="det-body">
       <div style="overflow-x:auto"><table>
         <thead><tr><th>출처</th><th>내용</th><th>비고</th></tr></thead>
         <tbody>
@@ -336,9 +420,11 @@
           <tr><td>한국은행 ECOS</td><td>국고채 10년 월평균 150개월</td><td>스프레드 기준선</td></tr>
         </tbody>
       </table></div>
-    </figure>
-    <figure class="viz">
-      <div class="viz-head"><div class="viz-title">커버리지 매트릭스 — 이 데이터를 어디까지 믿을 것인가</div></div>
+      </div>
+    </details>
+    <details class="viz-details">
+      <summary><b>커버리지 매트릭스 — 이 데이터를 어디까지 믿을 것인가</b><span class="det-meta">5개 데이터셋 · 표 5행</span></summary>
+      <div class="det-body">
       <div style="overflow-x:auto"><table>
         <thead><tr><th>데이터</th><th>지역 범위</th><th>기간</th><th>단위</th><th>커버리지</th></tr></thead>
         <tbody>
@@ -350,9 +436,11 @@
         </tbody>
       </table></div>
       <figcaption>프리미엄 산점의 시세 분모는 시도 대표 시군구 프록시 — 공고 소재 시군구와 다를 수 있어 상관을 희석한다(시군구 매칭이 로드맵 1순위인 이유).</figcaption>
-    </figure>
-    <figure class="viz">
-      <div class="viz-head"><div class="viz-title">정직한 정의 — 오해하기 쉬운 것들</div></div>
+      </div>
+    </details>
+    <details class="viz-details">
+      <summary><b>정직한 정의 — 오해하기 쉬운 것들</b><span class="det-meta">7개 주의점</span></summary>
+      <div class="det-body">
       <div style="padding:4px 2px 2px; font-size:14px; line-height:1.9; color:var(--ink-2)">
         · <b>초기분양률 관측값은 시도·분기 "평균"</b>이다 — 개별 단지의 분양률이 아니며, 모델·차트 해석의 상한선이다.<br>
         · <b>P/BV의 분모는 회계 장부 순자산</b> — 감정평가 기반 실질 NAV와 다르다. 후속 고도화에서 국토부 투자보고서 기반으로 정밀화한다.<br>
@@ -362,7 +450,8 @@
         · 경쟁률은 표기 문자열("(△15)") 대신 <b>Σ접수 ÷ Σ공급으로 재계산</b> — 미달 표기 파싱 오류 가능성을 제거.<br>
         · 결측은 보간하지 않고 결측으로 표시한다. 원본 응답은 전량 캐시되어 전 수치가 재현 가능하다.
       </div>
-    </figure>
+      </div>
+    </details>
   </div>
 </section>
 
