@@ -18,6 +18,7 @@
   --ink: #1a2a42;
   --ink-2: #45586f;
   --ink-3: #68798f;
+  --muted: #566476;   /* 캡션·각주·푸터 전용 — 대비 ≥4.5:1 (차트 축 라벨은 --ink-3 유지) */
   --hairline: #dfe4ec;
   --hairline-2: #c9d2df;
   --grid: #e8ecf2;
@@ -57,6 +58,7 @@
   --ink: #e9eef6;
   --ink-2: #a9b7cb;
   --ink-3: #6e8098;
+  --muted: #8090a6;   /* 캡션·각주·푸터 전용 — 대비 ≥4.5:1 */
   --hairline: #243450;
   --hairline-2: #324663;
   --grid: #182741;
@@ -111,13 +113,14 @@ a:hover { color: var(--blueprint-2); }
 
 .num { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
 
-.caption { font-size: var(--t-caption); color: var(--ink-3); }
+.caption { font-size: var(--t-caption); color: var(--muted); }
 
-section.chapter { padding: var(--sp-6) 0; }
+/* 8차 리뷰 ①: 데스크톱 섹션 간 여백 축소 (64→~56 최대, 넓은 화면일수록 여유는 arc가 담당) */
+section.chapter { padding-block: clamp(40px, 4vw, 56px); }
 
-/* 장 사이 구분 — 호(弧) 괘선 */
+/* 장 사이 구분 — 호(弧) 괘선. 장식은 유지, 상하 여백만 축소 (margin 40→8, 높이 60→44) */
 .arc-rule {
-  height: 60px; margin: var(--sp-5) auto; max-width: var(--col);
+  height: 44px; margin: var(--sp-2) auto; max-width: var(--col);
   display: flex; align-items: center; justify-content: center; gap: 14px;
   color: var(--ink-3); font-size: 12px; letter-spacing: .35em;
 }
@@ -138,7 +141,7 @@ th { color: var(--ink-3); font-size: 12px; letter-spacing: .06em; font-weight: 7
 td.num, th.num { text-align: right; font-family: var(--font-num); font-variant-numeric: tabular-nums; }
 
 @media (max-width: 640px) {
-  section.chapter { padding: var(--sp-5) 0; }
+  section.chapter { padding-block: clamp(28px, 7vw, 40px); }
   .wrap { padding: 0 var(--sp-3); }
 }
 
@@ -162,18 +165,64 @@ nav.appbar .tabs a {
 }
 nav.appbar .tabs a.active { background: var(--blueprint-2); color: var(--ground); }
 nav.appbar .tabs a:hover:not(.active) { color: var(--blueprint-2); }
+/* 8차 리뷰 ⑤: 테마 토글 = 원형 아이콘(☀/☾) */
 .theme-toggle {
+  flex: none; width: 40px; height: 40px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
   border: 1px solid var(--hairline-2); background: none; color: var(--ink-2);
-  border-radius: 99px; padding: 5px 13px; font-size: 12px; cursor: pointer; font-family: inherit;
+  font-size: 18px; line-height: 1; cursor: pointer; font-family: inherit; padding: 0;
 }
 .theme-toggle:hover { border-color: var(--blueprint); color: var(--blueprint-2); }
+
+/* 8차 리뷰 ②: 모바일 목차 버튼 (데스크톱 숨김) */
+.nav-menu-btn {
+  display: none; flex: none; align-items: center; gap: 6px;
+  border: 1px solid var(--hairline-2); background: none; color: var(--ink-2);
+  border-radius: 99px; padding: 7px 14px; font-size: 13.5px; font-weight: 700;
+  cursor: pointer; font-family: inherit;
+}
+.nav-menu-btn:hover { border-color: var(--blueprint); color: var(--blueprint-2); }
+
+/* 전체 화면 오버레이 목차 */
+.nav-overlay { display: none; }
+.nav-overlay:not([hidden]) {
+  display: flex; flex-direction: column;
+  position: fixed; inset: 0; z-index: 90;
+  background: color-mix(in srgb, var(--ground) 97%, transparent);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  padding: 16px 20px calc(24px + env(safe-area-inset-bottom));
+}
+.nav-ov-head { display: flex; align-items: center; justify-content: space-between; height: 54px; }
+.nav-ov-head .brand { font-weight: 900; font-size: 17px; letter-spacing: 2px; display: flex; align-items: center; gap: 8px; }
+.nav-ov-head .brand .hanja { font-family: var(--font-display); color: var(--blueprint); font-size: 19px; }
+.nav-ov-close {
+  flex: none; width: 44px; height: 44px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--hairline-2); background: none; color: var(--ink-2);
+  font-size: 22px; line-height: 1; cursor: pointer; font-family: inherit;
+}
+.nav-ov-list { display: flex; flex-direction: column; margin-top: 8px; }
+.nav-ov-list a {
+  display: flex; align-items: baseline; gap: 12px; min-height: 52px;
+  padding: 6px 8px; border-bottom: 1px solid var(--hairline);
+  font-size: 20px; font-weight: 800; color: var(--ink);
+}
+.nav-ov-list a .rn { font-family: var(--font-display); color: var(--blueprint); font-size: 22px; min-width: 1.4em; }
+.nav-ov-list a .sub { font-size: 12.5px; font-weight: 600; color: var(--muted); margin-left: auto; }
+.nav-ov-list a:active { background: var(--surface-2); }
+
 @media (max-width: 700px) {
   nav.appbar .tabs { -webkit-mask-image: linear-gradient(90deg, #000 86%, transparent);
                      mask-image: linear-gradient(90deg, #000 86%, transparent); }
 }
+/* 로마자 탭이 잘리기 시작하는 폭 — 탭 숨기고 목차 버튼으로 교체 */
+@media (max-width: 600px) {
+  nav.appbar .tabs { display: none; }
+  .nav-menu-btn { display: inline-flex; }
+}
 
 /* ── 히어로: 궤도 관측 ── */
-.hero { position: relative; overflow-x: clip; padding: calc(var(--sp-6) * 1.2) 0 var(--sp-6); }
+.hero { position: relative; overflow-x: clip; padding: clamp(36px, 4.5vw, 68px) 0 clamp(28px, 3.5vw, 52px); }
 .hero::before {
   content: ""; position: absolute; inset: -20% -10% auto; height: 120%;
   background:
@@ -186,12 +235,39 @@ nav.appbar .tabs a:hover:not(.active) { color: var(--blueprint-2); }
 .hero h1 { font-size: clamp(34px, 5vw, 56px); line-height: 1.18; letter-spacing: -.02em; }
 .hero h1 .hanja { font-family: var(--font-display); color: var(--blueprint); }
 .hero p.lede { margin-top: var(--sp-4); max-width: 34em; color: var(--ink-2); font-size: 16.5px; }
-.hero .sister { margin-top: var(--sp-3); font-size: 13px; color: var(--ink-3); }
-.hero .sister a { color: var(--seal); font-weight: 700; }
+
+/* 8차 리뷰 ⑧: 네 시장 단계 흐름을 별도 강조 캡션 밴드로 분리 (본문 축약) */
+.stage-caption {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px;
+  margin-top: var(--sp-3); padding: 12px 16px; max-width: 34em;
+  border-left: 3px solid var(--blueprint); background: var(--blueprint-wash);
+  border-radius: var(--radius-sm);
+}
+.stage-caption .sc-flow { font-family: var(--font-display); font-weight: 800; font-size: 17px; color: var(--blueprint-2); letter-spacing: .02em; }
+.stage-caption .sc-desc { font-size: 13px; color: var(--ink-2); }
+
+/* 8차 리뷰 ⑦: 자매 연구 링크를 소형 카드로 */
+.sister-card {
+  display: flex; flex-direction: column; gap: 2px;
+  margin-top: var(--sp-4); max-width: 34em; padding: 13px 16px;
+  border: 1px solid var(--hairline-2); border-left: 3px solid var(--seal);
+  border-radius: var(--radius-sm); background: var(--surface);
+  transition: border-color .25s ease, transform .25s ease;
+}
+.sister-card:hover { transform: translateY(-2px); border-color: var(--seal); color: inherit; }
+.sister-card .sk { font-size: 11px; font-weight: 800; letter-spacing: .14em; color: var(--muted); }
+.sister-card .stt { font-size: 14px; font-weight: 700; color: var(--ink); }
+.sister-card .scta { font-size: 12.5px; font-weight: 700; color: var(--seal); margin-top: 2px; }
 
 /* 궤도 SVG */
 .orbit-box { display: flex; justify-content: center; }
 .orbit-box svg { width: min(420px, 78vw); height: auto; }
+/* 8차 리뷰 ⑥: 4노드를 각 장 링크로 (투명 히트원으로 터치영역 확대·시각 유지) */
+.orbit-node { cursor: pointer; }
+.orbit-node .node-ring { transition: stroke-width .2s ease; }
+.orbit-node:hover .node-ring { stroke-width: 3.2; }
+.orbit-node:focus-visible { outline: none; }
+.orbit-node:focus-visible .node-ring { stroke-width: 3.6; }
 .ring-dash { animation: spin 140s linear infinite; transform-origin: 50% 50%; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .arc-draw { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: draw 2.2s ease forwards; }
@@ -241,8 +317,8 @@ figure.viz {
 }
 .viz-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
 .viz-title { font-weight: 800; font-size: 16px; }
-.viz-unit { margin-left: auto; font-size: 12px; color: var(--ink-3); }
-figcaption { font-size: var(--t-caption); color: var(--ink-3); margin-top: 10px; line-height: 1.6; }
+.viz-unit { margin-left: auto; font-size: 12px; color: var(--muted); }
+figcaption { font-size: var(--t-caption); color: var(--muted); margin-top: 10px; line-height: 1.6; }
 figure.viz svg { width: 100%; height: auto; display: block; }
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
 @media (max-width: 860px) { .two-col { grid-template-columns: 1fr; } }
@@ -266,8 +342,8 @@ figure.viz svg { width: 100%; height: auto; display: block; }
 }
 
 /* 푸터 콜로폰 */
-footer.colophon { border-top: 1px solid var(--hairline); padding: var(--sp-5) 0; margin-top: var(--sp-6);
-  text-align: center; font-size: 12.5px; color: var(--ink-3); line-height: 2; }
+footer.colophon { border-top: 1px solid var(--hairline); padding: var(--sp-5) 0; margin-top: var(--sp-5);
+  text-align: center; font-size: 12.5px; color: var(--muted); line-height: 2; }
 footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprint); }
 
 /* 모바일: 히어로 1열 스택 (2열 유지 시 글자 세로낙하 — 실측 검증) */
@@ -311,7 +387,7 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
 /* ════════ 7차 리뷰: 홈 4+2 분리 · 연결 3카드 · 접힘 ════════ */
 
 /* ── 홈 밴드(구획 라벨) ── */
-.home-band { margin-top: var(--sp-5); }
+.home-band { margin-top: var(--sp-4); }
 .home-label {
   display: flex; align-items: center; gap: 12px; margin-bottom: var(--sp-3);
   font-size: 12px; font-weight: 800; letter-spacing: .16em; color: var(--blueprint);
@@ -349,6 +425,29 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
 .research-card h4 { font-size: 16.5px; margin-bottom: 6px; }
 .research-card p { font-size: 13px; color: var(--ink-2); line-height: 1.6; }
 
+/* 8차 리뷰 ③: 홈 핵심 연결 미리보기 밴드 (정적 요약) */
+.keylink-band {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px;
+  margin-top: var(--sp-3); padding: 14px 18px;
+  border: 1px solid var(--hairline); border-left: 3px solid var(--blueprint);
+  border-radius: var(--radius-sm); background: var(--surface-2);
+}
+.keylink-band .kl-title { font-size: 12px; font-weight: 800; letter-spacing: .1em; color: var(--blueprint); }
+.keylink-band .kl-item { font-size: 13px; color: var(--ink-2); }
+.keylink-band .kl-item b { font-family: var(--font-num); color: var(--ink); font-weight: 800; }
+.keylink-band .kl-note { font-size: 11.5px; color: var(--muted); }
+.keylink-band .kl-cta { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--seal); white-space: nowrap; }
+.keylink-band:hover .kl-cta { text-decoration: underline; }
+
+/* 8차 리뷰 ④: 긴 순위표 펼치기 버튼 */
+.bar-toggle {
+  display: block; margin: 8px auto 0; padding: 6px 16px;
+  border: 1px solid var(--hairline-2); border-radius: 99px;
+  background: var(--surface); color: var(--blueprint-2);
+  font-family: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer;
+}
+.bar-toggle:hover { background: var(--blueprint-wash); border-color: var(--blueprint); }
+
 /* ── Ⅴ연결: 세 다리 연구 카드 (정적) ── */
 .bridge-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-3); margin-bottom: var(--sp-4); }
 .bridge-card {
@@ -368,7 +467,7 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
 .bridge-stat span { display: block; font-size: 11.5px; color: var(--ink-3); margin-top: 3px; }
 .bridge-result p { font-size: 12.5px; line-height: 1.65; color: var(--ink-2); }
 .bridge-caution { margin-top: auto; padding: 0 2px; }
-.bridge-caution p { font-size: 12.5px; line-height: 1.65; color: var(--ink-3); }
+.bridge-caution p { font-size: 12.5px; line-height: 1.65; color: var(--muted); }
 
 /* ── 접힘 블록(부록·방법론) — 표/텍스트 전용, 차트 금지 ── */
 details.viz-details {
@@ -383,7 +482,7 @@ details.viz-details > summary::-webkit-details-marker { display: none; }
 details.viz-details > summary::after { content: "▾ 펼치기"; margin-left: auto; font-size: 12px; font-weight: 700; color: var(--blueprint-2); }
 details.viz-details[open] > summary::after { content: "▴ 접기"; }
 details.viz-details > summary:hover { color: var(--blueprint-2); }
-details.viz-details .det-meta { font-size: 12px; font-weight: 400; color: var(--ink-3); }
+details.viz-details .det-meta { font-size: 12px; font-weight: 400; color: var(--muted); }
 details.viz-details .det-body { padding: 0 20px 16px; }
 details.viz-details .det-body figcaption { margin-top: 10px; }
 
@@ -417,9 +516,27 @@ figure.viz.viz-hero .viz-title { font-size: 18px; }
       <a href="#/ch5" data-view="ch5">Ⅴ 연결</a>
       <a href="#/ch6" data-view="ch6">Ⅵ 방법론</a>
     </div>
-    <button class="theme-toggle" type="button">주간/야간</button>
+    <button class="nav-menu-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="nav-overlay">☰ 목차</button>
+    <button class="theme-toggle" type="button" aria-label="테마 전환"><span class="ti">☀</span></button>
   </div>
 </nav>
+
+<!-- 8차 리뷰 ②: 모바일 전체화면 목차 오버레이 (데스크톱은 [hidden] 유지) -->
+<div class="nav-overlay" id="nav-overlay" hidden role="dialog" aria-modal="true" aria-label="목차">
+  <div class="wrap nav-ov-head">
+    <a class="brand" href="#/home"><span class="hanja">循環</span> 순환</a>
+    <button class="nav-ov-close" type="button" aria-label="목차 닫기">&times;</button>
+  </div>
+  <nav class="wrap nav-ov-list" aria-label="장 이동">
+    <a href="#/home"><span class="rn">✦</span>홈<span class="sub">순환의 네 지점</span></a>
+    <a href="#/ch1"><span class="rn">Ⅰ</span>공급<span class="sub">정비의 파이프라인</span></a>
+    <a href="#/ch2"><span class="rn">Ⅱ</span>분양<span class="sub">청약의 성적표</span></a>
+    <a href="#/ch3"><span class="rn">Ⅲ</span>운영<span class="sub">임대시장의 체온</span></a>
+    <a href="#/ch4"><span class="rn">Ⅳ</span>자본<span class="sub">리츠의 가격표</span></a>
+    <a href="#/ch5"><span class="rn">Ⅴ</span>연결<span class="sub">순환은 도는가</span></a>
+    <a href="#/ch6"><span class="rn">Ⅵ</span>방법론<span class="sub">출처·정의·한계</span></a>
+  </nav>
+</div>
 
 <!-- ============ 홈 ============ -->
 <section class="hero" id="home" data-view-root="home">
@@ -429,12 +546,19 @@ figure.viz.viz-hero .viz-title { font-size: 18px; }
       <h1><span class="hanja">循環</span> —<br>땅에서 자본으로,<br>다시 땅으로</h1>
       <p class="lede">정비사업과 신규 개발에서 주택 공급이 만들어지고, 청약과 분양을 거쳐 수요자에게
       이전된다. 한편 오피스·물류 등 수익형 부동산의 일부는 리츠에 편입되어 자본시장에서
-      가격과 배당으로 평가받는다. <b>공급 → 분양 → 운영 → 자본, 네 시장 단계를 잇는 흐름</b>을
-      공공 데이터로 관측한다 — 두 순환(주거 공급·수익형 자본)은 금리와 공사비로 연결된다.</p>
-      <p class="sister">자매 연구: <a href="https://yoonjae.pages.dev" rel="noopener">수지(收支) — 개발 손익의 구조</a> · 딜 하나를 깊게 보는 도구</p>
+      가격과 배당으로 평가받는다. 두 순환(주거 공급·수익형 자본)은 금리와 공사비로 연결된다.</p>
+      <div class="stage-caption">
+        <span class="sc-flow">공급 → 분양 → 운영 → 자본</span>
+        <span class="sc-desc">네 시장 단계를 공공 데이터로 관측한다.</span>
+      </div>
+      <a class="sister-card" href="https://yoonjae.pages.dev" rel="noopener">
+        <span class="sk">자매 연구</span>
+        <span class="stt">수지(收支) — 개별 사업의 손익 분석</span>
+        <span class="scta">수지 열기 →</span>
+      </a>
     </div>
-    <div class="orbit-box" aria-hidden="true">
-      <svg viewBox="0 0 420 420">
+    <div class="orbit-box">
+      <svg viewBox="0 0 420 420" role="navigation" aria-label="순환 궤도 — 장 이동">
         <!-- 컴퍼스 눈금 링 (회전) -->
         <circle class="ring-dash" cx="210" cy="210" r="192" fill="none" stroke="var(--hairline-2)" stroke-width="1" stroke-dasharray="2 14"/>
         <circle cx="210" cy="210" r="150" fill="none" stroke="var(--hairline)" stroke-width="1" stroke-dasharray="1 10"/>
@@ -450,24 +574,36 @@ figure.viz.viz-hero .viz-title { font-size: 18px; }
         <path class="arc-draw a3" d="M180.5 377.4 A170 170 0 0 1 42.6 239.5" fill="none" stroke="var(--s4)" stroke-width="2.5" stroke-linecap="round"/>
         <!-- 호④ 자본→공급 (θ 190°→260°) -->
         <path class="arc-draw a4" d="M42.6 180.5 A170 170 0 0 1 180.5 42.6" fill="none" stroke="var(--s3)" stroke-width="2.5" stroke-linecap="round"/>
-        <!-- 관문 노드 -->
+        <!-- 관문 노드 — 각 장으로 링크 (투명 히트원 r=32 → 64px 터치영역, 시각은 유지) -->
         <g font-family="var(--font-body)" font-size="13.5" font-weight="800" text-anchor="middle">
-          <circle cx="210" cy="40" r="27" fill="var(--surface)" stroke="var(--s1)" stroke-width="1.8"/>
-          <text x="210" y="36" fill="var(--ink-3)" font-size="10">Ⅰ</text>
-          <text x="210" y="50" fill="var(--ink)">공급</text>
-          <circle cx="380" cy="210" r="27" fill="var(--surface)" stroke="var(--s2)" stroke-width="1.8"/>
-          <text x="380" y="206" fill="var(--ink-3)" font-size="10">Ⅱ</text>
-          <text x="380" y="220" fill="var(--ink)">분양</text>
-          <circle cx="210" cy="380" r="27" fill="var(--surface)" stroke="var(--s4)" stroke-width="1.8"/>
-          <text x="210" y="376" fill="var(--ink-3)" font-size="10">Ⅲ</text>
-          <text x="210" y="390" fill="var(--ink)">운영</text>
-          <circle cx="40" cy="210" r="27" fill="var(--surface)" stroke="var(--s3)" stroke-width="1.8"/>
-          <text x="40" y="206" fill="var(--ink-3)" font-size="10">Ⅳ</text>
-          <text x="40" y="220" fill="var(--ink)">자본</text>
+          <a href="#/ch1" class="orbit-node" aria-label="제1장 공급 — 정비의 파이프라인">
+            <circle cx="210" cy="40" r="32" fill="transparent"/>
+            <circle class="node-ring" cx="210" cy="40" r="27" fill="var(--surface)" stroke="var(--s1)" stroke-width="1.8"/>
+            <text x="210" y="36" fill="var(--ink-3)" font-size="10">Ⅰ</text>
+            <text x="210" y="50" fill="var(--ink)">공급</text>
+          </a>
+          <a href="#/ch2" class="orbit-node" aria-label="제2장 분양 — 청약의 성적표">
+            <circle cx="380" cy="210" r="32" fill="transparent"/>
+            <circle class="node-ring" cx="380" cy="210" r="27" fill="var(--surface)" stroke="var(--s2)" stroke-width="1.8"/>
+            <text x="380" y="206" fill="var(--ink-3)" font-size="10">Ⅱ</text>
+            <text x="380" y="220" fill="var(--ink)">분양</text>
+          </a>
+          <a href="#/ch3" class="orbit-node" aria-label="제3장 운영 — 임대시장의 체온">
+            <circle cx="210" cy="380" r="32" fill="transparent"/>
+            <circle class="node-ring" cx="210" cy="380" r="27" fill="var(--surface)" stroke="var(--s4)" stroke-width="1.8"/>
+            <text x="210" y="376" fill="var(--ink-3)" font-size="10">Ⅲ</text>
+            <text x="210" y="390" fill="var(--ink)">운영</text>
+          </a>
+          <a href="#/ch4" class="orbit-node" aria-label="제4장 자본 — 리츠의 가격표">
+            <circle cx="40" cy="210" r="32" fill="transparent"/>
+            <circle class="node-ring" cx="40" cy="210" r="27" fill="var(--surface)" stroke="var(--s3)" stroke-width="1.8"/>
+            <text x="40" y="206" fill="var(--ink-3)" font-size="10">Ⅳ</text>
+            <text x="40" y="220" fill="var(--ink)">자본</text>
+          </a>
         </g>
-        <!-- 중심 인장 -->
-        <text x="210" y="228" text-anchor="middle" font-size="58" fill="var(--blueprint)" style="font-family:var(--font-display)">循環</text>
-        <text x="210" y="252" text-anchor="middle" font-size="11" fill="var(--ink-3)" letter-spacing="4">CAPITAL CYCLE</text>
+        <!-- 중심 인장 (장식) -->
+        <text x="210" y="228" text-anchor="middle" font-size="58" fill="var(--blueprint)" style="font-family:var(--font-display)" aria-hidden="true">循環</text>
+        <text x="210" y="252" text-anchor="middle" font-size="11" fill="var(--ink-3)" letter-spacing="4" aria-hidden="true">CAPITAL CYCLE</text>
       </svg>
     </div>
   </div>
@@ -537,6 +673,13 @@ figure.viz.viz-hero .viz-title { font-size: 18px; }
           <p>출처·커버리지·정의·한계를 한자리에. 모든 수치의 재현 경로를 남긴다.</p>
         </a>
       </div>
+      <a class="keylink-band" href="#/ch5">
+        <span class="kl-title">핵심 연결</span>
+        <span class="kl-item">공급 파이프라인 ↔ 초기분양률 <b>r = -0.43</b></span>
+        <span class="kl-item">오피스 공실률 ↔ 리츠 P/BV <b>r = -0.73</b></span>
+        <span class="kl-note">상관 관측이며 인과가 아니다</span>
+        <span class="kl-cta">연결 분석 보기 →</span>
+      </a>
     </div>
   </div>
 </section>
@@ -1869,6 +2012,37 @@ window.__DATA_SUNHWAN = {"built_at":"2026-07-22","bunyang":{"heat":{"xs":["2023Q
       "· 세 다리 전부 상관 관측이다. 선행·후행(그레인저류) 검정과 시군구 단위 연결은 후속 고도화 대상이다.";
   }
 
+  /* ---------- 긴 순위 막대: 상위5+하위5 기본 + 전체 펼치기 (8차 리뷰 ④) ----------
+     · sorted = 정렬된 전체 배열 · build(item) → {name,value,note} · 토글 상태는 root._barsOpen에 영속
+     · 재렌더는 항상 root가 보이는 상태(홈/자본 뷰)에서 일어나므로 폭 0 함정 없음 */
+  function collapsibleBars(root, sorted, build, opts) {
+    if (!root) return;
+    const TOP = 5, BOT = 5, canCollapse = sorted.length > TOP + BOT + 1;
+    let btn = root.nextElementSibling;
+    if (!btn || !btn.classList.contains("bar-toggle")) {
+      btn = document.createElement("button");
+      btn.type = "button"; btn.className = "bar-toggle";
+      root.insertAdjacentElement("afterend", btn);
+      btn.addEventListener("click", () => { root._barsOpen = !root._barsOpen; paint(); });
+    }
+    function paint() {
+      const open = !!root._barsOpen;
+      let rows;
+      if (canCollapse && !open) {
+        const omit = sorted.length - TOP - BOT;
+        rows = sorted.slice(0, TOP).map(build)
+          .concat([{ name: "", value: NaN, note: `… 중위 ${omit}종 생략 …` }])
+          .concat(sorted.slice(-BOT).map(build));
+      } else {
+        rows = sorted.map(build);
+      }
+      C.hbars(root, rows, opts);
+      btn.hidden = !canCollapse;
+      btn.textContent = open ? "접기 ▴" : `전체 ${sorted.length}종 보기 ▾`;
+    }
+    paint();
+  }
+
   /* ---------- Ⅳ. 자본 ---------- */
   function renderReits() {
     const R = B.reits, K = R.kpi;
@@ -1894,14 +2068,15 @@ window.__DATA_SUNHWAN = {"built_at":"2026-07-22","bunyang":{"heat":{"xs":["2023Q
       aria: "리츠 밸류에이션 사분면" });
     $("#r-quad-cap").textContent = `일회성 제외 ${normal.length}종(특별배당 ${R.items.filter(i => i.tags.includes("특별배당")).length}종·거래정지 ${R.items.filter(i => i.tags.includes("거래정지")).length}종 제외). ` +
       "좌상(할인+고스프레드)이 곧 저평가는 아니다 — 할인엔 이유가 있을 수 있다. 자산의 질·부채 구조와 함께 읽어야 한다.";
-    // ① P/장부NAV
-    C.hbars($("#r-pnav"), R.items.map(it => ({ name: tagName(it), value: it.pb })),
-      { color: "--s2", emph: R.items.filter(it => it.pb >= 1).map(tagName),
+    // ① P/장부NAV — P/BV 내림차순 상위5+하위5 기본, 전체 24종 펼치기
+    const byPb = R.items.slice().sort((a, b) => b.pb - a.pb);
+    collapsibleBars($("#r-pnav"), byPb, it => ({ name: tagName(it), value: it.pb }),
+      { color: "--s2", emph: byPb.filter(it => it.pb >= 1).map(tagName),
         fmt: v => v.toFixed(2), labelW: 190, width: 1160, rowH: 26, aria: "리츠별 P/BV" });
-    // ② TTM 배당률
+    // ② TTM 배당률 — 내림차순 상위5+하위5 기본, 전체 24종 펼치기
     const byDy = R.items.slice().sort((a, b) => (b.dy ?? -1) - (a.dy ?? -1));
-    C.hbars($("#r-dy"), byDy.map(it => ({ name: tagName(it), value: it.dy,
-        note: it.dy == null ? "거래정지 — TTM 미산출" : undefined })),
+    collapsibleBars($("#r-dy"), byDy, it => ({ name: tagName(it), value: it.dy,
+        note: it.dy == null ? "거래정지 — TTM 미산출" : undefined }),
       { color: "--s1", emph: byDy.filter(it => it.tags.includes("특별배당")).map(tagName),
         fmt: v => v.toFixed(1) + "%", labelW: 190, width: 1160, rowH: 26, aria: "리츠별 TTM 배당률" });
     $("#r-dy-cap").textContent = "금 강조 = 특별배당(자산 매각·청산성 분배) 포함 — 지속 가능한 수익률이 아니다. " +
@@ -1925,9 +2100,11 @@ window.__DATA_SUNHWAN = {"built_at":"2026-07-22","bunyang":{"heat":{"xs":["2023Q
   /* ---------- 테마 ---------- */
   function initTheme() {
     const btn = document.querySelector(".theme-toggle");
+    const icon = btn.querySelector(".ti");
     const sync = () => {
       const light = document.documentElement.dataset.theme !== "dark";
       btn.setAttribute("aria-pressed", String(light));
+      if (icon) icon.textContent = light ? "☀" : "☾";   // 현재 테마 표시 (8차 리뷰 ⑤)
     };
     btn.addEventListener("click", () => {
       const r = document.documentElement;
@@ -1935,6 +2112,20 @@ window.__DATA_SUNHWAN = {"built_at":"2026-07-22","bunyang":{"heat":{"xs":["2023Q
       sync(); renderAll();
     });
     sync();
+  }
+
+  /* ---------- 모바일 목차 오버레이 (8차 리뷰 ②) ---------- */
+  function initNav() {
+    const ov = document.getElementById("nav-overlay");
+    const openBtn = document.querySelector(".nav-menu-btn");
+    if (!ov || !openBtn) return;
+    const closeBtn = ov.querySelector(".nav-ov-close");
+    const open = () => { ov.hidden = false; openBtn.setAttribute("aria-expanded", "true"); document.body.style.overflow = "hidden"; };
+    const close = () => { ov.hidden = true; openBtn.setAttribute("aria-expanded", "false"); document.body.style.overflow = ""; };
+    openBtn.addEventListener("click", open);
+    if (closeBtn) closeBtn.addEventListener("click", close);
+    ov.querySelectorAll("a").forEach(a => a.addEventListener("click", close)); // 링크 탭 → 닫고 라우팅
+    addEventListener("keydown", e => { if (e.key === "Escape" && !ov.hidden) close(); });
   }
 
   /* ---------- 홈: 지금 시장 요약 ---------- */
@@ -1958,6 +2149,7 @@ window.__DATA_SUNHWAN = {"built_at":"2026-07-22","bunyang":{"heat":{"xs":["2023Q
   renderAll();
   reveal();
   initTheme();
+  initNav();
 })();
 
 </script>

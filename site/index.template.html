@@ -20,9 +20,27 @@
       <a href="#/ch5" data-view="ch5">Ⅴ 연결</a>
       <a href="#/ch6" data-view="ch6">Ⅵ 방법론</a>
     </div>
-    <button class="theme-toggle" type="button">주간/야간</button>
+    <button class="nav-menu-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="nav-overlay">☰ 목차</button>
+    <button class="theme-toggle" type="button" aria-label="테마 전환"><span class="ti">☀</span></button>
   </div>
 </nav>
+
+<!-- 8차 리뷰 ②: 모바일 전체화면 목차 오버레이 (데스크톱은 [hidden] 유지) -->
+<div class="nav-overlay" id="nav-overlay" hidden role="dialog" aria-modal="true" aria-label="목차">
+  <div class="wrap nav-ov-head">
+    <a class="brand" href="#/home"><span class="hanja">循環</span> 순환</a>
+    <button class="nav-ov-close" type="button" aria-label="목차 닫기">&times;</button>
+  </div>
+  <nav class="wrap nav-ov-list" aria-label="장 이동">
+    <a href="#/home"><span class="rn">✦</span>홈<span class="sub">순환의 네 지점</span></a>
+    <a href="#/ch1"><span class="rn">Ⅰ</span>공급<span class="sub">정비의 파이프라인</span></a>
+    <a href="#/ch2"><span class="rn">Ⅱ</span>분양<span class="sub">청약의 성적표</span></a>
+    <a href="#/ch3"><span class="rn">Ⅲ</span>운영<span class="sub">임대시장의 체온</span></a>
+    <a href="#/ch4"><span class="rn">Ⅳ</span>자본<span class="sub">리츠의 가격표</span></a>
+    <a href="#/ch5"><span class="rn">Ⅴ</span>연결<span class="sub">순환은 도는가</span></a>
+    <a href="#/ch6"><span class="rn">Ⅵ</span>방법론<span class="sub">출처·정의·한계</span></a>
+  </nav>
+</div>
 
 <!-- ============ 홈 ============ -->
 <section class="hero" id="home" data-view-root="home">
@@ -32,12 +50,19 @@
       <h1><span class="hanja">循環</span> —<br>땅에서 자본으로,<br>다시 땅으로</h1>
       <p class="lede">정비사업과 신규 개발에서 주택 공급이 만들어지고, 청약과 분양을 거쳐 수요자에게
       이전된다. 한편 오피스·물류 등 수익형 부동산의 일부는 리츠에 편입되어 자본시장에서
-      가격과 배당으로 평가받는다. <b>공급 → 분양 → 운영 → 자본, 네 시장 단계를 잇는 흐름</b>을
-      공공 데이터로 관측한다 — 두 순환(주거 공급·수익형 자본)은 금리와 공사비로 연결된다.</p>
-      <p class="sister">자매 연구: <a href="https://yoonjae.pages.dev" rel="noopener">수지(收支) — 개발 손익의 구조</a> · 딜 하나를 깊게 보는 도구</p>
+      가격과 배당으로 평가받는다. 두 순환(주거 공급·수익형 자본)은 금리와 공사비로 연결된다.</p>
+      <div class="stage-caption">
+        <span class="sc-flow">공급 → 분양 → 운영 → 자본</span>
+        <span class="sc-desc">네 시장 단계를 공공 데이터로 관측한다.</span>
+      </div>
+      <a class="sister-card" href="https://yoonjae.pages.dev" rel="noopener">
+        <span class="sk">자매 연구</span>
+        <span class="stt">수지(收支) — 개별 사업의 손익 분석</span>
+        <span class="scta">수지 열기 →</span>
+      </a>
     </div>
-    <div class="orbit-box" aria-hidden="true">
-      <svg viewBox="0 0 420 420">
+    <div class="orbit-box">
+      <svg viewBox="0 0 420 420" role="navigation" aria-label="순환 궤도 — 장 이동">
         <!-- 컴퍼스 눈금 링 (회전) -->
         <circle class="ring-dash" cx="210" cy="210" r="192" fill="none" stroke="var(--hairline-2)" stroke-width="1" stroke-dasharray="2 14"/>
         <circle cx="210" cy="210" r="150" fill="none" stroke="var(--hairline)" stroke-width="1" stroke-dasharray="1 10"/>
@@ -53,24 +78,36 @@
         <path class="arc-draw a3" d="M180.5 377.4 A170 170 0 0 1 42.6 239.5" fill="none" stroke="var(--s4)" stroke-width="2.5" stroke-linecap="round"/>
         <!-- 호④ 자본→공급 (θ 190°→260°) -->
         <path class="arc-draw a4" d="M42.6 180.5 A170 170 0 0 1 180.5 42.6" fill="none" stroke="var(--s3)" stroke-width="2.5" stroke-linecap="round"/>
-        <!-- 관문 노드 -->
+        <!-- 관문 노드 — 각 장으로 링크 (투명 히트원 r=32 → 64px 터치영역, 시각은 유지) -->
         <g font-family="var(--font-body)" font-size="13.5" font-weight="800" text-anchor="middle">
-          <circle cx="210" cy="40" r="27" fill="var(--surface)" stroke="var(--s1)" stroke-width="1.8"/>
-          <text x="210" y="36" fill="var(--ink-3)" font-size="10">Ⅰ</text>
-          <text x="210" y="50" fill="var(--ink)">공급</text>
-          <circle cx="380" cy="210" r="27" fill="var(--surface)" stroke="var(--s2)" stroke-width="1.8"/>
-          <text x="380" y="206" fill="var(--ink-3)" font-size="10">Ⅱ</text>
-          <text x="380" y="220" fill="var(--ink)">분양</text>
-          <circle cx="210" cy="380" r="27" fill="var(--surface)" stroke="var(--s4)" stroke-width="1.8"/>
-          <text x="210" y="376" fill="var(--ink-3)" font-size="10">Ⅲ</text>
-          <text x="210" y="390" fill="var(--ink)">운영</text>
-          <circle cx="40" cy="210" r="27" fill="var(--surface)" stroke="var(--s3)" stroke-width="1.8"/>
-          <text x="40" y="206" fill="var(--ink-3)" font-size="10">Ⅳ</text>
-          <text x="40" y="220" fill="var(--ink)">자본</text>
+          <a href="#/ch1" class="orbit-node" aria-label="제1장 공급 — 정비의 파이프라인">
+            <circle cx="210" cy="40" r="32" fill="transparent"/>
+            <circle class="node-ring" cx="210" cy="40" r="27" fill="var(--surface)" stroke="var(--s1)" stroke-width="1.8"/>
+            <text x="210" y="36" fill="var(--ink-3)" font-size="10">Ⅰ</text>
+            <text x="210" y="50" fill="var(--ink)">공급</text>
+          </a>
+          <a href="#/ch2" class="orbit-node" aria-label="제2장 분양 — 청약의 성적표">
+            <circle cx="380" cy="210" r="32" fill="transparent"/>
+            <circle class="node-ring" cx="380" cy="210" r="27" fill="var(--surface)" stroke="var(--s2)" stroke-width="1.8"/>
+            <text x="380" y="206" fill="var(--ink-3)" font-size="10">Ⅱ</text>
+            <text x="380" y="220" fill="var(--ink)">분양</text>
+          </a>
+          <a href="#/ch3" class="orbit-node" aria-label="제3장 운영 — 임대시장의 체온">
+            <circle cx="210" cy="380" r="32" fill="transparent"/>
+            <circle class="node-ring" cx="210" cy="380" r="27" fill="var(--surface)" stroke="var(--s4)" stroke-width="1.8"/>
+            <text x="210" y="376" fill="var(--ink-3)" font-size="10">Ⅲ</text>
+            <text x="210" y="390" fill="var(--ink)">운영</text>
+          </a>
+          <a href="#/ch4" class="orbit-node" aria-label="제4장 자본 — 리츠의 가격표">
+            <circle cx="40" cy="210" r="32" fill="transparent"/>
+            <circle class="node-ring" cx="40" cy="210" r="27" fill="var(--surface)" stroke="var(--s3)" stroke-width="1.8"/>
+            <text x="40" y="206" fill="var(--ink-3)" font-size="10">Ⅳ</text>
+            <text x="40" y="220" fill="var(--ink)">자본</text>
+          </a>
         </g>
-        <!-- 중심 인장 -->
-        <text x="210" y="228" text-anchor="middle" font-size="58" fill="var(--blueprint)" style="font-family:var(--font-display)">循環</text>
-        <text x="210" y="252" text-anchor="middle" font-size="11" fill="var(--ink-3)" letter-spacing="4">CAPITAL CYCLE</text>
+        <!-- 중심 인장 (장식) -->
+        <text x="210" y="228" text-anchor="middle" font-size="58" fill="var(--blueprint)" style="font-family:var(--font-display)" aria-hidden="true">循環</text>
+        <text x="210" y="252" text-anchor="middle" font-size="11" fill="var(--ink-3)" letter-spacing="4" aria-hidden="true">CAPITAL CYCLE</text>
       </svg>
     </div>
   </div>
@@ -140,6 +177,13 @@
           <p>출처·커버리지·정의·한계를 한자리에. 모든 수치의 재현 경로를 남긴다.</p>
         </a>
       </div>
+      <a class="keylink-band" href="#/ch5">
+        <span class="kl-title">핵심 연결</span>
+        <span class="kl-item">공급 파이프라인 ↔ 초기분양률 <b>r = -0.43</b></span>
+        <span class="kl-item">오피스 공실률 ↔ 리츠 P/BV <b>r = -0.73</b></span>
+        <span class="kl-note">상관 관측이며 인과가 아니다</span>
+        <span class="kl-cta">연결 분석 보기 →</span>
+      </a>
     </div>
   </div>
 </section>

@@ -190,6 +190,37 @@
       "· 세 다리 전부 상관 관측이다. 선행·후행(그레인저류) 검정과 시군구 단위 연결은 후속 고도화 대상이다.";
   }
 
+  /* ---------- 긴 순위 막대: 상위5+하위5 기본 + 전체 펼치기 (8차 리뷰 ④) ----------
+     · sorted = 정렬된 전체 배열 · build(item) → {name,value,note} · 토글 상태는 root._barsOpen에 영속
+     · 재렌더는 항상 root가 보이는 상태(홈/자본 뷰)에서 일어나므로 폭 0 함정 없음 */
+  function collapsibleBars(root, sorted, build, opts) {
+    if (!root) return;
+    const TOP = 5, BOT = 5, canCollapse = sorted.length > TOP + BOT + 1;
+    let btn = root.nextElementSibling;
+    if (!btn || !btn.classList.contains("bar-toggle")) {
+      btn = document.createElement("button");
+      btn.type = "button"; btn.className = "bar-toggle";
+      root.insertAdjacentElement("afterend", btn);
+      btn.addEventListener("click", () => { root._barsOpen = !root._barsOpen; paint(); });
+    }
+    function paint() {
+      const open = !!root._barsOpen;
+      let rows;
+      if (canCollapse && !open) {
+        const omit = sorted.length - TOP - BOT;
+        rows = sorted.slice(0, TOP).map(build)
+          .concat([{ name: "", value: NaN, note: `… 중위 ${omit}종 생략 …` }])
+          .concat(sorted.slice(-BOT).map(build));
+      } else {
+        rows = sorted.map(build);
+      }
+      C.hbars(root, rows, opts);
+      btn.hidden = !canCollapse;
+      btn.textContent = open ? "접기 ▴" : `전체 ${sorted.length}종 보기 ▾`;
+    }
+    paint();
+  }
+
   /* ---------- Ⅳ. 자본 ---------- */
   function renderReits() {
     const R = B.reits, K = R.kpi;
@@ -215,14 +246,15 @@
       aria: "리츠 밸류에이션 사분면" });
     $("#r-quad-cap").textContent = `일회성 제외 ${normal.length}종(특별배당 ${R.items.filter(i => i.tags.includes("특별배당")).length}종·거래정지 ${R.items.filter(i => i.tags.includes("거래정지")).length}종 제외). ` +
       "좌상(할인+고스프레드)이 곧 저평가는 아니다 — 할인엔 이유가 있을 수 있다. 자산의 질·부채 구조와 함께 읽어야 한다.";
-    // ① P/장부NAV
-    C.hbars($("#r-pnav"), R.items.map(it => ({ name: tagName(it), value: it.pb })),
-      { color: "--s2", emph: R.items.filter(it => it.pb >= 1).map(tagName),
+    // ① P/장부NAV — P/BV 내림차순 상위5+하위5 기본, 전체 24종 펼치기
+    const byPb = R.items.slice().sort((a, b) => b.pb - a.pb);
+    collapsibleBars($("#r-pnav"), byPb, it => ({ name: tagName(it), value: it.pb }),
+      { color: "--s2", emph: byPb.filter(it => it.pb >= 1).map(tagName),
         fmt: v => v.toFixed(2), labelW: 190, width: 1160, rowH: 26, aria: "리츠별 P/BV" });
-    // ② TTM 배당률
+    // ② TTM 배당률 — 내림차순 상위5+하위5 기본, 전체 24종 펼치기
     const byDy = R.items.slice().sort((a, b) => (b.dy ?? -1) - (a.dy ?? -1));
-    C.hbars($("#r-dy"), byDy.map(it => ({ name: tagName(it), value: it.dy,
-        note: it.dy == null ? "거래정지 — TTM 미산출" : undefined })),
+    collapsibleBars($("#r-dy"), byDy, it => ({ name: tagName(it), value: it.dy,
+        note: it.dy == null ? "거래정지 — TTM 미산출" : undefined }),
       { color: "--s1", emph: byDy.filter(it => it.tags.includes("특별배당")).map(tagName),
         fmt: v => v.toFixed(1) + "%", labelW: 190, width: 1160, rowH: 26, aria: "리츠별 TTM 배당률" });
     $("#r-dy-cap").textContent = "금 강조 = 특별배당(자산 매각·청산성 분배) 포함 — 지속 가능한 수익률이 아니다. " +
@@ -246,9 +278,11 @@
   /* ---------- 테마 ---------- */
   function initTheme() {
     const btn = document.querySelector(".theme-toggle");
+    const icon = btn.querySelector(".ti");
     const sync = () => {
       const light = document.documentElement.dataset.theme !== "dark";
       btn.setAttribute("aria-pressed", String(light));
+      if (icon) icon.textContent = light ? "☀" : "☾";   // 현재 테마 표시 (8차 리뷰 ⑤)
     };
     btn.addEventListener("click", () => {
       const r = document.documentElement;
@@ -256,6 +290,20 @@
       sync(); renderAll();
     });
     sync();
+  }
+
+  /* ---------- 모바일 목차 오버레이 (8차 리뷰 ②) ---------- */
+  function initNav() {
+    const ov = document.getElementById("nav-overlay");
+    const openBtn = document.querySelector(".nav-menu-btn");
+    if (!ov || !openBtn) return;
+    const closeBtn = ov.querySelector(".nav-ov-close");
+    const open = () => { ov.hidden = false; openBtn.setAttribute("aria-expanded", "true"); document.body.style.overflow = "hidden"; };
+    const close = () => { ov.hidden = true; openBtn.setAttribute("aria-expanded", "false"); document.body.style.overflow = ""; };
+    openBtn.addEventListener("click", open);
+    if (closeBtn) closeBtn.addEventListener("click", close);
+    ov.querySelectorAll("a").forEach(a => a.addEventListener("click", close)); // 링크 탭 → 닫고 라우팅
+    addEventListener("keydown", e => { if (e.key === "Escape" && !ov.hidden) close(); });
   }
 
   /* ---------- 홈: 지금 시장 요약 ---------- */
@@ -279,4 +327,5 @@
   renderAll();
   reveal();
   initTheme();
+  initNav();
 })();

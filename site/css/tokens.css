@@ -9,6 +9,7 @@
   --ink: #1a2a42;
   --ink-2: #45586f;
   --ink-3: #68798f;
+  --muted: #566476;   /* 캡션·각주·푸터 전용 — 대비 ≥4.5:1 (차트 축 라벨은 --ink-3 유지) */
   --hairline: #dfe4ec;
   --hairline-2: #c9d2df;
   --grid: #e8ecf2;
@@ -48,6 +49,7 @@
   --ink: #e9eef6;
   --ink-2: #a9b7cb;
   --ink-3: #6e8098;
+  --muted: #8090a6;   /* 캡션·각주·푸터 전용 — 대비 ≥4.5:1 */
   --hairline: #243450;
   --hairline-2: #324663;
   --grid: #182741;

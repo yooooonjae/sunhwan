@@ -31,13 +31,14 @@ a:hover { color: var(--blueprint-2); }
 
 .num { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
 
-.caption { font-size: var(--t-caption); color: var(--ink-3); }
+.caption { font-size: var(--t-caption); color: var(--muted); }
 
-section.chapter { padding: var(--sp-6) 0; }
+/* 8차 리뷰 ①: 데스크톱 섹션 간 여백 축소 (64→~56 최대, 넓은 화면일수록 여유는 arc가 담당) */
+section.chapter { padding-block: clamp(40px, 4vw, 56px); }
 
-/* 장 사이 구분 — 호(弧) 괘선 */
+/* 장 사이 구분 — 호(弧) 괘선. 장식은 유지, 상하 여백만 축소 (margin 40→8, 높이 60→44) */
 .arc-rule {
-  height: 60px; margin: var(--sp-5) auto; max-width: var(--col);
+  height: 44px; margin: var(--sp-2) auto; max-width: var(--col);
   display: flex; align-items: center; justify-content: center; gap: 14px;
   color: var(--ink-3); font-size: 12px; letter-spacing: .35em;
 }
@@ -58,6 +59,6 @@ th { color: var(--ink-3); font-size: 12px; letter-spacing: .06em; font-weight: 7
 td.num, th.num { text-align: right; font-family: var(--font-num); font-variant-numeric: tabular-nums; }
 
 @media (max-width: 640px) {
-  section.chapter { padding: var(--sp-5) 0; }
+  section.chapter { padding-block: clamp(28px, 7vw, 40px); }
   .wrap { padding: 0 var(--sp-3); }
 }
