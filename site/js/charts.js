@@ -896,8 +896,22 @@
       patternTransform: "rotate(45)" }, el("defs", {}, svg));
     el("line", { x1: 0, y1: 0, x2: 0, y2: 7, stroke: css("--ink-2"), "stroke-width": 1.3, "stroke-opacity": .5 }, pat);
     const read = document.createElement("div"); read.className = "korea-read";
-    const paths = {}; let overlay = null;
+    const paths = {}, metroBtns = {}; let overlay = null;
 
+    // 판독 패널 — 지역/기준 시점/핵심값/직전 대비/표본·모드/한 줄 해석 (정보 재배열)
+    const modeLabel = () => mode === "common"
+      ? "공통 기준분기 · 유효 " + (common.valid || 0) + "/" + (common.total || 17)
+        + " · 커버리지 " + (covPct == null ? "—" : covPct + "%")
+      : "지역별 최신 가용 분기";
+    const interp = (v, d) => {
+      const lvl = v >= 95 ? "기준선 80% 크게 상회 — 분양 원활"
+        : v >= 80 ? "기준선 80% 상회 — 순항"
+        : v >= 60 ? "기준선 80% 하회 — 다소 고전"
+        : "기준선 80% 크게 하회 — 분양 고전";
+      const tr = d == null ? "" : d > 0 ? " · 직전보다 개선" : d < 0 ? " · 직전보다 악화" : " · 직전과 보합";
+      return lvl + tr;
+    };
+    const prow = (k, v) => '<div class="krp-row"><span class="krp-k">' + k + '</span><span class="krp-v">' + v + "</span></div>";
     function readHTML(name) {
       if (!name) {
         let lo = null;
@@ -905,26 +919,41 @@
         if (mode === "common") {
           return '<span class="kr-hint">공통 기준분기 <b>' + fq(common.q) + "</b> · 유효 <b>"
             + (common.valid || 0) + "/" + (common.total || 17) + "</b> · 커버리지 <b>"
-            + (covPct == null ? "—" : covPct + "%") + "</b> — 지역을 클릭·탭하면 그 분기 값이 여기 표시된다.</span>"
+            + (covPct == null ? "—" : covPct + "%") + "</b> — 지역을 클릭·탭하거나 아래 버튼을 누르면 판독 패널이 여기 표시된다.</span>"
             + (lo ? ' <span class="kr-low">최저 <b>' + lo.name + " " + lo.v.toFixed(1) + "%</b></span>" : "");
         }
-        return '<span class="kr-hint">지역을 클릭·탭하면 최신 분기 초기분양률이 여기 표시된다. 사선 = 공통 기준분기('
+        return '<span class="kr-hint">지역을 클릭·탭하거나 아래 버튼을 누르면 최신 분기 판독이 여기 표시된다. 사선 = 공통 기준분기('
           + fq(common.q) + ")보다 2분기+ 과거.</span>"
           + (lo ? ' <span class="kr-low">현재 최저 <b>' + lo.name + " " + lo.v.toFixed(1) + "%</b></span>" : "");
       }
       const m = data[name], v = m && rateOf(m);
-      if (v == null) return "<b>" + name + "</b> — " + (mode === "common"
-        ? "공통 기준분기(" + fq(common.q) + ") 자료 없음" : "최신 가용 분기 자료 없음");
+      if (v == null) {
+        return '<div class="kr-panel">'
+          + prow("지역", '<b class="krp-region">' + name + "</b>")
+          + prow("핵심값", '<span class="kr-hint">' + (mode === "common"
+              ? "공통 기준분기(" + fq(common.q) + ") 자료 없음" : "최신 가용 분기 자료 없음") + "</span>")
+          + prow("표본·모드", '<span class="kr-hint">' + modeLabel() + "</span>")
+          + "</div>";
+      }
       const d = deltaOf(m);
-      return "<b>" + name + " · " + fq(qOf(m)) + "</b> — 초기분양률 <b class='num'>" + v.toFixed(1) + "%</b>"
-        + (d == null ? ' <span class="kr-hint">(직전 관측 없음)</span>'
-          : ' <span style="color:' + delCol(d) + '">· 직전(' + fq(prevQOf(m)) + ") 대비 " + delTag(d) + "</span>")
-        + (staleOf(m) ? ' <span class="kr-hint">· 공통 기준분기보다 오래됨(사선)</span>' : "");
+      const delRow = d == null
+        ? '<span class="kr-hint">직전 관측 없음</span>'
+        : '<span style="color:' + delCol(d) + '">' + delTag(d) + '</span> <span class="kr-hint">(직전 ' + fq(prevQOf(m)) + ")</span>";
+      const stale = staleOf(m) ? ' <span class="kr-hint">· 사선(공통 기준분기보다 2분기+ 과거)</span>' : "";
+      return '<div class="kr-panel">'
+        + prow("지역", '<b class="krp-region">' + name + "</b>")
+        + prow("기준 시점", fq(qOf(m)))
+        + prow("핵심값", '<b class="num krp-big">' + v.toFixed(1) + "%</b> <span class=\"kr-hint\">초기분양률</span>")
+        + prow("직전 대비", delRow)
+        + prow("표본·모드", '<span class="kr-hint">' + modeLabel() + stale + "</span>")
+        + prow("한 줄 해석", interp(v, d))
+        + "</div>";
     }
     function setSel(name) {
       root._mapSel = name || null;
       if (overlay) { overlay.remove(); overlay = null; }
       for (const k in paths) paths[k].classList.toggle("is-sel", k === name);
+      for (const k in metroBtns) metroBtns[k].setAttribute("aria-pressed", String(k === name));
       const g = name && geo.find(x => x.name === name);
       if (g) overlay = el("path", { d: g.d, fill: "none", stroke: css("--ink"),
         "stroke-width": 2.2, "stroke-linejoin": "round", "pointer-events": "none" }, svg);
@@ -962,6 +991,24 @@
       + '</div><span class="kl-lab">높음 (분양률 %)</span><span class="kl-na"><i></i>자료 없음</span>'
       + (mode === "latest" ? '<span class="kl-hatch"><i></i>공통보다 2분기+ 과거</span>' : "");
     wrap.appendChild(legend);
+
+    // ── 소형 시·도 보조 선택 (지도에서 누르기 어려운 8개 광역시·특별·특별자치시) — 지도 탭과 양방향 동기 ──
+    const METROS = ["서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종"];
+    const metrobar = document.createElement("div"); metrobar.className = "map-metros";
+    metrobar.setAttribute("role", "group"); metrobar.setAttribute("aria-label", "작은 시·도 바로 선택");
+    const mlab = document.createElement("span"); mlab.className = "mm-lab"; mlab.textContent = "작은 시·도";
+    metrobar.appendChild(mlab);
+    METROS.filter(n => geo.some(g => g.name === n)).forEach(n => {
+      const mm = data[n], has = mm && rateOf(mm) != null;
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "btn-sm"; b.textContent = n;
+      b.setAttribute("aria-pressed", String(root._mapSel === n));
+      b.setAttribute("aria-label", n + (has ? " 판독" : " (자료 없음) 판독"));
+      b.addEventListener("click", () => setSel(root._mapSel === n ? null : n));   // 지도 탭과 동일 토글
+      metroBtns[n] = b;
+      metrobar.appendChild(b);
+    });
+    root.appendChild(metrobar);
     root.appendChild(read);
     setSel(root._mapSel || null);   // 이전 선택 복원 (없으면 기본 판독)
     if (opts.onMode) opts.onMode(mode);   // 캡션·부제 갱신은 호출측에 위임

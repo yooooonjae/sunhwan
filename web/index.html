@@ -11,6 +11,25 @@
    수지 = 웜 제도지 + 주황 제도펜(직선·도곽) ⇄ 순환 = 한밤의 청람 관측지 + 금 컴퍼스(원호·궤도).
    기본 테마 = 라이트(주간 제도실) · 다크(한밤의 관측지)는 토글. */
 
+/* 순환 브랜드 보장 서브셋 — 윈도우 등 시스템 폰트 부재 환경에서 브랜드 글자 유지.
+   맥은 스택 상위 시스템 폰트가 먼저 잡혀 화면 불변. 스택 '마지막' 보장 폴백으로만 쓰인다.
+   서브셋 2종 합계 ~4.8KB (base64). 글리프: 명조=循環收支視差時差·Ⅰ~Ⅵ·CAPITAL CYCLE·✦ / 숫자=0-9·기호.
+   출처: Noto Serif KR 700 (OFL) · Montserrat SemiBold (OFL) — 필요 글리프만 서브셋. */
+@font-face {
+  font-family: "Sunhwan Serif";
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url(data:font/woff2;base64,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) format("woff2");
+}
+@font-face {
+  font-family: "Sunhwan Num";
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url(data:font/woff2;base64,d09GMgABAAAAAAWUAA0AAAAACkQAAAVFAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGyAcMAZgAIEcEQgKjUSKRgE2AiQDcAs6AAQgBQYHIBupB1GUDc5mgB+JsTNknxAGQqusfemEE8HzPJ71576kSjJyZpxtV3ChlfgNFR92+j8g//t8/umlsLYf8fJjV8TU103gpLEzMWJY8P/fr3QeDkZ5pNoIvf+n7puIoAzabZqxPL6ABRLdVlq2YAm0i+wupynowghgYNOAjBozKYwfHcB1AYBG1IkuaJ9XvmDb+pU0rJy3cTUN9IiZdHWyiuMBdXydCxPHl9n0kGEM2KuRZoDfSWTS8CYepamlVHvW9YAekacAAVCV6kGgiQsp2ojK0RCWztG7qKUYDYMmHNrTlf4MYDC7uYd8U01LqQvwaoN0pNt/4H7jdwD3NRnvutCNG75/3vcgAFRSyyxdQSll+uUKKMGiGEFcFAFgA9APcEC+BfUIUAhYACgUUultoq1ZkGPAjka3rEfXiy1vnV1U32AFbMuyfqvIgscLC4v0SkVHtaUf2jI9Bfr8Ao/17XnHcznZl8+bJ2Sz7M1koifkZV/OOJ5hb9b0GFKgm7LkDRvrFD0nTgwKOyLAPyR2VLR8/QyJWVJAmAZiU4m50BSTOcNoEnLyuC+kCrDC8jCB/jjC/cPLB9CD3HJYA1ZYGFLE0mNvm3j/GXTu9xxTY2obIlN4QGzpOJJyY8Y4fY1rTlLDw9vwSIGHdOHBSMz8zX7shXY4Bt033GC/NYYpICIsFDMz/M7ItXZFzcPqEE6JGJQQbx+PYQy5OiSlUwuixuiYOcMExkjByHw9y5Ljzz98v3H8Qds4SP9zD91Xqx5pNDOZ1OXSHnbjou3S1Svslya7n5iEjxvHH219bJHeTujBfx68fnQCPgFMDcw8MFM5uaFiiddbDUZTUiqNq2lpMW6pxHwocOHU3lVep7TGPK2bbH4gnkfmkgxhl8nRXccHR5UleHYcGubKJ8h/H7htYjHwBSac2P73vgvVhZEssYpOwEtpGm7c2IODVz3GrntuvrVgpYbFyqiHoPniZOzZCaPWPztpe8/O4saJ3ROU8Sv0WZhcEAl3TAx11flKl1p3jqxCnC4bmdNCZaaibFa2f73JwCmX3H7d1ui58yNZlBTPKFza9kgnZ0FFbS2GT+a2sUSFZDSVJxZmVtBUWWwFh0ZTcLgctYBMkAvBZb7J5TV1n00x54WMCsT2EEXJPCbDENvfaQIBcqMrcWp1FY4XDQmIvD/ONDB54uTWHtEsqYFFIVs5qVTHIlP+FAmKSsgITkaCUELCIWIy+CFwODbJgXuIDT0khsoDvEawzdvyf5vz19Ly57T90+3s4Lnj+uqcx9bWR6e4/fUeJ3LS463ftXO+WtdmcNp9Ub/AY+bmteEY9PloaVkueOmxAUn0+/jxIT8OiNewi2gf+/Yp3P2g4rFE6ADUD2rQmIQig+/J7wR0uzt43tj+OuehtfWxraTt8Z4nMfRqX/lKm3J+2nnLbQu3blmxNh3DOmZeLeSaM/fumwtHSJtasKa346OkzS0Gk6DbHS/+NG2LE6Qtdb6jIhBaTZPE5BgYmbAL2V4Q4qXBJCdHg2dGTEzIjYlOyFMoEieIWba0yIDMvOiUxuq9B+aX5YNHQ+8PHPgUCv4MGPDz0/jQ86rrOQReGBXEYoPswov1fVcNuedFZT9OAD7585cz5xQN+s1fpH0J8O7v3AjwyYyRx31siDZQmwB4UQAI/EMcWpoC5Tt8yWwtW00kpC6jk+zCr8bklURdQ4saR4HaQCc1lw6diLflq6Uc+JUyqMPeQmIzSDa4H7ePvpIiLGkq8fXv0k9NYbi2LLBf1EdL04wANr3wUI1CGHoYx4s2JdwL6YEG) format("woff2");
+}
+
 :root {
   --ground: #f3f5f9;
   --surface: #fdfdfc;
@@ -47,8 +66,9 @@
 
   /* 공통 */
   --font-body: "Apple SD Gothic Neo", "Pretendard", -apple-system, sans-serif;
-  --font-display: "Songti SC", "Songti TC", "AppleMyungjo", "Noto Serif KR", serif;
-  --font-num: "Avenir Next", "Helvetica Neue", -apple-system, sans-serif;
+  /* 스택 마지막 "Sunhwan Serif/Num" = 브랜드 보장 서브셋(윈도우 등 폴백). 맥은 상위 시스템 폰트가 먼저 잡혀 불변. */
+  --font-display: "Songti SC", "Songti TC", "AppleMyungjo", "Noto Serif KR", "Sunhwan Serif", serif;
+  --font-num: "Avenir Next", "Helvetica Neue", -apple-system, "Sunhwan Num", sans-serif;
   --t-caption: 12.5px;
   --radius: 12px;
   --radius-sm: 8px;
@@ -122,6 +142,8 @@ a:hover { color: var(--blueprint-2); }
 .wrap { max-width: var(--col); margin: 0 auto; padding: 0 var(--sp-4); }
 
 .num { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+/* 계량 활자 수치에 붙는 한글 단위(종·구역·건·개월·%p 등)는 본문 고딕으로 — 시차·수지와 동일 패턴 */
+.u { font-family: var(--font-body); font-variant-numeric: normal; }
 
 .caption { font-size: var(--t-caption); color: var(--muted); }
 
@@ -562,6 +584,18 @@ figure.viz.viz-hero .viz-title { font-size: 18px; }
 .korea-read .num { color: var(--blueprint-2); }
 .korea-read .kr-hint { color: var(--ink-3); }
 .korea-read .kr-low b { color: var(--seal); }
+/* 지도 판독 패널 — 지역/기준 시점/핵심값/직전 대비/표본·모드/한 줄 해석 (정보 재배열) */
+.korea-read .kr-panel { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; align-items: baseline; }
+.korea-read .krp-row { display: contents; }
+.korea-read .krp-k { color: var(--ink-3); font-size: 11px; font-weight: 700; letter-spacing: .04em; white-space: nowrap; }
+.korea-read .krp-v { color: var(--ink-2); font-size: 12.5px; line-height: 1.5; }
+.korea-read .krp-v b { color: var(--ink); }
+.korea-read .krp-region { font-size: 14.5px; font-weight: 800; }
+.korea-read .krp-big { font-size: 16px; font-weight: 800; color: var(--blueprint-2); }
+
+/* 소형 시·도 보조 선택 목록 — 지도 아래 한 줄(.btn-sm), 지도 탭과 양방향 강조 동기 */
+.map-metros { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; margin-top: 11px; }
+.map-metros .mm-lab { font-size: 11px; font-weight: 700; color: var(--ink-3); letter-spacing: .04em; margin-right: 2px; }
 
 /* KPI 값 안의 단위(작게) — 큰 숫자 + 작은 라벨 통일 지원 */
 .kpi .v small { font-size: 13px; color: var(--ink-3); font-weight: 500; margin-left: 2px; }
@@ -961,7 +995,7 @@ figure.viz.viz-hero .viz-title { font-size: 18px; }
         <p class="bridge-q">금리가 오르면 운영이 벌던 프리미엄이 사라지는가</p>
         <div class="bridge-result">
           <div class="bridge-sec-label">핵심 결과</div>
-          <div class="bridge-stat"><b>+3.0%p → +0.2%p</b><span>2016Q3 → 2026Q1</span></div>
+          <div class="bridge-stat"><b>+3.0<span class="u">%p</span> → +0.2<span class="u">%p</span></b><span>2016Q3 → 2026Q1</span></div>
           <p>서울 오피스 소득수익률 연환산 − 국고10년. 임대 프리미엄이 금리 상승과 함께 0 부근까지 좁혀졌다 — 리츠 할인(Ⅳ장)의 거시 배경.</p>
         </div>
         <div class="bridge-caution">
@@ -2004,8 +2038,22 @@ window.__KOREA__ = [{"name":"제주","d":"M191.5 626.2L192.8 629.1L192.5 630.6L1
       patternTransform: "rotate(45)" }, el("defs", {}, svg));
     el("line", { x1: 0, y1: 0, x2: 0, y2: 7, stroke: css("--ink-2"), "stroke-width": 1.3, "stroke-opacity": .5 }, pat);
     const read = document.createElement("div"); read.className = "korea-read";
-    const paths = {}; let overlay = null;
+    const paths = {}, metroBtns = {}; let overlay = null;
 
+    // 판독 패널 — 지역/기준 시점/핵심값/직전 대비/표본·모드/한 줄 해석 (정보 재배열)
+    const modeLabel = () => mode === "common"
+      ? "공통 기준분기 · 유효 " + (common.valid || 0) + "/" + (common.total || 17)
+        + " · 커버리지 " + (covPct == null ? "—" : covPct + "%")
+      : "지역별 최신 가용 분기";
+    const interp = (v, d) => {
+      const lvl = v >= 95 ? "기준선 80% 크게 상회 — 분양 원활"
+        : v >= 80 ? "기준선 80% 상회 — 순항"
+        : v >= 60 ? "기준선 80% 하회 — 다소 고전"
+        : "기준선 80% 크게 하회 — 분양 고전";
+      const tr = d == null ? "" : d > 0 ? " · 직전보다 개선" : d < 0 ? " · 직전보다 악화" : " · 직전과 보합";
+      return lvl + tr;
+    };
+    const prow = (k, v) => '<div class="krp-row"><span class="krp-k">' + k + '</span><span class="krp-v">' + v + "</span></div>";
     function readHTML(name) {
       if (!name) {
         let lo = null;
@@ -2013,26 +2061,41 @@ window.__KOREA__ = [{"name":"제주","d":"M191.5 626.2L192.8 629.1L192.5 630.6L1
         if (mode === "common") {
           return '<span class="kr-hint">공통 기준분기 <b>' + fq(common.q) + "</b> · 유효 <b>"
             + (common.valid || 0) + "/" + (common.total || 17) + "</b> · 커버리지 <b>"
-            + (covPct == null ? "—" : covPct + "%") + "</b> — 지역을 클릭·탭하면 그 분기 값이 여기 표시된다.</span>"
+            + (covPct == null ? "—" : covPct + "%") + "</b> — 지역을 클릭·탭하거나 아래 버튼을 누르면 판독 패널이 여기 표시된다.</span>"
             + (lo ? ' <span class="kr-low">최저 <b>' + lo.name + " " + lo.v.toFixed(1) + "%</b></span>" : "");
         }
-        return '<span class="kr-hint">지역을 클릭·탭하면 최신 분기 초기분양률이 여기 표시된다. 사선 = 공통 기준분기('
+        return '<span class="kr-hint">지역을 클릭·탭하거나 아래 버튼을 누르면 최신 분기 판독이 여기 표시된다. 사선 = 공통 기준분기('
           + fq(common.q) + ")보다 2분기+ 과거.</span>"
           + (lo ? ' <span class="kr-low">현재 최저 <b>' + lo.name + " " + lo.v.toFixed(1) + "%</b></span>" : "");
       }
       const m = data[name], v = m && rateOf(m);
-      if (v == null) return "<b>" + name + "</b> — " + (mode === "common"
-        ? "공통 기준분기(" + fq(common.q) + ") 자료 없음" : "최신 가용 분기 자료 없음");
+      if (v == null) {
+        return '<div class="kr-panel">'
+          + prow("지역", '<b class="krp-region">' + name + "</b>")
+          + prow("핵심값", '<span class="kr-hint">' + (mode === "common"
+              ? "공통 기준분기(" + fq(common.q) + ") 자료 없음" : "최신 가용 분기 자료 없음") + "</span>")
+          + prow("표본·모드", '<span class="kr-hint">' + modeLabel() + "</span>")
+          + "</div>";
+      }
       const d = deltaOf(m);
-      return "<b>" + name + " · " + fq(qOf(m)) + "</b> — 초기분양률 <b class='num'>" + v.toFixed(1) + "%</b>"
-        + (d == null ? ' <span class="kr-hint">(직전 관측 없음)</span>'
-          : ' <span style="color:' + delCol(d) + '">· 직전(' + fq(prevQOf(m)) + ") 대비 " + delTag(d) + "</span>")
-        + (staleOf(m) ? ' <span class="kr-hint">· 공통 기준분기보다 오래됨(사선)</span>' : "");
+      const delRow = d == null
+        ? '<span class="kr-hint">직전 관측 없음</span>'
+        : '<span style="color:' + delCol(d) + '">' + delTag(d) + '</span> <span class="kr-hint">(직전 ' + fq(prevQOf(m)) + ")</span>";
+      const stale = staleOf(m) ? ' <span class="kr-hint">· 사선(공통 기준분기보다 2분기+ 과거)</span>' : "";
+      return '<div class="kr-panel">'
+        + prow("지역", '<b class="krp-region">' + name + "</b>")
+        + prow("기준 시점", fq(qOf(m)))
+        + prow("핵심값", '<b class="num krp-big">' + v.toFixed(1) + "%</b> <span class=\"kr-hint\">초기분양률</span>")
+        + prow("직전 대비", delRow)
+        + prow("표본·모드", '<span class="kr-hint">' + modeLabel() + stale + "</span>")
+        + prow("한 줄 해석", interp(v, d))
+        + "</div>";
     }
     function setSel(name) {
       root._mapSel = name || null;
       if (overlay) { overlay.remove(); overlay = null; }
       for (const k in paths) paths[k].classList.toggle("is-sel", k === name);
+      for (const k in metroBtns) metroBtns[k].setAttribute("aria-pressed", String(k === name));
       const g = name && geo.find(x => x.name === name);
       if (g) overlay = el("path", { d: g.d, fill: "none", stroke: css("--ink"),
         "stroke-width": 2.2, "stroke-linejoin": "round", "pointer-events": "none" }, svg);
@@ -2070,6 +2133,24 @@ window.__KOREA__ = [{"name":"제주","d":"M191.5 626.2L192.8 629.1L192.5 630.6L1
       + '</div><span class="kl-lab">높음 (분양률 %)</span><span class="kl-na"><i></i>자료 없음</span>'
       + (mode === "latest" ? '<span class="kl-hatch"><i></i>공통보다 2분기+ 과거</span>' : "");
     wrap.appendChild(legend);
+
+    // ── 소형 시·도 보조 선택 (지도에서 누르기 어려운 8개 광역시·특별·특별자치시) — 지도 탭과 양방향 동기 ──
+    const METROS = ["서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종"];
+    const metrobar = document.createElement("div"); metrobar.className = "map-metros";
+    metrobar.setAttribute("role", "group"); metrobar.setAttribute("aria-label", "작은 시·도 바로 선택");
+    const mlab = document.createElement("span"); mlab.className = "mm-lab"; mlab.textContent = "작은 시·도";
+    metrobar.appendChild(mlab);
+    METROS.filter(n => geo.some(g => g.name === n)).forEach(n => {
+      const mm = data[n], has = mm && rateOf(mm) != null;
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "btn-sm"; b.textContent = n;
+      b.setAttribute("aria-pressed", String(root._mapSel === n));
+      b.setAttribute("aria-label", n + (has ? " 판독" : " (자료 없음) 판독"));
+      b.addEventListener("click", () => setSel(root._mapSel === n ? null : n));   // 지도 탭과 동일 토글
+      metroBtns[n] = b;
+      metrobar.appendChild(b);
+    });
+    root.appendChild(metrobar);
     root.appendChild(read);
     setSel(root._mapSel || null);   // 이전 선택 복원 (없으면 기본 판독)
     if (opts.onMode) opts.onMode(mode);   // 캡션·부제 갱신은 호출측에 위임
@@ -2132,10 +2213,10 @@ window.__KOREA__ = [{"name":"제주","d":"M191.5 626.2L192.8 629.1L192.5 630.6L1
     if (!J || !$("#j-kpis")) return;
     const hist = J.regions.filter(r => r.history);
     $("#j-kpis").innerHTML = [
-      [`${J.total.toLocaleString()}구역`, "관측 파이프라인 (도시정비법 " + J.regions.reduce((a, r) => a + r.core, 0) + " + 소규모 " + J.regions.reduce((a, r) => a + r.small, 0) + ")"],
-      [`${J.hist_n.toLocaleString()}구역`, `단계 이력 보유 (${hist.map(r => r.name).join("·")})`],
-      [`${(J.durations.find(d => d.pair === "조합설립 → 사업시행") || {}).med || "—"}년`, "조합설립 → 사업시행 중위"],
-      [`${J.durations.reduce((a, d) => a + d.med, 0).toFixed(0)}년+`, "예정구역고시 → 준공 중위 합산(단계 합)"],
+      [`${J.total.toLocaleString()}<span class="u">구역</span>`, "관측 파이프라인 (도시정비법 " + J.regions.reduce((a, r) => a + r.core, 0) + " + 소규모 " + J.regions.reduce((a, r) => a + r.small, 0) + ")"],
+      [`${J.hist_n.toLocaleString()}<span class="u">구역</span>`, `단계 이력 보유 (${hist.map(r => r.name).join("·")})`],
+      [`${(J.durations.find(d => d.pair === "조합설립 → 사업시행") || {}).med || "—"}<span class="u">년</span>`, "조합설립 → 사업시행 중위"],
+      [`${J.durations.reduce((a, d) => a + d.med, 0).toFixed(0)}<span class="u">년+</span>`, "예정구역고시 → 준공 중위 합산(단계 합)"],
     ].map(([v, k], i) => `<div class="kpi"><div class="v${i >= 2 ? " gold" : ""}">${v}</div><div class="k">${k}</div></div>`).join("");
 
     C.hbars($("#j-funnel"), J.funnel.map(f => ({ name: f.stage, value: f.n })),
@@ -2158,7 +2239,7 @@ window.__KOREA__ = [{"name":"제주","d":"M191.5 626.2L192.8 629.1L192.5 630.6L1
     const D = B.bunyang;
     // KPI
     $("#b-kpis").innerHTML = [
-      [`${B.counters.notices.toLocaleString()}건`, "분양 공고 · 만 6년"],
+      [`${B.counters.notices.toLocaleString()}<span class="u">건</span>`, "분양 공고 · 만 6년"],
       [`${(D.meta.coverage.compet_total / D.meta.n * 100).toFixed(0)}%`, "경쟁률 커버리지"],
       [`${D.price_cap.cap.med.toFixed(1)} : 1`, `분상제 적용 경쟁률 중위 (미적용 ${D.price_cap.non.med.toFixed(1)}:1)`],
       [`r = 0.47`, "log 경쟁률 ↔ 다음 분기 초기분양률"],
@@ -2350,10 +2431,10 @@ window.__KOREA__ = [{"name":"제주","d":"M191.5 626.2L192.8 629.1L192.5 630.6L1
   function renderReits() {
     const R = B.reits, K = R.kpi;
     $("#r-kpis").innerHTML = [
-      [`${K.n}종`, `상장 리츠 · 시총 ${K.mcap_total_jo}조`],
+      [`${K.n}<span class="u">종</span>`, `상장 리츠 · 시총 ${K.mcap_total_jo}조`],
       [`${K.pb_med.toFixed(2)}`, "P/BV 중위 — 장부가의 ⅔"],
       [`${K.dy_med.toFixed(1)}%`, "TTM 배당률 중위 (일회성 배당 제외)"],
-      [`+${K.spread.toFixed(1)}%p`, `국고10년(${K.t10.toFixed(2)}%) 대비 스프레드`],
+      [`+${K.spread.toFixed(1)}<span class="u">%p</span>`, `국고10년(${K.t10.toFixed(2)}%) 대비 스프레드`],
     ].map(([v, k], i) => `<div class="kpi"><div class="v${i === 3 ? " gold" : ""}">${v}</div><div class="k">${k}</div></div>`).join("");
 
     const tagName = it => it.name + (it.tags.length ? " · " + it.tags.join("·") : "");
@@ -2438,7 +2519,7 @@ window.__KOREA__ = [{"name":"제주","d":"M191.5 626.2L192.8 629.1L192.5 630.6L1
     const D = B.bunyang, K = B.reits.kpi;
     const natLatest = D.latest.rows.find(r => r.name === "전국");
     el2.innerHTML = [
-      ["공급", B.jeongbi.total.toLocaleString() + "구역", `정비 파이프라인 3개 시도 — 조합설립→사업시행 중위 ${(B.jeongbi.durations.find(d => d.pair === "조합설립 → 사업시행") || {}).med || "—"}년`, true],
+      ["공급", B.jeongbi.total.toLocaleString() + '<span class="u">구역</span>', `정비 파이프라인 3개 시도 — 조합설립→사업시행 중위 ${(B.jeongbi.durations.find(d => d.pair === "조합설립 → 사업시행") || {}).med || "—"}년`, true],
       ["분양", (natLatest && natLatest.value != null ? natLatest.value.toFixed(0) + "%" : "―"),
        `전국 초기분양률 ${D.latest.q.replace("Q", " Q")} — 기준선 80% ${natLatest && natLatest.value >= 80 ? "상회" : "하회"}`, true],
       ["운영", B.operating.kpi.seoul_vac.toFixed(1) + "%", `서울 오피스 공실률 ${B.operating.kpi.asof.replace("Q", " Q")} — 전국 ${B.operating.kpi.nat_vac.toFixed(1)}%`, true],

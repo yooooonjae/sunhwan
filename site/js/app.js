@@ -51,10 +51,10 @@
     if (!J || !$("#j-kpis")) return;
     const hist = J.regions.filter(r => r.history);
     $("#j-kpis").innerHTML = [
-      [`${J.total.toLocaleString()}구역`, "관측 파이프라인 (도시정비법 " + J.regions.reduce((a, r) => a + r.core, 0) + " + 소규모 " + J.regions.reduce((a, r) => a + r.small, 0) + ")"],
-      [`${J.hist_n.toLocaleString()}구역`, `단계 이력 보유 (${hist.map(r => r.name).join("·")})`],
-      [`${(J.durations.find(d => d.pair === "조합설립 → 사업시행") || {}).med || "—"}년`, "조합설립 → 사업시행 중위"],
-      [`${J.durations.reduce((a, d) => a + d.med, 0).toFixed(0)}년+`, "예정구역고시 → 준공 중위 합산(단계 합)"],
+      [`${J.total.toLocaleString()}<span class="u">구역</span>`, "관측 파이프라인 (도시정비법 " + J.regions.reduce((a, r) => a + r.core, 0) + " + 소규모 " + J.regions.reduce((a, r) => a + r.small, 0) + ")"],
+      [`${J.hist_n.toLocaleString()}<span class="u">구역</span>`, `단계 이력 보유 (${hist.map(r => r.name).join("·")})`],
+      [`${(J.durations.find(d => d.pair === "조합설립 → 사업시행") || {}).med || "—"}<span class="u">년</span>`, "조합설립 → 사업시행 중위"],
+      [`${J.durations.reduce((a, d) => a + d.med, 0).toFixed(0)}<span class="u">년+</span>`, "예정구역고시 → 준공 중위 합산(단계 합)"],
     ].map(([v, k], i) => `<div class="kpi"><div class="v${i >= 2 ? " gold" : ""}">${v}</div><div class="k">${k}</div></div>`).join("");
 
     C.hbars($("#j-funnel"), J.funnel.map(f => ({ name: f.stage, value: f.n })),
@@ -77,7 +77,7 @@
     const D = B.bunyang;
     // KPI
     $("#b-kpis").innerHTML = [
-      [`${B.counters.notices.toLocaleString()}건`, "분양 공고 · 만 6년"],
+      [`${B.counters.notices.toLocaleString()}<span class="u">건</span>`, "분양 공고 · 만 6년"],
       [`${(D.meta.coverage.compet_total / D.meta.n * 100).toFixed(0)}%`, "경쟁률 커버리지"],
       [`${D.price_cap.cap.med.toFixed(1)} : 1`, `분상제 적용 경쟁률 중위 (미적용 ${D.price_cap.non.med.toFixed(1)}:1)`],
       [`r = 0.47`, "log 경쟁률 ↔ 다음 분기 초기분양률"],
@@ -269,10 +269,10 @@
   function renderReits() {
     const R = B.reits, K = R.kpi;
     $("#r-kpis").innerHTML = [
-      [`${K.n}종`, `상장 리츠 · 시총 ${K.mcap_total_jo}조`],
+      [`${K.n}<span class="u">종</span>`, `상장 리츠 · 시총 ${K.mcap_total_jo}조`],
       [`${K.pb_med.toFixed(2)}`, "P/BV 중위 — 장부가의 ⅔"],
       [`${K.dy_med.toFixed(1)}%`, "TTM 배당률 중위 (일회성 배당 제외)"],
-      [`+${K.spread.toFixed(1)}%p`, `국고10년(${K.t10.toFixed(2)}%) 대비 스프레드`],
+      [`+${K.spread.toFixed(1)}<span class="u">%p</span>`, `국고10년(${K.t10.toFixed(2)}%) 대비 스프레드`],
     ].map(([v, k], i) => `<div class="kpi"><div class="v${i === 3 ? " gold" : ""}">${v}</div><div class="k">${k}</div></div>`).join("");
 
     const tagName = it => it.name + (it.tags.length ? " · " + it.tags.join("·") : "");
@@ -357,7 +357,7 @@
     const D = B.bunyang, K = B.reits.kpi;
     const natLatest = D.latest.rows.find(r => r.name === "전국");
     el2.innerHTML = [
-      ["공급", B.jeongbi.total.toLocaleString() + "구역", `정비 파이프라인 3개 시도 — 조합설립→사업시행 중위 ${(B.jeongbi.durations.find(d => d.pair === "조합설립 → 사업시행") || {}).med || "—"}년`, true],
+      ["공급", B.jeongbi.total.toLocaleString() + '<span class="u">구역</span>', `정비 파이프라인 3개 시도 — 조합설립→사업시행 중위 ${(B.jeongbi.durations.find(d => d.pair === "조합설립 → 사업시행") || {}).med || "—"}년`, true],
       ["분양", (natLatest && natLatest.value != null ? natLatest.value.toFixed(0) + "%" : "―"),
        `전국 초기분양률 ${D.latest.q.replace("Q", " Q")} — 기준선 80% ${natLatest && natLatest.value >= 80 ? "상회" : "하회"}`, true],
       ["운영", B.operating.kpi.seoul_vac.toFixed(1) + "%", `서울 오피스 공실률 ${B.operating.kpi.asof.replace("Q", " Q")} — 전국 ${B.operating.kpi.nat_vac.toFixed(1)}%`, true],

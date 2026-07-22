@@ -405,6 +405,18 @@ figure.viz.viz-hero .viz-title { font-size: 18px; }
 .korea-read .num { color: var(--blueprint-2); }
 .korea-read .kr-hint { color: var(--ink-3); }
 .korea-read .kr-low b { color: var(--seal); }
+/* 지도 판독 패널 — 지역/기준 시점/핵심값/직전 대비/표본·모드/한 줄 해석 (정보 재배열) */
+.korea-read .kr-panel { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; align-items: baseline; }
+.korea-read .krp-row { display: contents; }
+.korea-read .krp-k { color: var(--ink-3); font-size: 11px; font-weight: 700; letter-spacing: .04em; white-space: nowrap; }
+.korea-read .krp-v { color: var(--ink-2); font-size: 12.5px; line-height: 1.5; }
+.korea-read .krp-v b { color: var(--ink); }
+.korea-read .krp-region { font-size: 14.5px; font-weight: 800; }
+.korea-read .krp-big { font-size: 16px; font-weight: 800; color: var(--blueprint-2); }
+
+/* 소형 시·도 보조 선택 목록 — 지도 아래 한 줄(.btn-sm), 지도 탭과 양방향 강조 동기 */
+.map-metros { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; margin-top: 11px; }
+.map-metros .mm-lab { font-size: 11px; font-weight: 700; color: var(--ink-3); letter-spacing: .04em; margin-right: 2px; }
 
 /* KPI 값 안의 단위(작게) — 큰 숫자 + 작은 라벨 통일 지원 */
 .kpi .v small { font-size: 13px; color: var(--ink-3); font-weight: 500; margin-left: 2px; }

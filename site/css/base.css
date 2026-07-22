@@ -30,6 +30,8 @@ a:hover { color: var(--blueprint-2); }
 .wrap { max-width: var(--col); margin: 0 auto; padding: 0 var(--sp-4); }
 
 .num { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+/* 계량 활자 수치에 붙는 한글 단위(종·구역·건·개월·%p 등)는 본문 고딕으로 — 시차·수지와 동일 패턴 */
+.u { font-family: var(--font-body); font-variant-numeric: normal; }
 
 .caption { font-size: var(--t-caption); color: var(--muted); }
 
