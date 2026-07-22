@@ -247,10 +247,24 @@ def linkage_block():
             cap_link.append({"q": q, "pbv": round(pb, 3), "vac": round(vac_s[q], 1)})
     r_c = round(corr([x["pbv"] for x in cap_link], [x["vac"] for x in cap_link]), 2)
 
+    # 강건성: 차분·전년동기 상관, 금리 통제 부분상관 (리뷰 후속 검증)
+    import math
+    pipe = [x["pipe"] for x in supply_link]; rate = [x["rate"] for x in supply_link]
+    d = lambda a, k: [a[i] - a[i - k] for i in range(k, len(a))]
+    r_supply_d1 = round(corr(d(pipe, 1), d(rate, 1)), 2)
+    r_supply_yoy = round(corr(d(pipe, 4), d(rate, 4)), 2)
+    pbv = [x["pbv"] for x in cap_link]; vac = [x["vac"] for x in cap_link]
+    t10s = [statistics.mean(t10q[x["q"]]) for x in cap_link]
+    r_pv, r_pt, r_vt = corr(pbv, vac), corr(pbv, t10s), corr(vac, t10s)
+    r_cap_partial = round((r_pv - r_pt * r_vt) / math.sqrt((1 - r_pt ** 2) * (1 - r_vt ** 2)), 2)
+    r_cap_d1 = round(corr(d(pbv, 1), d(vac, 1)), 2)
+    robust = {"supply_d1": r_supply_d1, "supply_yoy": r_supply_yoy,
+              "cap_partial": r_cap_partial, "cap_d1": r_cap_d1}
+
     return {"supply_link": supply_link, "r_supply": r_a,
             "ops_spread": ops_spread,
             "cap_link": cap_link, "r_cap": r_c,
-            "office_n": len(office)}
+            "office_n": len(office), "robust": robust}
 
 
 def reits_block():
