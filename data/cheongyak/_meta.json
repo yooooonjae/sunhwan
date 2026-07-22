@@ -1,0 +1,11 @@
+{
+ "counts": {
+  "apt_detail": 2828,
+  "apt_model": 14445,
+  "remainder": 1627,
+  "compet": 53889,
+  "score": 29115
+ },
+ "per_page": 500,
+ "note": "소급 하한 2020-02(청약홈 개시). 분양가는 apt_model.공급금액."
+}
