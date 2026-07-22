@@ -195,7 +195,7 @@ nav.appbar .tabs a:hover:not(.active) { color: var(--blueprint-2); }
 .ring-dash { animation: spin 140s linear infinite; transform-origin: 50% 50%; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .arc-draw { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: draw 2.2s ease forwards; }
-.arc-draw.a2 { animation-delay: .5s; } .arc-draw.a3 { animation-delay: 1s; }
+.arc-draw.a2 { animation-delay: .5s; } .arc-draw.a3 { animation-delay: 1s; } .arc-draw.a4 { animation-delay: 1.5s; }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 @media (prefers-reduced-motion: reduce) { .arc-draw { stroke-dashoffset: 0; } }
 
@@ -336,7 +336,7 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
       <h1><span class="hanja">循環</span> —<br>땅에서 자본으로,<br>다시 땅으로</h1>
       <p class="lede">정비사업과 신규 개발에서 주택 공급이 만들어지고, 청약과 분양을 거쳐 수요자에게
       이전된다. 한편 오피스·물류 등 수익형 부동산의 일부는 리츠에 편입되어 자본시장에서
-      가격과 배당으로 평가받는다. <b>공급 → 분양 → 자본, 세 시장 단계를 잇는 흐름</b>을
+      가격과 배당으로 평가받는다. <b>공급 → 분양 → 운영 → 자본, 네 시장 단계를 잇는 흐름</b>을
       공공 데이터로 관측한다 — 두 순환(주거 공급·수익형 자본)은 금리와 공사비로 연결된다.</p>
       <p class="sister">자매 연구: <a href="https://yoonjae.pages.dev" rel="noopener">수지(收支) — 개발 손익의 구조</a> · 딜 하나를 깊게 보는 도구</p>
     </div>
@@ -345,21 +345,32 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
         <!-- 컴퍼스 눈금 링 (회전) -->
         <circle class="ring-dash" cx="210" cy="210" r="192" fill="none" stroke="var(--hairline-2)" stroke-width="1" stroke-dasharray="2 14"/>
         <circle cx="210" cy="210" r="150" fill="none" stroke="var(--hairline)" stroke-width="1" stroke-dasharray="1 10"/>
-        <!-- 세 호(弧): 공급→분양→자본 -->
-        <path class="arc-draw"    d="M227.8 40.9 A170 170 0 0 1 365.3 279.1" fill="none" stroke="var(--s1)" stroke-width="2.5" stroke-linecap="round"/>
-        <path class="arc-draw a2" d="M347.5 309.9 A170 170 0 0 1 72.5 309.9" fill="none" stroke="var(--s2)" stroke-width="2.5" stroke-linecap="round"/>
-        <path class="arc-draw a3" d="M54.7 279.1 A170 170 0 0 1 192.2 40.9" fill="none" stroke="var(--s3)" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- 4노드 궤도: 중심(210,210)·반지름 170. P(θ)=(210+170·cosθ, 210+170·sinθ), SVG y는 아래로 증가.
+             공급Ⅰ θ=-90°→(210,40) · 분양Ⅱ θ=0°→(380,210) · 운영Ⅲ θ=90°→(210,380) · 자본Ⅳ θ=180°→(40,210).
+             네 호(弧)는 인접 노드 사이를 시계방향(sweep=1)으로 잇되 각 노드에서 ±10° 띄운다(각 호 70°<180° → large-arc=0).
+             끝점: 170·cos10°=167.417, 170·sin10°=29.520 → 210±167.417, 210±29.520. 호 색 = 출발 노드 색. -->
+        <!-- 호① 공급→분양 (θ -80°→-10°) -->
+        <path class="arc-draw"    d="M239.5 42.6 A170 170 0 0 1 377.4 180.5" fill="none" stroke="var(--s1)" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- 호② 분양→운영 (θ 10°→80°) -->
+        <path class="arc-draw a2" d="M377.4 239.5 A170 170 0 0 1 239.5 377.4" fill="none" stroke="var(--s2)" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- 호③ 운영→자본 (θ 100°→170°) -->
+        <path class="arc-draw a3" d="M180.5 377.4 A170 170 0 0 1 42.6 239.5" fill="none" stroke="var(--s4)" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- 호④ 자본→공급 (θ 190°→260°) -->
+        <path class="arc-draw a4" d="M42.6 180.5 A170 170 0 0 1 180.5 42.6" fill="none" stroke="var(--s3)" stroke-width="2.5" stroke-linecap="round"/>
         <!-- 관문 노드 -->
         <g font-family="var(--font-body)" font-size="13.5" font-weight="800" text-anchor="middle">
           <circle cx="210" cy="40" r="27" fill="var(--surface)" stroke="var(--s1)" stroke-width="1.8"/>
           <text x="210" y="36" fill="var(--ink-3)" font-size="10">Ⅰ</text>
           <text x="210" y="50" fill="var(--ink)">공급</text>
-          <circle cx="357" cy="295" r="27" fill="var(--surface)" stroke="var(--s2)" stroke-width="1.8"/>
-          <text x="357" y="291" fill="var(--ink-3)" font-size="10">Ⅱ</text>
-          <text x="357" y="305" fill="var(--ink)">분양</text>
-          <circle cx="63" cy="295" r="27" fill="var(--surface)" stroke="var(--s3)" stroke-width="1.8"/>
-          <text x="63" y="291" fill="var(--ink-3)" font-size="10">Ⅲ</text>
-          <text x="63" y="305" fill="var(--ink)">자본</text>
+          <circle cx="380" cy="210" r="27" fill="var(--surface)" stroke="var(--s2)" stroke-width="1.8"/>
+          <text x="380" y="206" fill="var(--ink-3)" font-size="10">Ⅱ</text>
+          <text x="380" y="220" fill="var(--ink)">분양</text>
+          <circle cx="210" cy="380" r="27" fill="var(--surface)" stroke="var(--s4)" stroke-width="1.8"/>
+          <text x="210" y="376" fill="var(--ink-3)" font-size="10">Ⅲ</text>
+          <text x="210" y="390" fill="var(--ink)">운영</text>
+          <circle cx="40" cy="210" r="27" fill="var(--surface)" stroke="var(--s3)" stroke-width="1.8"/>
+          <text x="40" y="206" fill="var(--ink-3)" font-size="10">Ⅳ</text>
+          <text x="40" y="220" fill="var(--ink)">자본</text>
         </g>
         <!-- 중심 인장 -->
         <text x="210" y="228" text-anchor="middle" font-size="58" fill="var(--blueprint)" style="font-family:var(--font-display)">循環</text>
@@ -373,7 +384,7 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
       <div class="gauge"><div class="v">1,061<small>구역</small></div><div class="k">정비 파이프라인 (3개 시도)</div></div>
       <div class="gauge"><div class="v">101,904<small>행</small></div><div class="k">청약 데이터 수집</div></div>
       <div class="gauge"><div class="v">2,828<small>건</small></div><div class="k">분양 공고 (2020~)</div></div>
-      <div class="gauge"><div class="v">846<small>셀</small></div><div class="k">초기분양률 라벨 (12년)</div></div>
+      <div class="gauge"><div class="v">846<small>개</small></div><div class="k">지역·분기 초기분양률 관측값 (12년)</div></div>
       <div class="gauge"><div class="v">24<small>종</small></div><div class="k">상장 리츠 전수</div></div>
       <div class="gauge"><div class="v">150<small>개월</small></div><div class="k">국고 10년 금리</div></div>
     </div>
@@ -396,7 +407,7 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
   <div class="wrap">
     <div class="tobira"><div class="no">Ⅰ</div><h2>공급 — 정비의 파이프라인</h2>
       <div class="meta">상태 <b>Phase 1 가동 — 3개 시도</b><br>표본 <b>1,061개 정비구역</b></div></div>
-    <p class="lede">새 아파트 공급의 상류(上流)는 정비구역이다. 조합설립에서 준공까지 각 인가일을 시계열로
+    <p class="lede">기성 시가지 신규주택 공급의 주요 상류 중 하나가 정비구역이다. 조합설립에서 준공까지 각 인가일을 시계열로
     복원하면 <b>"어디서, 언제, 얼마나"의 공급 시점 추정</b>이 된다. 전국 통합 데이터가 없어 시도별로 분산된
     데이터를 직접 통합했다 — <b>대구·경기(단계 이력)·부산(현황 스냅샷) 3개 시도, 1,061개 구역</b>이 첫 관측이다.
     도시정비법 사업만 집계하며 소규모주택정비(별도 법령)는 분리 표기한다.</p>
@@ -443,7 +454,7 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
   <div class="wrap">
     <div class="tobira"><div class="no">Ⅱ</div><h2>분양 — 청약의 성적표</h2>
       <div class="meta">원천 <b>청약홈 · HUG(KOSIS)</b><br>기간 <b>2020-02 ~ 현재 · 초기분양률 2014~</b></div></div>
-    <p class="lede">분양 시장의 선행 관계는 명확하다 — <b>청약 접수(공고 시점)가 초기분양률(3~6개월 뒤)을 예고한다</b>.
+    <p class="lede">청약 경쟁률과 다음 분기 초기분양률 사이에는 뚜렷한 선행상관이 관측된다 — 접수 강도가 3~6개월 뒤 분양률에 앞서 움직인다.
     공고 2,828건과 경쟁률 5만여 행을 HUG 초기분양률 12년 치에 이어 붙여 이 관계를 데이터로 검증했다.
     경쟁률 5:1 이상을 기록한 지역·분기는 다음 분기 초기분양률이 중위 99%에 달했고, 미달 지역·분기는 중위 73%에 그쳤다 — 상관 관측이며 개별 단지의 완판 예측이 아니다.</p>
     <div class="kpi-row" id="b-kpis"></div>
@@ -510,7 +521,7 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
       <div class="viz-head"><div class="viz-title">운영이 벌어주는 수익률 — 소득수익률 연환산</div><div class="viz-unit">% · 최신 분기 × 4 (NOI 수익률 근사)</div></div>
       <div id="o-income"></div>
       <figcaption>소득수익률(임대이익 ÷ 자산가치)의 연환산 — Ⅳ장 리츠 배당·환원율을 가늠하는 운영 단계의 원천 수익률이다.
-      자본수익률(가격 변동분)은 제외한 값. 한국부동산원 상업용부동산 임대동향조사.</figcaption>
+      자본수익률(가격 변동분)은 제외한 값. 시장 전체 자산의 운영수익률 근사이며, 레버리지·운용보수·세금이 개입하는 개별 리츠의 배당수익률과 동일하지 않다. 한국부동산원 상업용부동산 임대동향조사.</figcaption>
     </figure>
   </div>
 </section>
@@ -572,7 +583,8 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
       <div class="meta">방법 <b>단계 간 교차 상관</b><br>주의 <b>상관 ≠ 인과 · 표본 작음</b></div></div>
     <p class="lede">이 사이트의 이름값을 검증하는 장이다. 공급·분양·운영·자본이 정말 이어져 있다면
     데이터에 흔적이 남아야 한다 — <b>세 개의 다리</b>를 자체 보유 데이터만으로 놓아 보았다.
-    전부 상관 관측이며 인과 주장이 아니다. 표본이 작은 다리는 그 사실을 함께 표기한다.</p>
+    전부 상관 관측이며 인과 주장이 아니다. 표본이 작은 다리는 그 사실을 함께 표기한다.
+    실측: 다리 ① r = -0.43(분기 21개, 2021Q1~2026Q1) · 다리 ② +3.0%p → +0.2%p(2016Q3~2026Q1) · 다리 ③ r = -0.73(분기 13개, 2023Q1~2026Q1, 국내 오피스 리츠 8종 시가총액 가중 합산).</p>
     <div class="kpi-row" id="l-kpis"></div>
     <div class="two-col">
       <figure class="viz">
@@ -636,7 +648,7 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
           <tr><td>초기분양률(라벨)</td><td>23개 지역</td><td>2014Q3~</td><td>지역·분기 평균</td><td class="num">846셀 (실적 없는 분기 결측)</td></tr>
           <tr><td>오피스 임대동향(운영)</td><td>17개 시도</td><td>2016Q3~</td><td>시도·분기</td><td class="num">공실·임대지수·수익률 전 시도</td></tr>
           <tr><td>리츠 시세·재무</td><td>상장 24종</td><td>상장일~</td><td>일별·결산기</td><td class="num">시세 24/24 · 배당 24/24 · LTV 23/24</td></tr>
-          <tr><td>정비사업</td><td>대구·경기·부산 우선</td><td>지역별 상이</td><td>구역</td><td class="num">구축 중 (Ⅰ장)</td></tr>
+          <tr><td>정비사업</td><td>대구·경기·부산 (1,061구역)</td><td>지역별 상이</td><td>구역</td><td class="num">1차 구축 완료(대구·경기·부산) · 전국 확장 중</td></tr>
         </tbody>
       </table></div>
       <figcaption>프리미엄 산점의 시세 분모는 시도 대표 시군구 프록시 — 공고 소재 시군구와 다를 수 있어 상관을 희석한다(시군구 매칭이 로드맵 1순위인 이유).</figcaption>
@@ -1672,6 +1684,7 @@ window.__DATA_SUNHWAN = {"built_at":"2026-07-22","bunyang":{"heat":{"xs":["2023Q
     $("#l-notes").innerHTML =
       "· 다리 ①의 파이프라인은 <b>청약홈 공고 기반(2020-02~)</b>만 집계 — 공고 없이 입주하는 물량은 빠져 있어 절대량이 아니라 방향으로 읽는다.<br>" +
       "· 다리 ③은 분기 " + L.cap_link.length + "개·국내 오피스 리츠 " + L.office_n + "종의 짧은 표본 — 강한 상관(r=" + L.r_cap + ")이지만 두 변수 모두 금리라는 공통 원인의 영향을 받는다.<br>" +
+      "· 원계열 상관이라 공통 추세에 의한 과대 가능성 — 차분·부분상관(금리 통제)은 후속 검증 항목이다.<br>" +
       "· 세 다리 전부 상관 관측이다. 선행·후행(그레인저류) 검정과 시군구 단위 연결은 후속 고도화 대상이다.";
   }
 
