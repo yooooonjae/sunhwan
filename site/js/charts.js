@@ -437,7 +437,7 @@
         if (!Number.isFinite(v)) { // 결측 — 무상관(0)으로 위장하지 않고 빈 셀로 (codex 지적)
           const miss = el("rect", { x: M.l + c * cw + 1, y: M.t + r * cellH + 1,
             width: cw - 2, height: cellH - 2, fill: css("--surface-2"), rx: 5,
-            stroke: css("--hairline"), "stroke-dasharray": "3 3" }, svg);
+            stroke: css("--hairline-2"), "stroke-dasharray": "3 3" }, svg);
           miss.addEventListener("mousemove", ev => tipShow(
             `<div class="t-title">${opts.xName || "X"} ${xv} · ${opts.yName || "Y"} ${yv}</div>자료 없음`, ev.clientX, ev.clientY));
           miss.addEventListener("mouseleave", tipHide);
@@ -754,5 +754,60 @@
     return svg;
   }
 
-  global.Charts = { line, smallMultiples, waterfall, tornado, heatmap, gauge, fan, hbars, phase, fmt, tipHide };
+
+  /* ---------- 산점 사분면 (순환 확장) ---------- */
+  // pts: [{name, x, y, size, group, label?}] · opts: {xName, yName, xRef, yRef, groups:{그룹:색변수}, xFmt, yFmt}
+  function scatter(root, pts, opts) {
+    opts = opts || {};
+    const W = opts.width || 1160, H = opts.height || 520;
+    const M = { t: 20, r: 30, b: 46, l: 56 };
+    root.innerHTML = "";
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": opts.aria || "산점" }, root);
+    const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
+    let [x0, x1] = extent(xs.concat(opts.xRef != null ? [opts.xRef] : []));
+    let [y0, y1] = extent(ys.concat(opts.yRef != null ? [opts.yRef] : []));
+    const xp = (x1 - x0) * 0.12, yp = (y1 - y0) * 0.14;
+    x0 -= xp; x1 += xp; y0 -= yp; y1 += yp;
+    const X = v => M.l + (v - x0) / (x1 - x0) * (W - M.l - M.r);
+    const Y = v => M.t + (1 - (v - y0) / (y1 - y0)) * (H - M.t - M.b);
+    for (const tv of niceTicks(y0, y1, 5)) {
+      el("line", { x1: M.l, x2: W - M.r, y1: Y(tv), y2: Y(tv), stroke: css("--grid"), "stroke-width": 1 }, svg);
+      el("text", { x: M.l - 8, y: Y(tv) + 4, "text-anchor": "end", "font-size": 11.5, fill: css("--ink-3"), "font-family": "var(--font-num)" }, svg)
+        .textContent = opts.yFmt ? opts.yFmt(tv) : tv;
+    }
+    for (const tv of niceTicks(x0, x1, 6)) {
+      el("text", { x: X(tv), y: H - M.b + 18, "text-anchor": "middle", "font-size": 11.5, fill: css("--ink-3"), "font-family": "var(--font-num)" }, svg)
+        .textContent = opts.xFmt ? opts.xFmt(tv) : tv;
+    }
+    // 기준선 (사분면)
+    if (opts.xRef != null) el("line", { x1: X(opts.xRef), x2: X(opts.xRef), y1: M.t, y2: H - M.b, stroke: css("--axis"), "stroke-width": 1.4, "stroke-dasharray": "5 4" }, svg);
+    if (opts.yRef != null) el("line", { x1: M.l, x2: W - M.r, y1: Y(opts.yRef), y2: Y(opts.yRef), stroke: css("--axis"), "stroke-width": 1.4, "stroke-dasharray": "5 4" }, svg);
+    // 축 이름
+    el("text", { x: W - M.r, y: H - 8, "text-anchor": "end", "font-size": 12, fill: css("--ink-3") }, svg).textContent = opts.xName || "";
+    el("text", { x: M.l, y: 12, "font-size": 12, fill: css("--ink-3") }, svg).textContent = opts.yName || "";
+    const groups = opts.groups || {};
+    pts.forEach(p => {
+      const col = css(groups[p.group] || "--s2");
+      const r = Math.max(6, Math.sqrt(p.size || 100) * (opts.sizeK || 0.35));
+      const c = el("circle", { cx: X(p.x), cy: Y(p.y), r, fill: col, "fill-opacity": .78,
+        stroke: css("--surface"), "stroke-width": 1.6 }, svg);
+      c.addEventListener("mousemove", ev => tipShow(
+        `<div class="t-title">${p.name}</div>${opts.xName || "x"} <b class="num">${opts.xFmt ? opts.xFmt(p.x) : p.x}</b><br>${opts.yName || "y"} <b class="num">${opts.yFmt ? opts.yFmt(p.y) : p.y}</b><br><span style="opacity:.7">${p.group || ""}</span>`,
+        ev.clientX, ev.clientY));
+      c.addEventListener("mouseleave", tipHide);
+      if (p.label) el("text", { x: X(p.x), y: Y(p.y) - r - 5, "text-anchor": "middle", "font-size": 11,
+        "font-weight": 700, fill: css("--ink-2") }, svg).textContent = p.name;
+    });
+    // 범례
+    let lx = M.l + 4;
+    Object.entries(groups).forEach(([g, cv]) => {
+      el("circle", { cx: lx, cy: H - M.b + 36, r: 5, fill: css(cv) }, svg);
+      const t = el("text", { x: lx + 10, y: H - M.b + 40, "font-size": 11.5, fill: css("--ink-2") }, svg);
+      t.textContent = g;
+      lx += 10 + g.length * 12 + 26;
+    });
+    return svg;
+  }
+
+  global.Charts = { line, smallMultiples, waterfall, tornado, heatmap, gauge, fan, hbars, phase, scatter, fmt, tipHide };
 })(typeof window !== "undefined" ? window : globalThis);

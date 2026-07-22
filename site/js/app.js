@@ -59,7 +59,7 @@
     C.hbars($("#b-ladder"), lad, { color: "--s2", emph: D.ladder.filter(x => (x.value || 0) >= 95).map(x => x.name),
       fmt: v => v + "%", labelW: 120, width: 1160, rowH: 40, aria: "경쟁률 구간별 초기분양률" });
     $("#b-ladder-cap").innerHTML = D.ladder.map(x => `${x.name} n=${x.n}`).join(" · ") +
-      " — 금 = 사실상 완판(95%+). 경쟁이 확인된 시장은 계약도 이뤄진다.";
+      " — 금 = 초기분양률 중위 95% 이상. 시도·분기 평균의 상관 관측이며 개별 단지 예측이 아니다.";
 
     // ② 히트맵 (기준선 80% 발산)
     C.heatmap($("#b-heat"), {
@@ -81,7 +81,7 @@
     ], { aria: "분기별 공고·무순위 건수", width: 560, height: 300, rightPad: 62 });
 
     // ④ 최신 분기 시도별
-    $("#b-latest-title").textContent = `시도별 초기분양률 — ${D.latest.q.replace("Q", " Q")}`;
+    $("#b-latest-title").textContent = `지금 분양이 가장 잘 소화되는 지역은 — ${D.latest.q.replace("Q", " Q")}`;
     const rows = D.latest.rows.map(r => ({ name: r.name, value: r.value,
       note: r.value == null ? "분양 실적 없음" : undefined }));
     C.hbars($("#b-latest"), rows, { color: "--s2", emph: ["전국"], fmt: v => v.toFixed(0) + "%",
@@ -100,6 +100,20 @@
     ].map(([v, k], i) => `<div class="kpi"><div class="v${i === 3 ? " gold" : ""}">${v}</div><div class="k">${k}</div></div>`).join("");
 
     const tagName = it => it.name + (it.tags.length ? " · " + it.tags.join("·") : "");
+    // ⓪ 밸류에이션 사분면 (정상 종목 — 특별배당·거래정지 제외)
+    const sector = tp => tp.includes("해외") ? "해외" : tp.includes("오피스") ? "오피스" : tp.includes("리테일") ? "리테일"
+      : tp.includes("물류") ? "물류" : tp.includes("주거") ? "주거" : tp.includes("호텔") ? "호텔" : "복합";
+    const normal = R.items.filter(it => it.dy != null && !it.tags.length);
+    C.scatter($("#r-quad"), normal.map(it => ({
+      name: it.name.replace(/리츠$/, ""), x: it.pb, y: +(it.dy - K.t10).toFixed(1),
+      size: it.mcap_eok, group: sector(it.type),
+      label: it.pb >= 1 || it.pb <= 0.45 || Math.abs(it.dy - K.t10) >= 4,
+    })), { xName: "P/장부NAV", yName: "스프레드 %p", xRef: 1.0, yRef: 0,
+      groups: { "오피스": "--s1", "리테일": "--s3", "물류": "--s2", "주거": "--s4", "복합": "--s5", "해외": "--ink-3" },
+      xFmt: v => v.toFixed(1), yFmt: v => (v >= 0 ? "+" : "") + v.toFixed(0), sizeK: 0.45,
+      aria: "리츠 밸류에이션 사분면" });
+    $("#r-quad-cap").textContent = `정상 종목 ${normal.length}종(특별배당 ${R.items.filter(i => i.tags.includes("특별배당")).length}종·거래정지 ${R.items.filter(i => i.tags.includes("거래정지")).length}종 제외). ` +
+      "좌상(할인+고스프레드)이 곧 저평가는 아니다 — 할인엔 이유가 있을 수 있다. 자산의 질·부채 구조와 함께 읽어야 한다.";
     // ① P/장부NAV
     C.hbars($("#r-pnav"), R.items.map(it => ({ name: tagName(it), value: it.pb })),
       { color: "--s2", emph: R.items.filter(it => it.pb >= 1).map(tagName),
@@ -127,19 +141,32 @@
   function initTheme() {
     const btn = document.querySelector(".theme-toggle");
     const sync = () => {
-      const light = document.documentElement.dataset.theme === "light";
+      const light = document.documentElement.dataset.theme !== "dark";
       btn.setAttribute("aria-pressed", String(light));
     };
     btn.addEventListener("click", () => {
       const r = document.documentElement;
-      r.dataset.theme = r.dataset.theme === "light" ? "" : "light";
-      if (!r.dataset.theme) delete r.dataset.theme;
+      if (r.dataset.theme === "dark") delete r.dataset.theme; else r.dataset.theme = "dark";
       sync(); renderAll();
     });
     sync();
   }
 
-  function renderAll() { counters(); renderBunyang(); renderReits(); }
+  /* ---------- 홈: 지금 시장 요약 ---------- */
+  function pulseNow() {
+    const el2 = $("#pulse-now");
+    if (!el2) return;
+    const D = B.bunyang, K = B.reits.kpi;
+    const natLatest = D.latest.rows.find(r => r.name === "전국");
+    el2.innerHTML = [
+      ["공급", "관측 구축 중", "정비 파이프라인 — 소스 지도 완성, 수집 착수", false],
+      ["분양", (natLatest && natLatest.value != null ? natLatest.value.toFixed(0) + "%" : "―"),
+       `전국 초기분양률 ${D.latest.q.replace("Q", " Q")} — 기준선 80% ${natLatest && natLatest.value >= 80 ? "상회" : "하회"}`, true],
+      ["자본", K.pb_med.toFixed(2), `리츠 P/장부NAV 중위 — 장부가 대비 ${Math.round((1 - K.pb_med) * 100)}% 할인 · 스프레드 +${K.spread.toFixed(1)}%p`, true],
+    ].map(([t, v, k, on]) => `<div class="kpi"><div class="k" style="margin:0 0 4px">${t} — 지금</div><div class="v${on ? " gold" : ""}">${v}</div><div class="k">${k}</div></div>`).join("");
+  }
+
+  function renderAll() { counters(); pulseNow(); renderBunyang(); renderReits(); }
 
   route();
   renderAll();

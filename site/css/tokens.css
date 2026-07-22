@@ -1,61 +1,14 @@
 /* 순환(循環) 디자인 토큰 — 수지(收支)의 자매 반전.
    수지 = 웜 제도지 + 주황 제도펜(직선·도곽) ⇄ 순환 = 한밤의 청람 관측지 + 금 컴퍼스(원호·궤도).
-   기본 테마가 다크(관측지) — 라이트는 "주간 제도실"로 반전. */
+   기본 테마 = 라이트(주간 제도실) · 다크(한밤의 관측지)는 토글. */
 
 :root {
-  /* 지면 — 한밤의 제도판 */
-  --ground: #0c1524;
-  --surface: #1320342;      /* fallback 아래 재정의 */
-  --surface: #132033;
-  --surface-2: #0f1a2b;
-  --ink: #e9eef6;
-  --ink-2: #a9b7cb;
-  --ink-3: #6e8098;
-  --hairline: #243450;
-  --hairline-2: #324663;
-  --grid: #182741;
-  --axis: #324663;
-
-  /* 기구 — 금 컴퍼스(주 강조) · 주황 인장(반전 포인트) */
-  --blueprint: #d9ae52;          /* 금 — 순환의 제도선 */
-  --blueprint-2: #e7c47a;
-  --blueprint-wash: #2a2312;
-  --seal: #e05910;               /* 수지의 주황이 여기선 인장으로 반전 */
-  --seal-wash: #2c160c;
-
-  /* 계열 — 다크 지면 검증 팔레트 */
-  --s1: #d9ae52;                 /* 금 (주 계열) */
-  --s2: #6b9bd8;                 /* 청람 azure */
-  --s3: #e0774a;                 /* 버밀리언 */
-  --s4: #8fb8a8;                 /* 세이지 청록 */
-  --s5: #b48ead;                 /* 모브 */
-  --pos: #5fb388;
-  --neg: #d96a5f;
-
-  /* 타이포 */
-  --font-body: "Apple SD Gothic Neo", "Pretendard", -apple-system, sans-serif;
-  --font-display: "Songti SC", "Songti TC", "AppleMyungjo", "Noto Serif KR", serif;
-  --font-num: "Avenir Next", "Helvetica Neue", -apple-system, sans-serif;
-
-  --t-caption: 12.5px;
-
-  /* 마감 — 애플 곡률 계보 유지 */
-  --radius: 12px;
-  --radius-sm: 8px;
-  --shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 12px 40px rgba(0, 0, 0, .35);
-
-  --col: 1200px;
-  --sp-1: 4px; --sp-2: 8px; --sp-3: 16px; --sp-4: 24px; --sp-5: 40px; --sp-6: 64px;
-}
-
-/* 주간 제도실(라이트) — 청람 잉크 on 한지 */
-:root[data-theme="light"] {
   --ground: #f3f5f9;
   --surface: #fdfdfc;
   --surface-2: #f6f7fa;
   --ink: #1a2a42;
   --ink-2: #45586f;
-  --ink-3: #7b8ba0;
+  --ink-3: #68798f;
   --hairline: #dfe4ec;
   --hairline-2: #c9d2df;
   --grid: #e8ecf2;
@@ -72,5 +25,46 @@
   --s5: #8b5e83;
   --pos: #2e7d54;
   --neg: #b5453c;
+  --seq-100: #f6ecd3; --seq-200: #ecd9a8; --seq-300: #ddc077;
+  --seq-400: #c9a34a; --seq-500: #a97e1f; --seq-600: #8a6717; --seq-700: #6b4d0e;
   --shadow: 0 1px 2px rgba(26, 42, 66, .08), 0 12px 36px rgba(26, 42, 66, .10);
+
+  /* 공통 */
+  --font-body: "Apple SD Gothic Neo", "Pretendard", -apple-system, sans-serif;
+  --font-display: "Songti SC", "Songti TC", "AppleMyungjo", "Noto Serif KR", serif;
+  --font-num: "Avenir Next", "Helvetica Neue", -apple-system, sans-serif;
+  --t-caption: 12.5px;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --col: 1200px;
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 16px; --sp-4: 24px; --sp-5: 40px; --sp-6: 64px;
+}
+
+/* 야간 관측지(다크) — 토글 전용 */
+:root[data-theme="dark"] {
+  --ground: #0c1524;
+  --surface: #132033;
+  --surface-2: #0f1a2b;
+  --ink: #e9eef6;
+  --ink-2: #a9b7cb;
+  --ink-3: #6e8098;
+  --hairline: #243450;
+  --hairline-2: #324663;
+  --grid: #182741;
+  --axis: #324663;
+  --blueprint: #d9ae52;          /* 금 — 순환의 제도선 */
+  --blueprint-2: #e7c47a;
+  --blueprint-wash: #2a2312;
+  --seal: #e05910;               /* 수지의 주황이 여기선 인장으로 반전 */
+  --seal-wash: #2c160c;
+  --s1: #d9ae52;                 /* 금 (주 계열) */
+  --s2: #6b9bd8;                 /* 청람 azure */
+  --s3: #e0774a;                 /* 버밀리언 */
+  --s4: #8fb8a8;                 /* 세이지 청록 */
+  --s5: #b48ead;                 /* 모브 */
+  --pos: #5fb388;
+  --neg: #d96a5f;
+  --seq-100: #3a3010; --seq-200: #57431a; --seq-300: #7a5c22;
+  --seq-400: #a67b2b; --seq-500: #cf9c3e; --seq-600: #e7bb63; --seq-700: #ffd98a;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 12px 40px rgba(0, 0, 0, .35);
 }

@@ -9,62 +9,15 @@
 <style>
 /* 순환(循環) 디자인 토큰 — 수지(收支)의 자매 반전.
    수지 = 웜 제도지 + 주황 제도펜(직선·도곽) ⇄ 순환 = 한밤의 청람 관측지 + 금 컴퍼스(원호·궤도).
-   기본 테마가 다크(관측지) — 라이트는 "주간 제도실"로 반전. */
+   기본 테마 = 라이트(주간 제도실) · 다크(한밤의 관측지)는 토글. */
 
 :root {
-  /* 지면 — 한밤의 제도판 */
-  --ground: #0c1524;
-  --surface: #1320342;      /* fallback 아래 재정의 */
-  --surface: #132033;
-  --surface-2: #0f1a2b;
-  --ink: #e9eef6;
-  --ink-2: #a9b7cb;
-  --ink-3: #6e8098;
-  --hairline: #243450;
-  --hairline-2: #324663;
-  --grid: #182741;
-  --axis: #324663;
-
-  /* 기구 — 금 컴퍼스(주 강조) · 주황 인장(반전 포인트) */
-  --blueprint: #d9ae52;          /* 금 — 순환의 제도선 */
-  --blueprint-2: #e7c47a;
-  --blueprint-wash: #2a2312;
-  --seal: #e05910;               /* 수지의 주황이 여기선 인장으로 반전 */
-  --seal-wash: #2c160c;
-
-  /* 계열 — 다크 지면 검증 팔레트 */
-  --s1: #d9ae52;                 /* 금 (주 계열) */
-  --s2: #6b9bd8;                 /* 청람 azure */
-  --s3: #e0774a;                 /* 버밀리언 */
-  --s4: #8fb8a8;                 /* 세이지 청록 */
-  --s5: #b48ead;                 /* 모브 */
-  --pos: #5fb388;
-  --neg: #d96a5f;
-
-  /* 타이포 */
-  --font-body: "Apple SD Gothic Neo", "Pretendard", -apple-system, sans-serif;
-  --font-display: "Songti SC", "Songti TC", "AppleMyungjo", "Noto Serif KR", serif;
-  --font-num: "Avenir Next", "Helvetica Neue", -apple-system, sans-serif;
-
-  --t-caption: 12.5px;
-
-  /* 마감 — 애플 곡률 계보 유지 */
-  --radius: 12px;
-  --radius-sm: 8px;
-  --shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 12px 40px rgba(0, 0, 0, .35);
-
-  --col: 1200px;
-  --sp-1: 4px; --sp-2: 8px; --sp-3: 16px; --sp-4: 24px; --sp-5: 40px; --sp-6: 64px;
-}
-
-/* 주간 제도실(라이트) — 청람 잉크 on 한지 */
-:root[data-theme="light"] {
   --ground: #f3f5f9;
   --surface: #fdfdfc;
   --surface-2: #f6f7fa;
   --ink: #1a2a42;
   --ink-2: #45586f;
-  --ink-3: #7b8ba0;
+  --ink-3: #68798f;
   --hairline: #dfe4ec;
   --hairline-2: #c9d2df;
   --grid: #e8ecf2;
@@ -81,7 +34,48 @@
   --s5: #8b5e83;
   --pos: #2e7d54;
   --neg: #b5453c;
+  --seq-100: #f6ecd3; --seq-200: #ecd9a8; --seq-300: #ddc077;
+  --seq-400: #c9a34a; --seq-500: #a97e1f; --seq-600: #8a6717; --seq-700: #6b4d0e;
   --shadow: 0 1px 2px rgba(26, 42, 66, .08), 0 12px 36px rgba(26, 42, 66, .10);
+
+  /* 공통 */
+  --font-body: "Apple SD Gothic Neo", "Pretendard", -apple-system, sans-serif;
+  --font-display: "Songti SC", "Songti TC", "AppleMyungjo", "Noto Serif KR", serif;
+  --font-num: "Avenir Next", "Helvetica Neue", -apple-system, sans-serif;
+  --t-caption: 12.5px;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --col: 1200px;
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 16px; --sp-4: 24px; --sp-5: 40px; --sp-6: 64px;
+}
+
+/* 야간 관측지(다크) — 토글 전용 */
+:root[data-theme="dark"] {
+  --ground: #0c1524;
+  --surface: #132033;
+  --surface-2: #0f1a2b;
+  --ink: #e9eef6;
+  --ink-2: #a9b7cb;
+  --ink-3: #6e8098;
+  --hairline: #243450;
+  --hairline-2: #324663;
+  --grid: #182741;
+  --axis: #324663;
+  --blueprint: #d9ae52;          /* 금 — 순환의 제도선 */
+  --blueprint-2: #e7c47a;
+  --blueprint-wash: #2a2312;
+  --seal: #e05910;               /* 수지의 주황이 여기선 인장으로 반전 */
+  --seal-wash: #2c160c;
+  --s1: #d9ae52;                 /* 금 (주 계열) */
+  --s2: #6b9bd8;                 /* 청람 azure */
+  --s3: #e0774a;                 /* 버밀리언 */
+  --s4: #8fb8a8;                 /* 세이지 청록 */
+  --s5: #b48ead;                 /* 모브 */
+  --pos: #5fb388;
+  --neg: #d96a5f;
+  --seq-100: #3a3010; --seq-200: #57431a; --seq-300: #7a5c22;
+  --seq-400: #a67b2b; --seq-500: #cf9c3e; --seq-600: #e7bb63; --seq-700: #ffd98a;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 12px 40px rgba(0, 0, 0, .35);
 }
 
 /* 순환 — 베이스: 관측지 지면, 타이포 위계, 리듬 */
@@ -166,7 +160,7 @@ nav.appbar .tabs a {
   padding: 7px 12px; font-size: 13.5px; font-weight: 700; color: var(--ink-2);
   border-radius: var(--radius); white-space: nowrap;
 }
-nav.appbar .tabs a.active { background: var(--blueprint); color: var(--ground); }
+nav.appbar .tabs a.active { background: var(--blueprint-2); color: var(--ground); }
 nav.appbar .tabs a:hover:not(.active) { color: var(--blueprint-2); }
 .theme-toggle {
   border: 1px solid var(--hairline-2); background: none; color: var(--ink-2);
@@ -286,6 +280,34 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
   .tobira .meta { margin-left: 0; text-align: left; }
 }
 
+/* 차트 툴(월/분기/연·리셋)·툴팁 — 수지 이식, 순환 토큰 적용 */
+.chart-tools { display: flex; align-items: center; gap: var(--sp-2); margin-bottom: 6px; min-height: 26px; }
+.chart-tools .unit-seg { display: inline-flex; border: 1px solid var(--hairline-2); border-radius: var(--radius-sm); overflow: hidden; }
+.chart-tools .unit-seg button {
+  font: inherit; font-size: 11.5px; font-weight: 700; color: var(--ink-2);
+  background: var(--surface); border: 0; padding: 3px 11px; cursor: pointer;
+}
+.chart-tools .unit-seg button + button { border-left: 1px solid var(--hairline); }
+.chart-tools .unit-seg button[aria-pressed="true"] { background: var(--blueprint-2); color: var(--ground); }
+.chart-tools .zoom-hint { font-size: 11px; color: var(--ink-3); margin-left: auto; }
+.chart-tools .zoom-reset {
+  font: inherit; font-size: 11.5px; font-weight: 700; cursor: pointer;
+  border: 1px solid var(--hairline-2); background: var(--surface); color: var(--blueprint-2);
+  padding: 3px 11px; border-radius: var(--radius-sm);
+}
+.chart-tools .zoom-reset:hover { background: var(--blueprint-wash); }
+@media (max-width: 640px) { .chart-tools .zoom-hint { display: none; } }
+#tip {
+  position: fixed; z-index: 60; pointer-events: none; opacity: 0;
+  background: var(--ink); color: var(--ground);
+  font-size: var(--t-caption); line-height: 1.5;
+  padding: 7px 10px; border-radius: var(--radius-sm);
+  transform: translate(-50%, calc(-100% - 10px));
+  max-width: 260px; transition: opacity .12s;
+}
+#tip.on { opacity: 1; }
+#tip .t-title { font-weight: 700; }
+
 </style>
 
 
@@ -343,7 +365,8 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
     </div>
   </div>
   <div class="wrap">
-    <div class="gauge-row" id="counters">
+    <div class="kpi-row" id="pulse-now" style="margin-top:var(--sp-5)"></div>
+    <div class="gauge-row" id="counters" style="margin-top:var(--sp-3)">
       <div class="gauge"><div class="v">101,904<small>행</small></div><div class="k">청약 데이터 수집</div></div>
       <div class="gauge"><div class="v">2,828<small>건</small></div><div class="k">분양 공고 (2020~)</div></div>
       <div class="gauge"><div class="v">846<small>셀</small></div><div class="k">초기분양률 라벨 (12년)</div></div>
@@ -354,7 +377,7 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
       <a class="gate" href="#/ch1"><span class="st">관측 준비</span><div class="no">Ⅰ</div>
         <h4>공급 — 정비의 파이프라인</h4><p>재개발·재건축 구역이 새 아파트가 되기까지. 전국 소스 지도 완성, 수집 착수 단계.</p></a>
       <a class="gate" href="#/ch2"><span class="st on">가동 중</span><div class="no">Ⅱ</div>
-        <h4>분양 — 청약의 성적표</h4><p>공고 2,828건 · 경쟁률 5만 행 · 초기분양률 라벨 12년. 경쟁률 5:1이면 완판이 보인다.</p></a>
+        <h4>분양 — 청약의 성적표</h4><p>공고 2,828건 · 경쟁률 5만 행 · 라벨 12년. 경쟁률 5:1과 완판의 상관을 실측했다.</p></a>
       <a class="gate" href="#/ch3"><span class="st on">가동 중</span><div class="no">Ⅲ</div>
         <h4>자본 — 리츠의 가격표</h4><p>상장 리츠 24종의 할인율과 배당 — 완성된 부동산에 시장이 매기는 값.</p></a>
     </div>
@@ -398,10 +421,10 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
       <div class="meta">원천 <b>청약홈 · HUG(KOSIS)</b><br>기간 <b>2020-02 ~ 현재 · 라벨 2014~</b></div></div>
     <p class="lede">분양 시장의 인과 사슬은 짧고 명확하다 — <b>청약 접수(공고 시점)가 초기분양률(3~6개월 뒤)을 예고한다</b>.
     공고 2,828건과 경쟁률 5만여 행을 HUG 초기분양률 12년 치에 이어 붙여 이 사슬을 실측했다.
-    결과: 경쟁률 5:1을 넘긴 시장은 사실상 완판, 미달 시장은 열 집 중 세 집이 빈다.</p>
+    경쟁률 5:1 이상을 기록한 지역·분기는 다음 분기 초기분양률이 중위 99%에 달했고, 미달 지역·분기는 중위 73%에 그쳤다 — 상관 관측이며 개별 단지의 완판 예측이 아니다.</p>
     <div class="kpi-row" id="b-kpis"></div>
     <figure class="viz">
-      <div class="viz-head"><div class="viz-title">경쟁률 사다리 — 청약 성적이 예고하는 초기분양률</div><div class="viz-unit">공고분기 경쟁률 → 다음 분기 시도 초기분양률 중위</div></div>
+      <div class="viz-head"><div class="viz-title">청약 경쟁률은 무엇을 말해주는가 — 구간별 다음 분기 초기분양률</div><div class="viz-unit">공고분기 경쟁률 → 다음 분기 시도 초기분양률 중위</div></div>
       <div id="b-ladder"></div>
       <figcaption id="b-ladder-cap"></figcaption>
     </figure>
@@ -440,13 +463,18 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
     지금 한국 리츠는 장부가의 3분의 2 값에 거래되며, 정상 종목의 배당은 국고채 10년을 웃돈다.</p>
     <div class="kpi-row" id="r-kpis"></div>
     <figure class="viz">
-      <div class="viz-head"><div class="viz-title">할인의 사다리 — P/장부NAV</div><div class="viz-unit">시가총액 ÷ 자본총계(장부가) · 1.0 = 장부가 그대로</div></div>
+      <div class="viz-head"><div class="viz-title">싸고, 배당은 높은가 — 밸류에이션 사분면</div><div class="viz-unit">가로 P/장부NAV (1.0 = 장부가) · 세로 배당 스프레드(TTM − 국고10y) · 원 크기 = 시총</div></div>
+      <div id="r-quad"></div>
+      <figcaption id="r-quad-cap"></figcaption>
+    </figure>
+    <figure class="viz">
+      <div class="viz-head"><div class="viz-title">장부가보다 크게 할인된 리츠는 어디인가 — P/장부NAV</div><div class="viz-unit">시가총액 ÷ 자본총계(장부가) · 1.0 = 장부가 그대로</div></div>
       <div id="r-pnav"></div>
       <figcaption>장부가 기준 근사치 — 감정평가 실질 NAV가 아니다(오피스·물류처럼 재평가 괴리가 큰 유형은 특히).
       1.0 미만 = 순자산보다 싸게 거래. 해외 자산 리츠의 심층 할인은 현지 부실·환위험 반영.</figcaption>
     </figure>
     <figure class="viz">
-      <div class="viz-head"><div class="viz-title">배당의 사다리 — TTM 배당수익률</div><div class="viz-unit">최근 12개월 결산기 배당 합 ÷ 현 주가</div></div>
+      <div class="viz-head"><div class="viz-title">지난 1년, 실제로 얼마를 배당했는가 — TTM 배당수익률</div><div class="viz-unit">최근 12개월 결산기 배당 합 ÷ 현 주가</div></div>
       <div id="r-dy"></div>
       <figcaption id="r-dy-cap"></figcaption>
     </figure>
@@ -948,7 +976,7 @@ window.__DATA_SUNHWAN = {"built_at":"2026-07-22","bunyang":{"heat":{"xs":["2023Q
         if (!Number.isFinite(v)) { // 결측 — 무상관(0)으로 위장하지 않고 빈 셀로 (codex 지적)
           const miss = el("rect", { x: M.l + c * cw + 1, y: M.t + r * cellH + 1,
             width: cw - 2, height: cellH - 2, fill: css("--surface-2"), rx: 5,
-            stroke: css("--hairline"), "stroke-dasharray": "3 3" }, svg);
+            stroke: css("--hairline-2"), "stroke-dasharray": "3 3" }, svg);
           miss.addEventListener("mousemove", ev => tipShow(
             `<div class="t-title">${opts.xName || "X"} ${xv} · ${opts.yName || "Y"} ${yv}</div>자료 없음`, ev.clientX, ev.clientY));
           miss.addEventListener("mouseleave", tipHide);
@@ -1265,7 +1293,62 @@ window.__DATA_SUNHWAN = {"built_at":"2026-07-22","bunyang":{"heat":{"xs":["2023Q
     return svg;
   }
 
-  global.Charts = { line, smallMultiples, waterfall, tornado, heatmap, gauge, fan, hbars, phase, fmt, tipHide };
+
+  /* ---------- 산점 사분면 (순환 확장) ---------- */
+  // pts: [{name, x, y, size, group, label?}] · opts: {xName, yName, xRef, yRef, groups:{그룹:색변수}, xFmt, yFmt}
+  function scatter(root, pts, opts) {
+    opts = opts || {};
+    const W = opts.width || 1160, H = opts.height || 520;
+    const M = { t: 20, r: 30, b: 46, l: 56 };
+    root.innerHTML = "";
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": opts.aria || "산점" }, root);
+    const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
+    let [x0, x1] = extent(xs.concat(opts.xRef != null ? [opts.xRef] : []));
+    let [y0, y1] = extent(ys.concat(opts.yRef != null ? [opts.yRef] : []));
+    const xp = (x1 - x0) * 0.12, yp = (y1 - y0) * 0.14;
+    x0 -= xp; x1 += xp; y0 -= yp; y1 += yp;
+    const X = v => M.l + (v - x0) / (x1 - x0) * (W - M.l - M.r);
+    const Y = v => M.t + (1 - (v - y0) / (y1 - y0)) * (H - M.t - M.b);
+    for (const tv of niceTicks(y0, y1, 5)) {
+      el("line", { x1: M.l, x2: W - M.r, y1: Y(tv), y2: Y(tv), stroke: css("--grid"), "stroke-width": 1 }, svg);
+      el("text", { x: M.l - 8, y: Y(tv) + 4, "text-anchor": "end", "font-size": 11.5, fill: css("--ink-3"), "font-family": "var(--font-num)" }, svg)
+        .textContent = opts.yFmt ? opts.yFmt(tv) : tv;
+    }
+    for (const tv of niceTicks(x0, x1, 6)) {
+      el("text", { x: X(tv), y: H - M.b + 18, "text-anchor": "middle", "font-size": 11.5, fill: css("--ink-3"), "font-family": "var(--font-num)" }, svg)
+        .textContent = opts.xFmt ? opts.xFmt(tv) : tv;
+    }
+    // 기준선 (사분면)
+    if (opts.xRef != null) el("line", { x1: X(opts.xRef), x2: X(opts.xRef), y1: M.t, y2: H - M.b, stroke: css("--axis"), "stroke-width": 1.4, "stroke-dasharray": "5 4" }, svg);
+    if (opts.yRef != null) el("line", { x1: M.l, x2: W - M.r, y1: Y(opts.yRef), y2: Y(opts.yRef), stroke: css("--axis"), "stroke-width": 1.4, "stroke-dasharray": "5 4" }, svg);
+    // 축 이름
+    el("text", { x: W - M.r, y: H - 8, "text-anchor": "end", "font-size": 12, fill: css("--ink-3") }, svg).textContent = opts.xName || "";
+    el("text", { x: M.l, y: 12, "font-size": 12, fill: css("--ink-3") }, svg).textContent = opts.yName || "";
+    const groups = opts.groups || {};
+    pts.forEach(p => {
+      const col = css(groups[p.group] || "--s2");
+      const r = Math.max(6, Math.sqrt(p.size || 100) * (opts.sizeK || 0.35));
+      const c = el("circle", { cx: X(p.x), cy: Y(p.y), r, fill: col, "fill-opacity": .78,
+        stroke: css("--surface"), "stroke-width": 1.6 }, svg);
+      c.addEventListener("mousemove", ev => tipShow(
+        `<div class="t-title">${p.name}</div>${opts.xName || "x"} <b class="num">${opts.xFmt ? opts.xFmt(p.x) : p.x}</b><br>${opts.yName || "y"} <b class="num">${opts.yFmt ? opts.yFmt(p.y) : p.y}</b><br><span style="opacity:.7">${p.group || ""}</span>`,
+        ev.clientX, ev.clientY));
+      c.addEventListener("mouseleave", tipHide);
+      if (p.label) el("text", { x: X(p.x), y: Y(p.y) - r - 5, "text-anchor": "middle", "font-size": 11,
+        "font-weight": 700, fill: css("--ink-2") }, svg).textContent = p.name;
+    });
+    // 범례
+    let lx = M.l + 4;
+    Object.entries(groups).forEach(([g, cv]) => {
+      el("circle", { cx: lx, cy: H - M.b + 36, r: 5, fill: css(cv) }, svg);
+      const t = el("text", { x: lx + 10, y: H - M.b + 40, "font-size": 11.5, fill: css("--ink-2") }, svg);
+      t.textContent = g;
+      lx += 10 + g.length * 12 + 26;
+    });
+    return svg;
+  }
+
+  global.Charts = { line, smallMultiples, waterfall, tornado, heatmap, gauge, fan, hbars, phase, scatter, fmt, tipHide };
 })(typeof window !== "undefined" ? window : globalThis);
 
 /* 순환 — 데이터 바인딩·해시 라우터·렌더 */
@@ -1329,7 +1412,7 @@ window.__DATA_SUNHWAN = {"built_at":"2026-07-22","bunyang":{"heat":{"xs":["2023Q
     C.hbars($("#b-ladder"), lad, { color: "--s2", emph: D.ladder.filter(x => (x.value || 0) >= 95).map(x => x.name),
       fmt: v => v + "%", labelW: 120, width: 1160, rowH: 40, aria: "경쟁률 구간별 초기분양률" });
     $("#b-ladder-cap").innerHTML = D.ladder.map(x => `${x.name} n=${x.n}`).join(" · ") +
-      " — 금 = 사실상 완판(95%+). 경쟁이 확인된 시장은 계약도 이뤄진다.";
+      " — 금 = 초기분양률 중위 95% 이상. 시도·분기 평균의 상관 관측이며 개별 단지 예측이 아니다.";
 
     // ② 히트맵 (기준선 80% 발산)
     C.heatmap($("#b-heat"), {
@@ -1351,7 +1434,7 @@ window.__DATA_SUNHWAN = {"built_at":"2026-07-22","bunyang":{"heat":{"xs":["2023Q
     ], { aria: "분기별 공고·무순위 건수", width: 560, height: 300, rightPad: 62 });
 
     // ④ 최신 분기 시도별
-    $("#b-latest-title").textContent = `시도별 초기분양률 — ${D.latest.q.replace("Q", " Q")}`;
+    $("#b-latest-title").textContent = `지금 분양이 가장 잘 소화되는 지역은 — ${D.latest.q.replace("Q", " Q")}`;
     const rows = D.latest.rows.map(r => ({ name: r.name, value: r.value,
       note: r.value == null ? "분양 실적 없음" : undefined }));
     C.hbars($("#b-latest"), rows, { color: "--s2", emph: ["전국"], fmt: v => v.toFixed(0) + "%",
@@ -1370,6 +1453,20 @@ window.__DATA_SUNHWAN = {"built_at":"2026-07-22","bunyang":{"heat":{"xs":["2023Q
     ].map(([v, k], i) => `<div class="kpi"><div class="v${i === 3 ? " gold" : ""}">${v}</div><div class="k">${k}</div></div>`).join("");
 
     const tagName = it => it.name + (it.tags.length ? " · " + it.tags.join("·") : "");
+    // ⓪ 밸류에이션 사분면 (정상 종목 — 특별배당·거래정지 제외)
+    const sector = tp => tp.includes("해외") ? "해외" : tp.includes("오피스") ? "오피스" : tp.includes("리테일") ? "리테일"
+      : tp.includes("물류") ? "물류" : tp.includes("주거") ? "주거" : tp.includes("호텔") ? "호텔" : "복합";
+    const normal = R.items.filter(it => it.dy != null && !it.tags.length);
+    C.scatter($("#r-quad"), normal.map(it => ({
+      name: it.name.replace(/리츠$/, ""), x: it.pb, y: +(it.dy - K.t10).toFixed(1),
+      size: it.mcap_eok, group: sector(it.type),
+      label: it.pb >= 1 || it.pb <= 0.45 || Math.abs(it.dy - K.t10) >= 4,
+    })), { xName: "P/장부NAV", yName: "스프레드 %p", xRef: 1.0, yRef: 0,
+      groups: { "오피스": "--s1", "리테일": "--s3", "물류": "--s2", "주거": "--s4", "복합": "--s5", "해외": "--ink-3" },
+      xFmt: v => v.toFixed(1), yFmt: v => (v >= 0 ? "+" : "") + v.toFixed(0), sizeK: 0.45,
+      aria: "리츠 밸류에이션 사분면" });
+    $("#r-quad-cap").textContent = `정상 종목 ${normal.length}종(특별배당 ${R.items.filter(i => i.tags.includes("특별배당")).length}종·거래정지 ${R.items.filter(i => i.tags.includes("거래정지")).length}종 제외). ` +
+      "좌상(할인+고스프레드)이 곧 저평가는 아니다 — 할인엔 이유가 있을 수 있다. 자산의 질·부채 구조와 함께 읽어야 한다.";
     // ① P/장부NAV
     C.hbars($("#r-pnav"), R.items.map(it => ({ name: tagName(it), value: it.pb })),
       { color: "--s2", emph: R.items.filter(it => it.pb >= 1).map(tagName),
@@ -1397,19 +1494,32 @@ window.__DATA_SUNHWAN = {"built_at":"2026-07-22","bunyang":{"heat":{"xs":["2023Q
   function initTheme() {
     const btn = document.querySelector(".theme-toggle");
     const sync = () => {
-      const light = document.documentElement.dataset.theme === "light";
+      const light = document.documentElement.dataset.theme !== "dark";
       btn.setAttribute("aria-pressed", String(light));
     };
     btn.addEventListener("click", () => {
       const r = document.documentElement;
-      r.dataset.theme = r.dataset.theme === "light" ? "" : "light";
-      if (!r.dataset.theme) delete r.dataset.theme;
+      if (r.dataset.theme === "dark") delete r.dataset.theme; else r.dataset.theme = "dark";
       sync(); renderAll();
     });
     sync();
   }
 
-  function renderAll() { counters(); renderBunyang(); renderReits(); }
+  /* ---------- 홈: 지금 시장 요약 ---------- */
+  function pulseNow() {
+    const el2 = $("#pulse-now");
+    if (!el2) return;
+    const D = B.bunyang, K = B.reits.kpi;
+    const natLatest = D.latest.rows.find(r => r.name === "전국");
+    el2.innerHTML = [
+      ["공급", "관측 구축 중", "정비 파이프라인 — 소스 지도 완성, 수집 착수", false],
+      ["분양", (natLatest && natLatest.value != null ? natLatest.value.toFixed(0) + "%" : "―"),
+       `전국 초기분양률 ${D.latest.q.replace("Q", " Q")} — 기준선 80% ${natLatest && natLatest.value >= 80 ? "상회" : "하회"}`, true],
+      ["자본", K.pb_med.toFixed(2), `리츠 P/장부NAV 중위 — 장부가 대비 ${Math.round((1 - K.pb_med) * 100)}% 할인 · 스프레드 +${K.spread.toFixed(1)}%p`, true],
+    ].map(([t, v, k, on]) => `<div class="kpi"><div class="k" style="margin:0 0 4px">${t} — 지금</div><div class="v${on ? " gold" : ""}">${v}</div><div class="k">${k}</div></div>`).join("");
+  }
+
+  function renderAll() { counters(); pulseNow(); renderBunyang(); renderReits(); }
 
   route();
   renderAll();

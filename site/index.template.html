@@ -61,7 +61,8 @@
     </div>
   </div>
   <div class="wrap">
-    <div class="gauge-row" id="counters">
+    <div class="kpi-row" id="pulse-now" style="margin-top:var(--sp-5)"></div>
+    <div class="gauge-row" id="counters" style="margin-top:var(--sp-3)">
       <div class="gauge"><div class="v">101,904<small>행</small></div><div class="k">청약 데이터 수집</div></div>
       <div class="gauge"><div class="v">2,828<small>건</small></div><div class="k">분양 공고 (2020~)</div></div>
       <div class="gauge"><div class="v">846<small>셀</small></div><div class="k">초기분양률 라벨 (12년)</div></div>
@@ -72,7 +73,7 @@
       <a class="gate" href="#/ch1"><span class="st">관측 준비</span><div class="no">Ⅰ</div>
         <h4>공급 — 정비의 파이프라인</h4><p>재개발·재건축 구역이 새 아파트가 되기까지. 전국 소스 지도 완성, 수집 착수 단계.</p></a>
       <a class="gate" href="#/ch2"><span class="st on">가동 중</span><div class="no">Ⅱ</div>
-        <h4>분양 — 청약의 성적표</h4><p>공고 2,828건 · 경쟁률 5만 행 · 초기분양률 라벨 12년. 경쟁률 5:1이면 완판이 보인다.</p></a>
+        <h4>분양 — 청약의 성적표</h4><p>공고 2,828건 · 경쟁률 5만 행 · 라벨 12년. 경쟁률 5:1과 완판의 상관을 실측했다.</p></a>
       <a class="gate" href="#/ch3"><span class="st on">가동 중</span><div class="no">Ⅲ</div>
         <h4>자본 — 리츠의 가격표</h4><p>상장 리츠 24종의 할인율과 배당 — 완성된 부동산에 시장이 매기는 값.</p></a>
     </div>
@@ -116,10 +117,10 @@
       <div class="meta">원천 <b>청약홈 · HUG(KOSIS)</b><br>기간 <b>2020-02 ~ 현재 · 라벨 2014~</b></div></div>
     <p class="lede">분양 시장의 인과 사슬은 짧고 명확하다 — <b>청약 접수(공고 시점)가 초기분양률(3~6개월 뒤)을 예고한다</b>.
     공고 2,828건과 경쟁률 5만여 행을 HUG 초기분양률 12년 치에 이어 붙여 이 사슬을 실측했다.
-    결과: 경쟁률 5:1을 넘긴 시장은 사실상 완판, 미달 시장은 열 집 중 세 집이 빈다.</p>
+    경쟁률 5:1 이상을 기록한 지역·분기는 다음 분기 초기분양률이 중위 99%에 달했고, 미달 지역·분기는 중위 73%에 그쳤다 — 상관 관측이며 개별 단지의 완판 예측이 아니다.</p>
     <div class="kpi-row" id="b-kpis"></div>
     <figure class="viz">
-      <div class="viz-head"><div class="viz-title">경쟁률 사다리 — 청약 성적이 예고하는 초기분양률</div><div class="viz-unit">공고분기 경쟁률 → 다음 분기 시도 초기분양률 중위</div></div>
+      <div class="viz-head"><div class="viz-title">청약 경쟁률은 무엇을 말해주는가 — 구간별 다음 분기 초기분양률</div><div class="viz-unit">공고분기 경쟁률 → 다음 분기 시도 초기분양률 중위</div></div>
       <div id="b-ladder"></div>
       <figcaption id="b-ladder-cap"></figcaption>
     </figure>
@@ -158,13 +159,18 @@
     지금 한국 리츠는 장부가의 3분의 2 값에 거래되며, 정상 종목의 배당은 국고채 10년을 웃돈다.</p>
     <div class="kpi-row" id="r-kpis"></div>
     <figure class="viz">
-      <div class="viz-head"><div class="viz-title">할인의 사다리 — P/장부NAV</div><div class="viz-unit">시가총액 ÷ 자본총계(장부가) · 1.0 = 장부가 그대로</div></div>
+      <div class="viz-head"><div class="viz-title">싸고, 배당은 높은가 — 밸류에이션 사분면</div><div class="viz-unit">가로 P/장부NAV (1.0 = 장부가) · 세로 배당 스프레드(TTM − 국고10y) · 원 크기 = 시총</div></div>
+      <div id="r-quad"></div>
+      <figcaption id="r-quad-cap"></figcaption>
+    </figure>
+    <figure class="viz">
+      <div class="viz-head"><div class="viz-title">장부가보다 크게 할인된 리츠는 어디인가 — P/장부NAV</div><div class="viz-unit">시가총액 ÷ 자본총계(장부가) · 1.0 = 장부가 그대로</div></div>
       <div id="r-pnav"></div>
       <figcaption>장부가 기준 근사치 — 감정평가 실질 NAV가 아니다(오피스·물류처럼 재평가 괴리가 큰 유형은 특히).
       1.0 미만 = 순자산보다 싸게 거래. 해외 자산 리츠의 심층 할인은 현지 부실·환위험 반영.</figcaption>
     </figure>
     <figure class="viz">
-      <div class="viz-head"><div class="viz-title">배당의 사다리 — TTM 배당수익률</div><div class="viz-unit">최근 12개월 결산기 배당 합 ÷ 현 주가</div></div>
+      <div class="viz-head"><div class="viz-title">지난 1년, 실제로 얼마를 배당했는가 — TTM 배당수익률</div><div class="viz-unit">최근 12개월 결산기 배당 합 ÷ 현 주가</div></div>
       <div id="r-dy"></div>
       <figcaption id="r-dy-cap"></figcaption>
     </figure>
