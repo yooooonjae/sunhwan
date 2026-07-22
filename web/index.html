@@ -532,7 +532,7 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
   <div class="wrap">
     <div class="tobira"><div class="no">Ⅳ</div><h2>자본 — 리츠의 가격표</h2>
       <div class="meta">원천 <b>DART · 금융위 시세 · ECOS</b><br>대상 <b>상장 리츠 전 종목</b></div></div>
-    <p class="lede">완성된 부동산이 자본시장에서 받는 성적표가 상장 리츠다. 두 숫자로 요약된다 —
+    <p class="lede">상장 리츠의 가격은 보유자산 가치와 함께 부채 구조·운용성과·배당 지속성에 대한 자본시장의 평가를 반영한다. 두 숫자로 요약된다 —
     <b>P/BV(시가총액 ÷ 장부 순자산)</b>와 <b>TTM 배당수익률(지난 1년 실제 배당)</b>.
     지금 한국 리츠는 장부가의 3분의 2 값에 거래되며, 일회성 배당을 제외한 표본의 배당은 국고채 10년을 웃돈다.
     <b>표본 기준: 코스피 상장 리츠 전수 24종</b>(위탁관리 22 + 자기관리 2) — 자기관리·거래정지 종목까지 포함한 전수라서,
@@ -634,7 +634,7 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
         <tbody>
           <tr><td>한국부동산원 임대동향(R-ONE)</td><td>오피스 공실률·임대가격지수·소득/자본수익률 — 17개 시도 분기(2016Q3~)</td><td>수지 수집분 재사용 — 운영(Ⅲ장) 원천</td></tr>
           <tr><td>한국부동산원 청약홈 (2 API)</td><td>분양공고 2,828건·주택형 14,445(분양가 100%)·경쟁률 53,889·가점 29,115·무순위 1,627</td><td>소급 하한 2020-02(청약홈 개시)</td></tr>
-          <tr><td>HUG × KOSIS</td><td>민간아파트 평균 초기분양률 — 23개 지역 × 2014Q3~ (846셀)</td><td>구계열+신계열 병합 · 지역 평균(단지 아님)</td></tr>
+          <tr><td>HUG × KOSIS</td><td>민간아파트 평균 초기분양률 — 23개 지역 × 2014Q3~ (846개 관측값)</td><td>구계열+신계열 병합 · 지역 평균(단지 아님)</td></tr>
           <tr><td>DART OpenAPI</td><td>리츠 재무 168 스냅샷·배당 240 결산기</td><td>결산기(stlm_dt) 단위 — 리츠는 반기·분기 결산</td></tr>
           <tr><td>금융위 주식시세</td><td>리츠 24종 일별 종가·시총 (상장일~)</td><td>T+1 · KRX 로그인화(2025-12) 이후 표준 경로</td></tr>
           <tr><td>한국은행 ECOS</td><td>국고채 10년 월평균 150개월</td><td>스프레드 기준선</td></tr>
@@ -1733,7 +1733,7 @@ window.__DATA_SUNHWAN = {"built_at":"2026-07-22","bunyang":{"heat":{"xs":["2023Q
       points: R.treasury.map((p, i) => ({ x: i, label: fmt.ym(p.ym), y: p.rate })) }],
       { aria: "국고채 10년 월평균", yFmt: v => v.toFixed(1) + "%", width: 560, height: 300, rightPad: 64 });
     $("#r-t10-cap").textContent = `최신 ${K.t10.toFixed(2)}% — 일회성 제외 리츠 배당 중위와의 간격 +${K.spread.toFixed(1)}%p가 리츠에 요구되는 위험 보상이다.`;
-    // ③-2 LTV 근사 (장부)
+    // ③-2 장부상 부채비율
     const byLtv = R.items.filter(it => it.ltv != null).sort((a, b) => b.ltv - a.ltv);
     C.hbars($("#r-ltv"), byLtv.map(it => ({ name: it.name, value: it.ltv })),
       { color: "--s3", emph: byLtv.filter(it => it.ltv >= 60).map(it => it.name),

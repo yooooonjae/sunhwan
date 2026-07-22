@@ -236,7 +236,7 @@
       points: R.treasury.map((p, i) => ({ x: i, label: fmt.ym(p.ym), y: p.rate })) }],
       { aria: "국고채 10년 월평균", yFmt: v => v.toFixed(1) + "%", width: 560, height: 300, rightPad: 64 });
     $("#r-t10-cap").textContent = `최신 ${K.t10.toFixed(2)}% — 일회성 제외 리츠 배당 중위와의 간격 +${K.spread.toFixed(1)}%p가 리츠에 요구되는 위험 보상이다.`;
-    // ③-2 LTV 근사 (장부)
+    // ③-2 장부상 부채비율
     const byLtv = R.items.filter(it => it.ltv != null).sort((a, b) => b.ltv - a.ltv);
     C.hbars($("#r-ltv"), byLtv.map(it => ({ name: it.name, value: it.ltv })),
       { color: "--s3", emph: byLtv.filter(it => it.ltv >= 60).map(it => it.name),
