@@ -16,12 +16,15 @@
 """
 
 import json
+import os
 import statistics
 from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-SUJI = Path("/Users/iseul/개발/out/market.json")
+# 수지(收支) 저장소 위치 — 기본 ~/개발, SUJI_DIR 로 재정의(이식성).
+SUJI = Path(os.environ.get("SUJI_DIR", str(Path.home() / "개발")))
+MARKET = SUJI / "out" / "market.json"
 
 
 def _q(date: str) -> str:
@@ -92,8 +95,8 @@ def main():
 
     # 거시(수지 재사용): 시도·월 미분양, 월 기준금리
     unsold, base_rate = {}, {}
-    if SUJI.exists():
-        M = json.load(open(SUJI))
+    if MARKET.exists():
+        M = json.load(open(MARKET))
         for sido, series in (M.get("unsold") or {}).items():
             for p in series:
                 unsold[(sido, p["ym"])] = p["value"]

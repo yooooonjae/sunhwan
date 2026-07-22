@@ -2,7 +2,7 @@
 
 실행: /usr/bin/python3 src/collect/jeongbi.py [--refresh]
   * requests·openpyxl 필요 → macOS CommandLineTools python3(/usr/bin/python3)에 존재.
-    (주의: /Users/iseul/개발/venv 에는 openpyxl 없음 — 반드시 /usr/bin/python3 로 실행.)
+    (주의: 수지(~/개발) venv 에는 openpyxl 없음 — 반드시 /usr/bin/python3 로 실행.)
   * 구식 .xls 를 받게 되면 soffice --headless --convert-to xlsx 폴백(_ensure_xlsx).
   * --refresh 없으면 data/raw/jeongbi/ 캐시 재사용(무네트워크 재실행 가능).
 

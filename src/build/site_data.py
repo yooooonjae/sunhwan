@@ -5,6 +5,7 @@
 
 import datetime
 import json
+import os
 import statistics
 from collections import defaultdict
 from pathlib import Path
@@ -12,6 +13,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 D = ROOT / "data"
 OUT = ROOT / "out"
+# 수지(收支) 저장소 위치 — 기본 ~/개발, SUJI_DIR 로 재정의(이식성).
+SUJI = Path(os.environ.get("SUJI_DIR", str(Path.home() / "개발")))
 
 REPRT_ORD = {"1분기": 1, "반기": 2, "3분기": 3, "사업": 4}
 SIDO_ORDER = ["전국", "서울", "경기", "인천", "부산", "대구", "광주", "대전", "울산",
@@ -116,7 +119,7 @@ def bunyang_block():
 
     # ⑥ 분양가 프리미엄 × 경쟁률 산점 — 시세 = 수지 RTMS 시도 대표구 중위(공고월)
     prem_pts, n_drop = [], 0
-    rtms = json.load(open("/Users/iseul/개발/data/rtms.json"))["trades"]
+    rtms = json.load(open(SUJI / "data" / "rtms.json"))["trades"]
     CAP_REGIONS = {"서울", "경기", "인천"}
     med_cache = {}
     for sido, gus in rtms.items():
@@ -201,7 +204,7 @@ def jeongbi_block():
 
 def operating_block():
     """Ⅲ장 운영 — R-ONE 상업용 임대동향(수지 수집분 재사용). 오피스 중심."""
-    C = json.load(open("/Users/iseul/개발/data/rone_commercial.json"))
+    C = json.load(open(SUJI / "data" / "rone_commercial.json"))
     vac, rent, yld = C["office_vacancy"], C["office_rent_index"], C["office_yield"]
 
     # ① 시도별 최신 공실률·소득수익률(연환산)
@@ -237,7 +240,7 @@ def linkage_block():
     det = json.load(open(D / "cheongyak" / "apt_detail.json"))
     hug = json.load(open(D / "hug_initial_rate.json"))
     tre = json.load(open(D / "treasury10y.json"))["series"]
-    C = json.load(open("/Users/iseul/개발/data/rone_commercial.json"))
+    C = json.load(open(SUJI / "data" / "rone_commercial.json"))
     P = json.load(open(D / "reits_price.json"))["prices"]
     F = json.load(open(D / "reits_fin.json"))
     R = json.load(open(D / "reits_corp.json"))["reits"]

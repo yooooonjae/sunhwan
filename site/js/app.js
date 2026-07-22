@@ -127,7 +127,7 @@
       note: r.value == null ? "분양 실적 없음" : undefined }));
     C.hbars($("#b-latest"), rows, { color: "--s2", emph: ["전국"], fmt: v => v.toFixed(0) + "%",
       labelW: 60, width: 1160, rowH: 27, aria: "시도별 초기분양률 최신 분기" });
-    $("#b-cap-latest").textContent = "결측 시도는 해당 분기 30세대 이상 민간분양 실적이 없는 곳 — 공급 자체가 멈춘 시장이다.";
+    $("#b-cap-latest").textContent = "결측 시도는 해당 분기에 기준(30세대 이상 민간분양)을 충족하는 실적이 관측되지 않은 지역이다.";
 
     // ④-2 지도 코로플레스 — 시점 모드 토글(공통 기준분기 / 지역별 최신). 집계 키는 D.map 단계에서 이미 제외.
     if (window.__KOREA__ && $("#b-koreamap")) {

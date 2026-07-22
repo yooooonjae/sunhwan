@@ -1,0 +1,21 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      # 빌드(site_data.py)는 자매 저장소 '수지'의 자료(SUJI_DIR, 기본 ~/개발)에 의존한다.
+      # CI 에는 그 자료가 없으므로 빌드를 실행하지 않고 구문·임포트 검사만 수행한다.
+      - name: Python 구문 검사
+        run: python -m py_compile src/build/*.py src/collect/*.py src/analysis/*.py
+      - name: JS 구문 검사
+        run: for f in site/js/*.js; do node --check "$f"; done

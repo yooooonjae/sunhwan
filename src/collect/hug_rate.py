@@ -11,11 +11,14 @@
 """
 
 import json
+import os
 import urllib.parse
 import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+# 수지(收支) 저장소 위치 — 기본 ~/개발, SUJI_DIR 로 재정의(이식성).
+SUJI = Path(os.environ.get("SUJI_DIR", str(Path.home() / "개발")))
 URL = "https://kosis.kr/openapi/Param/statisticsParameterData.do"
 TABLES = ["DT_41401N_004", "DT_41401N_008"]  # 구계열 → 신계열 순 (신이 덮어씀)
 
@@ -34,7 +37,7 @@ def fetch(tbl: str, key: str) -> list[dict]:
 
 
 def main():
-    key = json.load(open("/Users/iseul/개발/config.json"))["kosis_key"]
+    key = json.load(open(SUJI / "config.json"))["kosis_key"]
     merged: dict[str, dict[str, float]] = {}
     for tbl in TABLES:  # 순서: 구계열 먼저, 신계열이 같은 (지역,분기)를 덮어쓴다
         for r in fetch(tbl, key):
