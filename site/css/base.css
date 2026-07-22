@@ -1,0 +1,63 @@
+/* 순환 — 베이스: 관측지 지면, 타이포 위계, 리듬 */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+[hidden] { display: none !important; }  /* display:flex 가 hidden 을 이기는 표준 함정 차단 */
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--ground);
+  color: var(--ink);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  /* 관측지 눈금: 미세 점그리드 + 상단 대원(컴퍼스 자국) */
+  background-image:
+    radial-gradient(circle at 1px 1px, var(--grid) 1px, transparent 1.6px);
+  background-size: 34px 34px;
+}
+
+::selection { background: var(--blueprint); color: var(--ground); }
+
+h1, h2, h3 { font-weight: 800; letter-spacing: -.01em; }
+a { color: inherit; text-decoration: none; }
+a:hover { color: var(--blueprint-2); }
+:focus-visible { outline: 2px solid var(--blueprint); outline-offset: 3px; border-radius: 4px; }
+
+.wrap { max-width: var(--col); margin: 0 auto; padding: 0 var(--sp-4); }
+
+.num { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+
+.caption { font-size: var(--t-caption); color: var(--ink-3); }
+
+section.chapter { padding: var(--sp-6) 0; }
+
+/* 장 사이 구분 — 호(弧) 괘선 */
+.arc-rule {
+  height: 60px; margin: var(--sp-5) auto; max-width: var(--col);
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  color: var(--ink-3); font-size: 12px; letter-spacing: .35em;
+}
+.arc-rule::before, .arc-rule::after {
+  content: ""; flex: 1; height: 22px;
+  border-bottom: 1.5px solid var(--hairline-2);
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+}
+
+/* 리빌 */
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.on { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
+
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--hairline); }
+th { color: var(--ink-3); font-size: 12px; letter-spacing: .06em; font-weight: 700; }
+td.num, th.num { text-align: right; font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+
+@media (max-width: 640px) {
+  section.chapter { padding: var(--sp-5) 0; }
+  .wrap { padding: 0 var(--sp-3); }
+}
