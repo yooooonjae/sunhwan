@@ -8,7 +8,7 @@
   /* ---------- 라우터 ---------- */
   const VIEWS = ["home", "ch1", "ch2", "ch3", "ch4"];
   function route() {
-    const m = /^#\/(ch[1-4])$/.exec(location.hash);
+    const m = /^#\/(ch[1-5])$/.exec(location.hash);
     const view = m ? m[1] : "home";
     document.querySelectorAll("[data-view-root]").forEach(el => {
       el.hidden = view === "home" ? false : el.dataset.viewRoot !== view;
@@ -129,7 +129,41 @@
     $("#b-cap-latest").textContent = "결측 시도는 해당 분기 30세대 이상 민간분양 실적이 없는 곳 — 공급 자체가 멈춘 시장이다.";
   }
 
-  /* ---------- Ⅲ. 자본 ---------- */
+  /* ---------- Ⅲ. 운영 ---------- */
+  function renderOperating() {
+    const O = B.operating;
+    if (!O || !$("#o-kpis")) return;
+    const K = O.kpi;
+    $("#o-kpis").innerHTML = [
+      [K.seoul_vac.toFixed(1) + "%", `서울 오피스 공실률 (${K.asof.replace("Q", " Q")})`],
+      [K.nat_vac.toFixed(1) + "%", "전국 오피스 공실률"],
+      [K.seoul_inc_ann.toFixed(1) + "%", "서울 소득수익률 연환산 — NOI 수익률 근사"],
+      [K.seoul_total_q.toFixed(2) + "%", "서울 분기 투자수익률 (소득+자본)"],
+    ].map(([v, k], i) => `<div class="kpi"><div class="v${i === 2 ? " gold" : ""}">${v}</div><div class="k">${k}</div></div>`).join("");
+
+    C.hbars($("#o-vac-latest"), O.latest.map(x => ({ name: x.name, value: x.vac })),
+      { color: "--s2", emph: ["서울"], fmt: v => v.toFixed(1) + "%",
+        labelW: 60, width: 1160, rowH: 27, aria: "시도별 오피스 공실률" });
+    const lo = O.latest[0], hi = O.latest[O.latest.length - 1];
+    $("#o-vac-cap").textContent = `${lo.name} ${lo.vac}%에서 ${hi.name} ${hi.vac}%까지 — 오피스 운영 시장의 지역 격차는 주택보다 훨씬 크다. ` +
+      "공실이 깊은 지역의 건물은 임대수익 기반 밸류에이션 자체가 성립하기 어렵다.";
+
+    const mkq = arr => arr.map((p, i) => ({ x: i, label: p.yq.replace("Q", " Q"), y: p.v }));
+    const COLS = { "서울": "--s1", "경기": "--s2", "부산": "--s3", "전국": "--s5" };
+    C.line($("#o-vac-trend"), Object.entries(O.trend_vac).map(([n, arr]) => (
+      { name: n, color: COLS[n] || "--s4", emph: n === "서울", points: mkq(arr) })),
+      { aria: "공실률 추이", yFmt: v => v.toFixed(0) + "%", width: 560, height: 300, rightPad: 56 });
+    C.line($("#o-rent-trend"), Object.entries(O.trend_rent).map(([n, arr]) => (
+      { name: n, color: COLS[n] || "--s4", emph: n === "서울", points: mkq(arr) })),
+      { aria: "임대가격지수 추이", width: 560, height: 300, rightPad: 56 });
+
+    const inc = O.latest.filter(x => x.inc_ann != null).sort((a, b) => b.inc_ann - a.inc_ann);
+    C.hbars($("#o-income"), inc.map(x => ({ name: x.name, value: x.inc_ann })),
+      { color: "--s1", emph: ["서울"], fmt: v => v.toFixed(1) + "%",
+        labelW: 60, width: 1160, rowH: 27, aria: "시도별 소득수익률 연환산" });
+  }
+
+  /* ---------- Ⅳ. 자본 ---------- */
   function renderReits() {
     const R = B.reits, K = R.kpi;
     $("#r-kpis").innerHTML = [
@@ -207,11 +241,12 @@
       ["공급", B.jeongbi.total.toLocaleString() + "구역", `정비 파이프라인 3개 시도 — 조합설립→사업시행 중위 ${(B.jeongbi.durations.find(d => d.pair.includes("조합설립 → 사업시행")) || {med: "3.5"}).med}년`, true],
       ["분양", (natLatest && natLatest.value != null ? natLatest.value.toFixed(0) + "%" : "―"),
        `전국 초기분양률 ${D.latest.q.replace("Q", " Q")} — 기준선 80% ${natLatest && natLatest.value >= 80 ? "상회" : "하회"}`, true],
-      ["자본", K.pb_med.toFixed(2), `리츠 P/장부NAV 중위 — 장부가 대비 ${Math.round((1 - K.pb_med) * 100)}% 할인 · 스프레드 +${K.spread.toFixed(1)}%p`, true],
+      ["운영", B.operating.kpi.seoul_vac.toFixed(1) + "%", `서울 오피스 공실률 ${B.operating.kpi.asof.replace("Q", " Q")} — 전국 ${B.operating.kpi.nat_vac.toFixed(1)}%`, true],
+      ["자본", K.pb_med.toFixed(2), `리츠 P/BV 중위 — 장부가 대비 ${Math.round((1 - K.pb_med) * 100)}% 할인 · 스프레드 +${K.spread.toFixed(1)}%p`, true],
     ].map(([t, v, k, on]) => `<div class="kpi"><div class="k" style="margin:0 0 4px">${t} — 지금</div><div class="v${on ? " gold" : ""}">${v}</div><div class="k">${k}</div></div>`).join("");
   }
 
-  function renderAll() { counters(); pulseNow(); renderSupply(); renderBunyang(); renderReits(); }
+  function renderAll() { counters(); pulseNow(); renderSupply(); renderBunyang(); renderOperating(); renderReits(); }
 
   route();
   renderAll();

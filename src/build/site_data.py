@@ -156,6 +156,39 @@ def jeongbi_block():
             "total": total, "hist_n": len(hist), "schema": schema}
 
 
+def operating_block():
+    """Ⅲ장 운영 — R-ONE 상업용 임대동향(수지 수집분 재사용). 오피스 중심."""
+    C = json.load(open("/Users/iseul/개발/data/rone_commercial.json"))
+    vac, rent, yld = C["office_vacancy"], C["office_rent_index"], C["office_yield"]
+
+    # ① 시도별 최신 공실률·소득수익률(연환산)
+    latest = []
+    for sido, series in vac.items():
+        if sido == "전국" or not series:
+            continue
+        v = series[-1]["value"]
+        y = yld.get(sido, [])
+        inc_ann = round(y[-1]["income"] * 4, 2) if y else None
+        latest.append({"name": sido, "vac": round(v, 1), "inc_ann": inc_ann})
+    latest.sort(key=lambda x: x["vac"])
+
+    # ② 추이(주요 시도): 공실률·임대지수
+    KEY_SIDOS = ["서울", "경기", "부산", "전국"]
+    trend_vac = {s_: [{"yq": p_["yq"], "v": round(p_["value"], 2)} for p_ in vac[s_]] for s_ in KEY_SIDOS if s_ in vac}
+    trend_rent = {s_: [{"yq": p_["yq"], "v": round(p_["value"], 2)} for p_ in rent[s_]] for s_ in KEY_SIDOS if s_ in rent}
+
+    seoul_y = yld["서울"][-1]
+    nat_v = vac["전국"][-1]
+    kpi = {
+        "asof": nat_v["yq"],
+        "seoul_vac": round(vac["서울"][-1]["value"], 1),
+        "nat_vac": round(nat_v["value"], 1),
+        "seoul_inc_ann": round(seoul_y["income"] * 4, 1),
+        "seoul_total_q": round(seoul_y["total"], 2),
+    }
+    return {"latest": latest, "trend_vac": trend_vac, "trend_rent": trend_rent, "kpi": kpi}
+
+
 def reits_block():
     P = json.load(open(D / "reits_price.json"))["prices"]
     F = json.load(open(D / "reits_fin.json"))
@@ -220,6 +253,7 @@ def main():
         "built_at": datetime.date.today().isoformat(),
         "bunyang": bunyang_block(),
         "jeongbi": jeongbi_block(),
+        "operating": operating_block(),
         "reits": reits_block(),
         "counters": {},
     }

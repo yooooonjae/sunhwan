@@ -15,8 +15,9 @@
     <div class="tabs" role="navigation" aria-label="장 이동">
       <a href="#/ch1" data-view="ch1">Ⅰ 공급</a>
       <a href="#/ch2" data-view="ch2">Ⅱ 분양</a>
-      <a href="#/ch3" data-view="ch3">Ⅲ 자본</a>
-      <a href="#/ch4" data-view="ch4">Ⅳ 방법론</a>
+      <a href="#/ch3" data-view="ch3">Ⅲ 운영</a>
+      <a href="#/ch4" data-view="ch4">Ⅳ 자본</a>
+      <a href="#/ch5" data-view="ch5">Ⅴ 방법론</a>
     </div>
     <button class="theme-toggle" type="button">주간/야간</button>
   </div>
@@ -77,6 +78,8 @@
       <a class="gate" href="#/ch2"><span class="st on">가동 중</span><div class="no">Ⅱ</div>
         <h4>분양 — 청약의 성적표</h4><p>공고 2,828건 · 경쟁률 5만 행 · 라벨 12년. 경쟁률 5:1과 완판의 상관을 실측했다.</p></a>
       <a class="gate" href="#/ch3"><span class="st on">가동 중</span><div class="no">Ⅲ</div>
+        <h4>운영 — 임대시장의 체온</h4><p>오피스 공실률·임대지수·소득수익률 — 배당과 매각가치가 태어나는 곳.</p></a>
+      <a class="gate" href="#/ch4"><span class="st on">가동 중</span><div class="no">Ⅳ</div>
         <h4>자본 — 리츠의 가격표</h4><p>상장 리츠 24종의 할인율과 배당 — 완성된 부동산에 시장이 매기는 값.</p></a>
     </div>
   </div>
@@ -174,10 +177,44 @@
 </section>
 
 <div class="arc-rule" data-view-root="ch3">제 Ⅲ 장</div>
-<!-- ============ Ⅲ. 자본 ============ -->
+<!-- ============ Ⅲ. 운영 ============ -->
 <section class="chapter" id="ch3" data-view-root="ch3">
   <div class="wrap">
-    <div class="tobira"><div class="no">Ⅲ</div><h2>자본 — 리츠의 가격표</h2>
+    <div class="tobira"><div class="no">Ⅲ</div><h2>운영 — 임대시장의 체온</h2>
+      <div class="meta">원천 <b>한국부동산원 임대동향</b><br>주기 <b>분기 · 2016Q3~</b></div></div>
+    <p class="lede">공급과 자본 사이에는 <b>운영</b>이 있다 — 완성된 건물이 임대료를 벌고 공실을 견디는 단계.
+    리츠의 배당도, 매각가치도 결국 여기서 나온다. 오피스 임대시장의 공실률·임대가격·소득수익률을
+    시도별로 관측한다 — <b>운영이 벌어주는 수익률이 Ⅳ장 자본시장 평가의 원료</b>다.</p>
+    <div class="kpi-row" id="o-kpis"></div>
+    <figure class="viz">
+      <div class="viz-head"><div class="viz-title">오피스 공실은 어디가 깊은가 — 시도별 최신 분기</div><div class="viz-unit">% · 낮을수록 견조</div></div>
+      <div id="o-vac-latest"></div>
+      <figcaption id="o-vac-cap"></figcaption>
+    </figure>
+    <div class="two-col">
+      <figure class="viz">
+        <div class="viz-head"><div class="viz-title">공실률 추이 — 주요 시장</div><div class="viz-unit">% · 분기</div></div>
+        <div id="o-vac-trend"></div>
+      </figure>
+      <figure class="viz">
+        <div class="viz-head"><div class="viz-title">임대가격지수 추이</div><div class="viz-unit">2024.2Q=100 · 분기</div></div>
+        <div id="o-rent-trend"></div>
+      </figure>
+    </div>
+    <figure class="viz">
+      <div class="viz-head"><div class="viz-title">운영이 벌어주는 수익률 — 소득수익률 연환산</div><div class="viz-unit">% · 최신 분기 × 4 (NOI 수익률 근사)</div></div>
+      <div id="o-income"></div>
+      <figcaption>소득수익률(임대이익 ÷ 자산가치)의 연환산 — Ⅳ장 리츠 배당·환원율을 가늠하는 운영 단계의 원천 수익률이다.
+      자본수익률(가격 변동분)은 제외한 값. 한국부동산원 상업용부동산 임대동향조사.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<div class="arc-rule" data-view-root="ch4">제 Ⅳ 장</div>
+<!-- ============ Ⅲ. 자본 ============ -->
+<section class="chapter" id="ch4" data-view-root="ch4">
+  <div class="wrap">
+    <div class="tobira"><div class="no">Ⅳ</div><h2>자본 — 리츠의 가격표</h2>
       <div class="meta">원천 <b>DART · 금융위 시세 · ECOS</b><br>대상 <b>상장 리츠 전 종목</b></div></div>
     <p class="lede">완성된 부동산이 자본시장에서 받는 성적표가 상장 리츠다. 두 숫자로 요약된다 —
     <b>P/BV(시가총액 ÷ 장부 순자산)</b>와 <b>TTM 배당수익률(지난 1년 실제 배당)</b>.
@@ -220,17 +257,18 @@
   </div>
 </section>
 
-<div class="arc-rule" data-view-root="ch4">제 Ⅳ 장</div>
+<div class="arc-rule" data-view-root="ch5">제 Ⅴ 장</div>
 <!-- ============ Ⅳ. 방법론 ============ -->
-<section class="chapter" id="ch4" data-view-root="ch4">
+<section class="chapter" id="ch5" data-view-root="ch5">
   <div class="wrap">
-    <div class="tobira"><div class="no">Ⅳ</div><h2>방법론 — 출처, 정의, 그리고 한계</h2>
+    <div class="tobira"><div class="no">Ⅴ</div><h2>방법론 — 출처, 정의, 그리고 한계</h2>
       <div class="meta">갱신 <b>수집기 재실행 시</b><br>원본 <b>전량 캐시</b></div></div>
     <figure class="viz">
       <div class="viz-head"><div class="viz-title">데이터 출처</div></div>
       <div style="overflow-x:auto"><table>
         <thead><tr><th>출처</th><th>내용</th><th>비고</th></tr></thead>
         <tbody>
+          <tr><td>한국부동산원 임대동향(R-ONE)</td><td>오피스 공실률·임대가격지수·소득/자본수익률 — 17개 시도 분기(2016Q3~)</td><td>수지 수집분 재사용 — 운영(Ⅲ장) 원천</td></tr>
           <tr><td>한국부동산원 청약홈 (2 API)</td><td>분양공고 2,828건·주택형 14,445(분양가 100%)·경쟁률 53,889·가점 29,115·무순위 1,627</td><td>소급 하한 2020-02(청약홈 개시)</td></tr>
           <tr><td>HUG × KOSIS</td><td>민간아파트 평균 초기분양률 — 23개 지역 × 2014Q3~ (846셀)</td><td>구계열+신계열 병합 · 지역 평균(단지 아님)</td></tr>
           <tr><td>DART OpenAPI</td><td>리츠 재무 168 스냅샷·배당 240 결산기</td><td>결산기(stlm_dt) 단위 — 리츠는 반기·분기 결산</td></tr>
@@ -246,6 +284,7 @@
         <tbody>
           <tr><td>청약 경쟁률</td><td>전국</td><td>2020-02~</td><td>공고·주택형</td><td class="num">경쟁률 85% · 분양가 98%</td></tr>
           <tr><td>초기분양률(라벨)</td><td>23개 지역</td><td>2014Q3~</td><td>지역·분기 평균</td><td class="num">846셀 (실적 없는 분기 결측)</td></tr>
+          <tr><td>오피스 임대동향(운영)</td><td>17개 시도</td><td>2016Q3~</td><td>시도·분기</td><td class="num">공실·임대지수·수익률 전 시도</td></tr>
           <tr><td>리츠 시세·재무</td><td>상장 24종</td><td>상장일~</td><td>일별·결산기</td><td class="num">시세 24/24 · 배당 24/24 · LTV 23/24</td></tr>
           <tr><td>정비사업</td><td>대구·경기·부산 우선</td><td>지역별 상이</td><td>구역</td><td class="num">구축 중 (Ⅰ장)</td></tr>
         </tbody>
