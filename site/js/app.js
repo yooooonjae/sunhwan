@@ -53,7 +53,7 @@
     $("#j-kpis").innerHTML = [
       [`${J.total.toLocaleString()}구역`, "관측 파이프라인 (도시정비법 " + J.regions.reduce((a, r) => a + r.core, 0) + " + 소규모 " + J.regions.reduce((a, r) => a + r.small, 0) + ")"],
       [`${J.hist_n.toLocaleString()}구역`, `단계 이력 보유 (${hist.map(r => r.name).join("·")})`],
-      [`${(J.durations.find(d => d.pair.includes("조합설립")) || {}).med || "—"}년`, "조합설립 → 사업시행 중위"],
+      [`${(J.durations.find(d => d.pair === "조합설립 → 사업시행") || {}).med || "—"}년`, "조합설립 → 사업시행 중위"],
       [`${J.durations.reduce((a, d) => a + d.med, 0).toFixed(0)}년+`, "예정구역고시 → 준공 중위 합산(단계 합)"],
     ].map(([v, k], i) => `<div class="kpi"><div class="v${i >= 2 ? " gold" : ""}">${v}</div><div class="k">${k}</div></div>`).join("");
 
@@ -151,11 +151,13 @@
 
     const mkq = arr => arr.map((p, i) => ({ x: i, label: p.yq.replace("Q", " Q"), y: p.v }));
     const COLS = { "서울": "--s1", "경기": "--s2", "부산": "--s3", "전국": "--s5" };
-    C.line($("#o-vac-trend"), Object.entries(O.trend_vac).map(([n, arr]) => (
-      { name: n, color: COLS[n] || "--s4", emph: n === "서울", points: mkq(arr) })),
+    // 다계열(시도별)은 dict 에서 온 독립 배열 — 라벨 축 일치가 app 단에서 보장되지
+    // 않으므로 렌더 직전 alignByLabel 로 라벨 합집합에 재색인(툴팁 인덱스 공유 방어).
+    C.line($("#o-vac-trend"), C.alignByLabel(Object.entries(O.trend_vac).map(([n, arr]) => (
+      { name: n, color: COLS[n] || "--s4", emph: n === "서울", points: mkq(arr) }))),
       { aria: "공실률 추이", yFmt: v => v.toFixed(0) + "%", width: 560, height: 300, rightPad: 56 });
-    C.line($("#o-rent-trend"), Object.entries(O.trend_rent).map(([n, arr]) => (
-      { name: n, color: COLS[n] || "--s4", emph: n === "서울", points: mkq(arr) })),
+    C.line($("#o-rent-trend"), C.alignByLabel(Object.entries(O.trend_rent).map(([n, arr]) => (
+      { name: n, color: COLS[n] || "--s4", emph: n === "서울", points: mkq(arr) }))),
       { aria: "임대가격지수 추이", width: 560, height: 300, rightPad: 56 });
 
     const inc = O.latest.filter(x => x.inc_ann != null).sort((a, b) => b.inc_ann - a.inc_ann);
@@ -313,7 +315,7 @@
     const D = B.bunyang, K = B.reits.kpi;
     const natLatest = D.latest.rows.find(r => r.name === "전국");
     el2.innerHTML = [
-      ["공급", B.jeongbi.total.toLocaleString() + "구역", `정비 파이프라인 3개 시도 — 조합설립→사업시행 중위 ${(B.jeongbi.durations.find(d => d.pair.includes("조합설립 → 사업시행")) || {med: "3.5"}).med}년`, true],
+      ["공급", B.jeongbi.total.toLocaleString() + "구역", `정비 파이프라인 3개 시도 — 조합설립→사업시행 중위 ${(B.jeongbi.durations.find(d => d.pair === "조합설립 → 사업시행") || {}).med || "—"}년`, true],
       ["분양", (natLatest && natLatest.value != null ? natLatest.value.toFixed(0) + "%" : "―"),
        `전국 초기분양률 ${D.latest.q.replace("Q", " Q")} — 기준선 80% ${natLatest && natLatest.value >= 80 ? "상회" : "하회"}`, true],
       ["운영", B.operating.kpi.seoul_vac.toFixed(1) + "%", `서울 오피스 공실률 ${B.operating.kpi.asof.replace("Q", " Q")} — 전국 ${B.operating.kpi.nat_vac.toFixed(1)}%`, true],
