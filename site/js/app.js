@@ -33,14 +33,42 @@
   function counters() {
     const c = B.counters;
     const items = [
+      [c.jeongbi_zones, "구역", "정비 파이프라인 (3개 시도)"],
       [c.cheongyak_rows, "행", "청약 데이터 수집"],
       [c.notices, "건", "분양 공고 (2020~)"],
-      [c.label_cells, "셀", "초기분양률 라벨 (12년)"],
+      [c.label_cells, "개", "지역·분기 초기분양률 관측값 (12년)"],
       [c.reits, "종", "상장 리츠 전수"],
       [c.treasury_months, "개월", "국고 10년 금리"],
     ];
     $("#counters").innerHTML = items.map(([v, u, k]) =>
       `<div class="gauge"><div class="v">${Number(v).toLocaleString()}<small>${u}</small></div><div class="k">${k}</div></div>`).join("");
+  }
+
+  /* ---------- Ⅰ. 공급 ---------- */
+  function renderSupply() {
+    const J = B.jeongbi;
+    if (!J || !$("#j-kpis")) return;
+    const hist = J.regions.filter(r => r.history);
+    $("#j-kpis").innerHTML = [
+      [`${J.total.toLocaleString()}구역`, "관측 파이프라인 (도시정비법 " + J.regions.reduce((a, r) => a + r.core, 0) + " + 소규모 " + J.regions.reduce((a, r) => a + r.small, 0) + ")"],
+      [`${J.hist_n.toLocaleString()}구역`, `단계 이력 보유 (${hist.map(r => r.name).join("·")})`],
+      [`${(J.durations.find(d => d.pair.includes("조합설립")) || {}).med || "—"}년`, "조합설립 → 사업시행 중위"],
+      [`${J.durations.reduce((a, d) => a + d.med, 0).toFixed(0)}년+`, "예정구역고시 → 준공 중위 합산(단계 합)"],
+    ].map(([v, k], i) => `<div class="kpi"><div class="v${i >= 2 ? " gold" : ""}">${v}</div><div class="k">${k}</div></div>`).join("");
+
+    C.hbars($("#j-funnel"), J.funnel.map(f => ({ name: f.stage, value: f.n })),
+      { color: "--s2", emph: ["조합설립", "착공", "준공"], fmt: v => v + "구역",
+        labelW: 110, width: 1160, rowH: 32, aria: "단계별 기록 보유 구역 수" });
+
+    C.hbars($("#j-dur"), J.durations.map(d => ({ name: d.pair.replace(" → ", "→"), value: d.med })),
+      { color: "--s1", emph: J.durations.filter(d => d.med >= 3).map(d => d.pair.replace(" → ", "→")),
+        fmt: v => v.toFixed(1) + "년", labelW: 170, width: 1160, rowH: 30, aria: "인접 단계 소요기간 중위" });
+    $("#j-dur-cap").textContent = J.durations.map(d =>
+      `${d.pair} 중위 ${d.med}년 (IQR ${d.q1}~${d.q3} · n=${d.n})`).join(" · ") +
+      " — 완주 구역 기준이라 중단·해제 구역의 시간은 담기지 않는다(생존 편향).";
+
+    $("#j-regions").innerHTML = "<thead><tr><th>시도</th><th class='num'>구역</th><th class='num'>도시정비법</th><th class='num'>소규모(별도 법)</th><th>데이터 성격</th></tr></thead><tbody>" +
+      J.regions.map(r => `<tr><td>${r.name}</td><td class="num">${r.total}</td><td class="num">${r.core}</td><td class="num">${r.small}</td><td>${r.history ? "단계 이력" : "현황 스냅샷"}</td></tr>`).join("") + "</tbody>";
   }
 
   /* ---------- Ⅱ. 분양 ---------- */
@@ -106,8 +134,8 @@
     const R = B.reits, K = R.kpi;
     $("#r-kpis").innerHTML = [
       [`${K.n}종`, `상장 리츠 · 시총 ${K.mcap_total_jo}조`],
-      [`${K.pb_med.toFixed(2)}`, "P/장부NAV 중위 — 장부가의 ⅔"],
-      [`${K.dy_med.toFixed(1)}%`, "TTM 배당률 중위 (정상 종목)"],
+      [`${K.pb_med.toFixed(2)}`, "P/BV 중위 — 장부가의 ⅔"],
+      [`${K.dy_med.toFixed(1)}%`, "TTM 배당률 중위 (일회성 배당 제외)"],
       [`+${K.spread.toFixed(1)}%p`, `국고10년(${K.t10.toFixed(2)}%) 대비 스프레드`],
     ].map(([v, k], i) => `<div class="kpi"><div class="v${i === 3 ? " gold" : ""}">${v}</div><div class="k">${k}</div></div>`).join("");
 
@@ -120,16 +148,16 @@
       name: it.name.replace(/리츠$/, ""), x: it.pb, y: +(it.dy - K.t10).toFixed(1),
       size: it.mcap_eok, group: sector(it.type),
       label: it.pb >= 1 || it.pb <= 0.45 || Math.abs(it.dy - K.t10) >= 4,
-    })), { xName: "P/장부NAV", yName: "스프레드 %p", xRef: 1.0, yRef: 0,
+    })), { xName: "P/BV", yName: "스프레드 %p", xRef: 1.0, yRef: 0,
       groups: { "오피스": "--s1", "리테일": "--s3", "물류": "--s2", "주거": "--s4", "복합": "--s5", "해외": "--ink-3" },
       xFmt: v => v.toFixed(1), yFmt: v => (v >= 0 ? "+" : "") + v.toFixed(0), sizeK: 0.45,
       aria: "리츠 밸류에이션 사분면" });
-    $("#r-quad-cap").textContent = `정상 종목 ${normal.length}종(특별배당 ${R.items.filter(i => i.tags.includes("특별배당")).length}종·거래정지 ${R.items.filter(i => i.tags.includes("거래정지")).length}종 제외). ` +
+    $("#r-quad-cap").textContent = `일회성 제외 ${normal.length}종(특별배당 ${R.items.filter(i => i.tags.includes("특별배당")).length}종·거래정지 ${R.items.filter(i => i.tags.includes("거래정지")).length}종 제외). ` +
       "좌상(할인+고스프레드)이 곧 저평가는 아니다 — 할인엔 이유가 있을 수 있다. 자산의 질·부채 구조와 함께 읽어야 한다.";
     // ① P/장부NAV
     C.hbars($("#r-pnav"), R.items.map(it => ({ name: tagName(it), value: it.pb })),
       { color: "--s2", emph: R.items.filter(it => it.pb >= 1).map(tagName),
-        fmt: v => v.toFixed(2), labelW: 190, width: 1160, rowH: 26, aria: "리츠별 P/장부NAV" });
+        fmt: v => v.toFixed(2), labelW: 190, width: 1160, rowH: 26, aria: "리츠별 P/BV" });
     // ② TTM 배당률
     const byDy = R.items.slice().sort((a, b) => (b.dy ?? -1) - (a.dy ?? -1));
     C.hbars($("#r-dy"), byDy.map(it => ({ name: tagName(it), value: it.dy,
@@ -137,19 +165,19 @@
       { color: "--s1", emph: byDy.filter(it => it.tags.includes("특별배당")).map(tagName),
         fmt: v => v.toFixed(1) + "%", labelW: 190, width: 1160, rowH: 26, aria: "리츠별 TTM 배당률" });
     $("#r-dy-cap").textContent = "금 강조 = 특별배당(자산 매각·청산성 분배) 포함 — 지속 가능한 수익률이 아니다. " +
-      "정상 종목 중위 " + K.dy_med.toFixed(1) + "%가 이 시장의 진짜 체온.";
+      "일회성 배당 제외 중위 " + K.dy_med.toFixed(1) + "%가 이 시장의 기조적 수익률이다.";
     // ③ 국고10년
     C.line($("#r-t10"), [{ name: "국고10y", color: "--s2", emph: true,
       points: R.treasury.map((p, i) => ({ x: i, label: fmt.ym(p.ym), y: p.rate })) }],
       { aria: "국고채 10년 월평균", yFmt: v => v.toFixed(1) + "%", width: 560, height: 300, rightPad: 64 });
-    $("#r-t10-cap").textContent = `최신 ${K.t10.toFixed(2)}% — 정상 리츠 배당 중위와의 간격 +${K.spread.toFixed(1)}%p가 리츠에 요구되는 위험 보상이다.`;
+    $("#r-t10-cap").textContent = `최신 ${K.t10.toFixed(2)}% — 일회성 제외 리츠 배당 중위와의 간격 +${K.spread.toFixed(1)}%p가 리츠에 요구되는 위험 보상이다.`;
     // ③-2 LTV 근사 (장부)
     const byLtv = R.items.filter(it => it.ltv != null).sort((a, b) => b.ltv - a.ltv);
     C.hbars($("#r-ltv"), byLtv.map(it => ({ name: it.name, value: it.ltv })),
       { color: "--s3", emph: byLtv.filter(it => it.ltv >= 60).map(it => it.name),
         fmt: v => v.toFixed(0) + "%", labelW: 170, width: 560, rowH: 24, aria: "리츠별 자산 대비 부채" });
     // ④ 섹터 표
-    $("#r-sector").innerHTML = "<thead><tr><th>섹터</th><th class='num'>종목</th><th class='num'>P/장부NAV</th><th class='num'>TTM 배당</th><th class='num'>부채/자산</th></tr></thead><tbody>" +
+    $("#r-sector").innerHTML = "<thead><tr><th>섹터</th><th class='num'>종목</th><th class='num'>P/BV</th><th class='num'>TTM 배당</th><th class='num'>부채/자산</th></tr></thead><tbody>" +
       R.sectors.map(s => { const ls = R.items.filter(i => i.ltv != null && sector(i.type) === s.name).map(i => i.ltv).sort((a, b) => a - b); const lm = ls.length ? ls[Math.floor(ls.length / 2)].toFixed(0) + "%" : "―"; return `<tr><td>${s.name}</td><td class="num">${s.n}</td><td class="num">${s.pb_med.toFixed(2)}</td><td class="num">${s.dy_med != null ? s.dy_med.toFixed(1) + "%" : "―"}</td><td class="num">${lm}</td></tr>`; }).join("") +
       "</tbody>";
   }
@@ -176,14 +204,14 @@
     const D = B.bunyang, K = B.reits.kpi;
     const natLatest = D.latest.rows.find(r => r.name === "전국");
     el2.innerHTML = [
-      ["공급", "관측 구축 중", "정비 파이프라인 — 소스 지도 완성, 수집 착수", false],
+      ["공급", B.jeongbi.total.toLocaleString() + "구역", `정비 파이프라인 3개 시도 — 조합설립→사업시행 중위 ${(B.jeongbi.durations.find(d => d.pair.includes("조합설립 → 사업시행")) || {med: "3.5"}).med}년`, true],
       ["분양", (natLatest && natLatest.value != null ? natLatest.value.toFixed(0) + "%" : "―"),
        `전국 초기분양률 ${D.latest.q.replace("Q", " Q")} — 기준선 80% ${natLatest && natLatest.value >= 80 ? "상회" : "하회"}`, true],
       ["자본", K.pb_med.toFixed(2), `리츠 P/장부NAV 중위 — 장부가 대비 ${Math.round((1 - K.pb_med) * 100)}% 할인 · 스프레드 +${K.spread.toFixed(1)}%p`, true],
     ].map(([t, v, k, on]) => `<div class="kpi"><div class="k" style="margin:0 0 4px">${t} — 지금</div><div class="v${on ? " gold" : ""}">${v}</div><div class="k">${k}</div></div>`).join("");
   }
 
-  function renderAll() { counters(); pulseNow(); renderBunyang(); renderReits(); }
+  function renderAll() { counters(); pulseNow(); renderSupply(); renderBunyang(); renderReits(); }
 
   route();
   renderAll();

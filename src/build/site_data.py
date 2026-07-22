@@ -107,6 +107,55 @@ def bunyang_block():
             "premium": premium, "meta": ds["meta"]}
 
 
+def jeongbi_block():
+    """Ⅰ장 공급 — Phase 1(대구·경기 이력 + 부산 스냅샷)."""
+    J = json.load(open(D / "jeongbi_phase1.json"))
+    schema = J["schema"]
+    hist_regions = ["대구", "경기"]
+
+    # 이력 구역(도정법만) 풀
+    hist = [z for r in hist_regions for z in J["regions"][r] if not z.get("small_scale")]
+
+    # ① 단계 퍼널: 단계일자 보유 구역 수 (이력 2지역 합)
+    funnel = []
+    for st_ in schema:
+        n = sum(1 for z in hist if (z.get("dates") or {}).get(st_))
+        funnel.append({"stage": st_, "n": n})
+
+    # ② 인접 단계 소요기간: 중위·IQR (n>=10 만)
+    import datetime as dt
+    def yrs(a, b):
+        try:
+            d0 = dt.date.fromisoformat(a); d1 = dt.date.fromisoformat(b)
+            return (d1 - d0).days / 365.25
+        except (ValueError, TypeError):
+            return None
+    durations = []
+    for i in range(len(schema) - 1):
+        a, b = schema[i], schema[i + 1]
+        vals = sorted(v for z in hist
+                      if (v := yrs((z.get("dates") or {}).get(a), (z.get("dates") or {}).get(b))) is not None
+                      and 0 <= v <= 30)
+        if len(vals) >= 10:
+            q = lambda p: vals[max(0, min(len(vals) - 1, int(p * len(vals))))]
+            durations.append({"pair": f"{a} → {b}", "n": len(vals),
+                              "med": round(statistics.median(vals), 1),
+                              "q1": round(q(0.25), 1), "q3": round(q(0.75), 1)})
+
+    # ③ 지역 현황
+    regions = []
+    for r, zones in J["regions"].items():
+        core = [z for z in zones if not z.get("small_scale")]
+        small = len(zones) - len(core)
+        has_hist = any((z.get("dates") or {}).get(schema[0]) for z in core)
+        regions.append({"name": r, "total": len(zones), "core": len(core), "small": small,
+                        "history": has_hist})
+
+    total = sum(r["total"] for r in regions)
+    return {"funnel": funnel, "durations": durations, "regions": regions,
+            "total": total, "hist_n": len(hist), "schema": schema}
+
+
 def reits_block():
     P = json.load(open(D / "reits_price.json"))["prices"]
     F = json.load(open(D / "reits_fin.json"))
@@ -170,11 +219,13 @@ def main():
     bundle = {
         "built_at": datetime.date.today().isoformat(),
         "bunyang": bunyang_block(),
+        "jeongbi": jeongbi_block(),
         "reits": reits_block(),
         "counters": {},
     }
     ch = json.load(open(D / "cheongyak" / "_meta.json"))["counts"]
     bundle["counters"] = {
+        "jeongbi_zones": bundle["jeongbi"]["total"],
         "cheongyak_rows": sum(ch.values()),
         "notices": ch["apt_detail"],
         "label_cells": sum(len(v) for v in json.load(open(D / "hug_initial_rate.json")).values()),

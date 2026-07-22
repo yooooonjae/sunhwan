@@ -28,9 +28,10 @@
     <div>
       <div class="hero-kicker">부동산 자본 생애주기 관측 · {{BUILT_AT}} 기준</div>
       <h1><span class="hanja">循環</span> —<br>땅에서 자본으로,<br>다시 땅으로</h1>
-      <p class="lede">새 아파트는 정비구역에서 태어나 청약으로 팔리고, 완성된 건물은 리츠가 되어
-      시장에서 값이 매겨진다. 이 <b>세 개의 관문을 지나는 자본의 궤도</b>를
-      공공 데이터로 관측한다 — 공급의 파이프라인, 분양의 성적표, 자본시장의 가격.</p>
+      <p class="lede">정비사업과 신규 개발에서 주택 공급이 만들어지고, 청약과 분양을 거쳐 수요자에게
+      이전된다. 한편 오피스·물류 등 수익형 부동산의 일부는 리츠에 편입되어 자본시장에서
+      가격과 배당으로 평가받는다. <b>공급 → 분양 → 자본, 세 시장 단계를 잇는 흐름</b>을
+      공공 데이터로 관측한다 — 두 순환(주거 공급·수익형 자본)은 금리와 공사비로 연결된다.</p>
       <p class="sister">자매 연구: <a href="https://yoonjae.pages.dev" rel="noopener">수지(收支) — 개발 손익의 구조</a> · 딜 하나를 깊게 보는 도구</p>
     </div>
     <div class="orbit-box" aria-hidden="true">
@@ -63,6 +64,7 @@
   <div class="wrap">
     <div class="kpi-row" id="pulse-now" style="margin-top:var(--sp-5)"></div>
     <div class="gauge-row" id="counters" style="margin-top:var(--sp-3)">
+      <div class="gauge"><div class="v">1,061<small>구역</small></div><div class="k">정비 파이프라인 (3개 시도)</div></div>
       <div class="gauge"><div class="v">101,904<small>행</small></div><div class="k">청약 데이터 수집</div></div>
       <div class="gauge"><div class="v">2,828<small>건</small></div><div class="k">분양 공고 (2020~)</div></div>
       <div class="gauge"><div class="v">846<small>셀</small></div><div class="k">초기분양률 라벨 (12년)</div></div>
@@ -70,8 +72,8 @@
       <div class="gauge"><div class="v">150<small>개월</small></div><div class="k">국고 10년 금리</div></div>
     </div>
     <div class="gates">
-      <a class="gate" href="#/ch1"><span class="st">관측 준비</span><div class="no">Ⅰ</div>
-        <h4>공급 — 정비의 파이프라인</h4><p>재개발·재건축 구역이 새 아파트가 되기까지. 전국 소스 지도 완성, 수집 착수 단계.</p></a>
+      <a class="gate" href="#/ch1"><span class="st on">가동 중</span><div class="no">Ⅰ</div>
+        <h4>공급 — 정비의 파이프라인</h4><p>대구·경기 단계 이력 + 부산 스냅샷, 1,061개 구역. 조합설립→사업시행 중위 3~4년의 실측.</p></a>
       <a class="gate" href="#/ch2"><span class="st on">가동 중</span><div class="no">Ⅱ</div>
         <h4>분양 — 청약의 성적표</h4><p>공고 2,828건 · 경쟁률 5만 행 · 라벨 12년. 경쟁률 5:1과 완판의 상관을 실측했다.</p></a>
       <a class="gate" href="#/ch3"><span class="st on">가동 중</span><div class="no">Ⅲ</div>
@@ -85,12 +87,30 @@
 <section class="chapter" id="ch1" data-view-root="ch1">
   <div class="wrap">
     <div class="tobira"><div class="no">Ⅰ</div><h2>공급 — 정비의 파이프라인</h2>
-      <div class="meta">상태 <b>소스 지도 완성 · 수집 착수</b><br>목표 <b>구역별 단계 타임라인</b></div></div>
-    <p class="lede">새 아파트 공급의 상류(上流)는 정비구역이다. 조합설립에서 준공까지 각 인가일을
-    시계열로 복원하면 <b>"어디서, 언제, 얼마나"의 공급 예보</b>가 된다. 전국 통합 데이터는 존재하지 않아 —
-    시도별 파편을 직접 이어붙이는 것이 이 장의 공정이다. 아래는 정찰로 확정한 소스 지도다.</p>
+      <div class="meta">상태 <b>Phase 1 가동 — 3개 시도</b><br>표본 <b>1,061개 정비구역</b></div></div>
+    <p class="lede">새 아파트 공급의 상류(上流)는 정비구역이다. 조합설립에서 준공까지 각 인가일을 시계열로
+    복원하면 <b>"어디서, 언제, 얼마나"의 공급 시점 추정</b>이 된다. 전국 통합 데이터가 없어 시도별로 분산된
+    데이터를 직접 통합했다 — <b>대구·경기(단계 이력)·부산(현황 스냅샷) 3개 시도, 1,061개 구역</b>이 첫 관측이다.
+    도시정비법 사업만 집계하며 소규모주택정비(별도 법령)는 분리 표기한다.</p>
+    <div class="kpi-row" id="j-kpis"></div>
     <figure class="viz">
-      <div class="viz-head"><div class="viz-title">소스 지도 — 수집 난도 사다리</div><div class="viz-unit">2026-07 정찰 · 16개 소스 중 핵심 6</div></div>
+      <div class="viz-head"><div class="viz-title">파이프라인은 어느 단계에 쌓여 있는가 — 단계별 기록 보유 구역</div><div class="viz-unit">대구+경기(이력 보유 2개 시도) · 단계 일자가 기록된 구역 수</div></div>
+      <div id="j-funnel"></div>
+      <figcaption>엄밀한 전환 퍼널이 아니다 — 대구는 최근 지정 구역 위주(후반 단계 희소), 경기는 준공 구역 다수 포함으로
+      코호트가 섞여 있고, 원천에 따라 중간 단계 일자가 생략되기도 한다. "기록이 존재하는 구역 수"로 읽어야 한다.</figcaption>
+    </figure>
+    <figure class="viz">
+      <div class="viz-head"><div class="viz-title">각 단계는 얼마나 걸리는가 — 인접 단계 소요기간</div><div class="viz-unit">중위 연수 · 괄호 = 사분위 범위(IQR)·표본</div></div>
+      <div id="j-dur"></div>
+      <figcaption id="j-dur-cap"></figcaption>
+    </figure>
+    <figure class="viz">
+      <div class="viz-head"><div class="viz-title">시도별 관측 현황</div></div>
+      <div style="overflow-x:auto"><table id="j-regions" style="width:100%"></table></div>
+      <figcaption>부산은 이력 일자가 없는 현황 스냅샷 — 단계 소요기간 계산에서 제외된다. 서울(정보몽땅 크롤링)·인천·울산이 다음 확장 대상.</figcaption>
+    </figure>
+    <figure class="viz">
+      <div class="viz-head"><div class="viz-title">부록 — 소스 지도와 수집 난이도</div><div class="viz-unit">2026-07 소스 조사 · 16개 중 핵심 6</div></div>
       <div style="overflow-x:auto"><table>
         <thead><tr><th>소스</th><th>제공 방식</th><th>단계 이력</th><th>난도</th><th>비고</th></tr></thead>
         <tbody>
@@ -98,13 +118,13 @@
           <tr><td><b>대구 추진현황</b></td><td>XLS 월간</td><td><b>9개 인가일 전부</b></td><td class="num">중간</td><td>통합 스키마의 표준 템플릿</td></tr>
           <tr><td>경기 추진현황</td><td>CSV 일간</td><td>4개 인가일</td><td class="num">중간</td><td>454구역</td></tr>
           <tr><td>인천·울산 파일</td><td>CSV/XLS</td><td>현 단계</td><td class="num">중간</td><td>날짜 없음 — 스냅샷 수용</td></tr>
-          <tr><td><b>서울 정비사업 정보몽땅</b></td><td>목록 엑셀 + 구역별 상세</td><td><b>상세에 인가일 이력</b></td><td class="num">어려움</td><td>공식 개방 데이터셋은 2026-07 종료 — 상세 크롤이 유일 경로</td></tr>
+          <tr><td><b>서울 정비사업 정보몽땅</b></td><td>목록 엑셀 + 구역별 상세</td><td><b>상세에 인가일 이력</b></td><td class="num">어려움(HTML 크롤링)</td><td>공식 개방 데이터셋은 2026-07 종료 — 상세 크롤이 유일 경로</td></tr>
           <tr><td>시군구 고시·공고 PDF</td><td>문서</td><td>보충용</td><td class="num">최악</td><td>누락 인가일만 보강</td></tr>
         </tbody>
       </table></div>
-      <figcaption>수집 순서 = 난도 사다리: API → 정형 파일 → HTML 크롤 → PDF. 모든 소스는 대구 스키마
+      <figcaption>수집 순서: API → 정형 파일 → HTML 크롤링 → PDF(보충). 모든 소스는 대구 스키마
       (예정구역고시 → 구역지정 → 추진위 → 조합설립 → 사업시행 → 관리처분 → 착공 → 일반분양 → 준공)로 정규화한다.
-      함정 10건 목록화 완료: 스냅샷↔이력 혼동 금지, 소규모주택정비(별도 법) 혼재 금지, "정비사업" 키워드 오염 등.</figcaption>
+      수집·정합성 이슈 10건 목록화: 스냅샷↔이력 혼동 금지, 소규모주택정비(별도 법) 분리, 비대상 데이터 혼입 차단 등.</figcaption>
     </figure>
   </div>
 </section>
@@ -114,9 +134,9 @@
 <section class="chapter" id="ch2" data-view-root="ch2">
   <div class="wrap">
     <div class="tobira"><div class="no">Ⅱ</div><h2>분양 — 청약의 성적표</h2>
-      <div class="meta">원천 <b>청약홈 · HUG(KOSIS)</b><br>기간 <b>2020-02 ~ 현재 · 라벨 2014~</b></div></div>
-    <p class="lede">분양 시장의 인과 사슬은 짧고 명확하다 — <b>청약 접수(공고 시점)가 초기분양률(3~6개월 뒤)을 예고한다</b>.
-    공고 2,828건과 경쟁률 5만여 행을 HUG 초기분양률 12년 치에 이어 붙여 이 사슬을 실측했다.
+      <div class="meta">원천 <b>청약홈 · HUG(KOSIS)</b><br>기간 <b>2020-02 ~ 현재 · 초기분양률 2014~</b></div></div>
+    <p class="lede">분양 시장의 선행 관계는 명확하다 — <b>청약 접수(공고 시점)가 초기분양률(3~6개월 뒤)을 예고한다</b>.
+    공고 2,828건과 경쟁률 5만여 행을 HUG 초기분양률 12년 치에 이어 붙여 이 관계를 데이터로 검증했다.
     경쟁률 5:1 이상을 기록한 지역·분기는 다음 분기 초기분양률이 중위 99%에 달했고, 미달 지역·분기는 중위 73%에 그쳤다 — 상관 관측이며 개별 단지의 완판 예측이 아니다.</p>
     <div class="kpi-row" id="b-kpis"></div>
     <figure class="viz">
@@ -130,7 +150,7 @@
       <figcaption id="b-prem-cap"></figcaption>
     </figure>
     <figure class="viz">
-      <div class="viz-head"><div class="viz-title">초기분양률 관측지 — 시도 × 최근 12분기</div><div class="viz-unit">% · 기준선 80% (금=상회, 청=하회)</div></div>
+      <div class="viz-head"><div class="viz-title">지역·분기 초기분양률 히트맵 — 시도 × 최근 12분기</div><div class="viz-unit">% · 기준선 80% (금=상회, 청=하회)</div></div>
       <div id="b-heat"></div>
       <figcaption>HUG 민간아파트 평균 초기분양률(분양 개시 3~6개월 시점, 30세대 이상). 지역·분기 평균이며 단지 단위가 아니다.
       회색 대시 셀 = 해당 분기 분양 실적 없음(결측을 보간하지 않는다).</figcaption>
@@ -141,7 +161,7 @@
         <div id="b-rate"></div>
       </figure>
       <figure class="viz">
-        <div class="viz-head"><div class="viz-title">공고·무순위의 맥 — 분기별 건수</div><div class="viz-unit">건 · 무순위 = 미계약 발생의 대리지표</div></div>
+        <div class="viz-head"><div class="viz-title">분양공고·무순위공고 추이 — 분기별 건수</div><div class="viz-unit">건 · 무순위 = 미계약 발생의 대리지표</div></div>
         <div id="b-pulse"></div>
       </figure>
     </div>
@@ -160,19 +180,18 @@
     <div class="tobira"><div class="no">Ⅲ</div><h2>자본 — 리츠의 가격표</h2>
       <div class="meta">원천 <b>DART · 금융위 시세 · ECOS</b><br>대상 <b>상장 리츠 전 종목</b></div></div>
     <p class="lede">완성된 부동산이 자본시장에서 받는 성적표가 상장 리츠다. 두 숫자로 요약된다 —
-    <b>P/장부NAV(순자산 대비 몇 배에 거래되나)</b>와 <b>TTM 배당수익률(지난 1년 실제 배당)</b>.
+    <b>P/BV(시가총액 ÷ 장부 순자산)</b>와 <b>TTM 배당수익률(지난 1년 실제 배당)</b>.
     지금 한국 리츠는 장부가의 3분의 2 값에 거래되며, 정상 종목의 배당은 국고채 10년을 웃돈다.</p>
     <div class="kpi-row" id="r-kpis"></div>
     <figure class="viz">
-      <div class="viz-head"><div class="viz-title">싸고, 배당은 높은가 — 밸류에이션 사분면</div><div class="viz-unit">가로 P/장부NAV (1.0 = 장부가) · 세로 배당 스프레드(TTM − 국고10y) · 원 크기 = 시총</div></div>
+      <div class="viz-head"><div class="viz-title">싸고, 배당은 높은가 — 밸류에이션 사분면</div><div class="viz-unit">가로 P/BV (1.0 = 장부가) · 세로 배당 스프레드(TTM − 국고10y) · 원 크기 = 시총</div></div>
       <div id="r-quad"></div>
       <figcaption id="r-quad-cap"></figcaption>
     </figure>
     <figure class="viz">
-      <div class="viz-head"><div class="viz-title">장부가보다 크게 할인된 리츠는 어디인가 — P/장부NAV</div><div class="viz-unit">시가총액 ÷ 자본총계(장부가) · 1.0 = 장부가 그대로</div></div>
+      <div class="viz-head"><div class="viz-title">장부가보다 크게 할인된 리츠는 어디인가 — P/BV</div><div class="viz-unit">시가총액 ÷ 장부 순자산 · 1.0 = 장부가 동가</div></div>
       <div id="r-pnav"></div>
-      <figcaption>장부가 기준 근사치 — 감정평가 실질 NAV가 아니다(오피스·물류처럼 재평가 괴리가 큰 유형은 특히).
-      1.0 미만 = 순자산보다 싸게 거래. 해외 자산 리츠의 심층 할인은 현지 부실·환위험 반영.</figcaption>
+      <figcaption>P/BV는 회계 장부 기준 — 감정평가 실질 NAV와 다르다(재평가 괴리가 큰 오피스·물류는 특히). 감정평가 NAV 확보 후 P/NAV로 전환 예정. 1.0 미만 = 장부 순자산보다 싸게 거래. 해외 자산 리츠의 큰 폭 할인은 현지 부실·환위험 반영.</figcaption>
     </figure>
     <figure class="viz">
       <div class="viz-head"><div class="viz-title">지난 1년, 실제로 얼마를 배당했는가 — TTM 배당수익률</div><div class="viz-unit">최근 12개월 결산기 배당 합 ÷ 현 주가</div></div>
@@ -214,7 +233,7 @@
         <tbody>
           <tr><td>한국부동산원 청약홈 (2 API)</td><td>분양공고 2,828건·주택형 14,445(분양가 100%)·경쟁률 53,889·가점 29,115·무순위 1,627</td><td>소급 하한 2020-02(청약홈 개시)</td></tr>
           <tr><td>HUG × KOSIS</td><td>민간아파트 평균 초기분양률 — 23개 지역 × 2014Q3~ (846셀)</td><td>구계열+신계열 병합 · 지역 평균(단지 아님)</td></tr>
-          <tr><td>DART OpenAPI</td><td>리츠 재무 168 스냅샷·배당 240 결산기 블록</td><td>결산기(stlm_dt) 단위 — 리츠는 반기·분기 결산</td></tr>
+          <tr><td>DART OpenAPI</td><td>리츠 재무 168 스냅샷·배당 240 결산기</td><td>결산기(stlm_dt) 단위 — 리츠는 반기·분기 결산</td></tr>
           <tr><td>금융위 주식시세</td><td>리츠 24종 일별 종가·시총 (상장일~)</td><td>T+1 · KRX 로그인화(2025-12) 이후 표준 경로</td></tr>
           <tr><td>한국은행 ECOS</td><td>국고채 10년 월평균 150개월</td><td>스프레드 기준선</td></tr>
         </tbody>
@@ -237,10 +256,10 @@
       <div class="viz-head"><div class="viz-title">정직한 정의 — 오해하기 쉬운 것들</div></div>
       <div style="padding:4px 2px 2px; font-size:14px; line-height:1.9; color:var(--ink-2)">
         · <b>초기분양률 라벨은 시도·분기 "평균"</b>이다 — 개별 단지의 분양률이 아니며, 모델·차트 해석의 상한선이다.<br>
-        · <b>P/NAV의 NAV는 회계 장부가(자본총계)</b> — 감정평가 기반 실질 NAV와 다르다. 정밀판은 국토부 투자보고서로 후속.<br>
-        · <b>TTM 배당은 결산기 블록 합산</b> — 리츠마다 결산월이 달라 연도 합산은 왜곡된다. 특별배당(자산매각·청산성)은 태그로 분리.<br>
+        · <b>P/BV의 분모는 회계 장부 순자산</b> — 감정평가 기반 실질 NAV와 다르다. 후속 고도화에서 국토부 투자보고서 기반으로 정밀화한다.<br>
+        · <b>TTM 배당은 결산기별 배당의 합산</b> — 리츠마다 결산월이 달라 연도 합산은 왜곡된다. 특별배당(자산매각·청산성)은 태그로 분리.<br>
         · <b>무순위 공고는 미계약의 대리지표</b>다 — 청약 시스템엔 실계약·완판 시점 데이터가 존재하지 않는다.<br>
-        · 경쟁률은 표기 문자열("(△15)") 대신 <b>Σ접수 ÷ Σ공급으로 재계산</b> — 미달 표기 파싱 오류를 원천 차단.<br>
+        · 경쟁률은 표기 문자열("(△15)") 대신 <b>Σ접수 ÷ Σ공급으로 재계산</b> — 미달 표기 파싱 오류 가능성을 제거.<br>
         · 결측은 보간하지 않고 결측으로 표시한다. 원본 응답은 전량 캐시되어 전 수치가 재현 가능하다.
       </div>
     </figure>
