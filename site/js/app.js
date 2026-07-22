@@ -61,6 +61,18 @@
     $("#b-ladder-cap").innerHTML = D.ladder.map(x => `${x.name} n=${x.n}`).join(" · ") +
       " — 금 = 초기분양률 중위 95% 이상. 시도·분기 평균의 상관 관측이며 개별 단지 예측이 아니다.";
 
+    // ①-2 프리미엄 산점 (시도 프록시 — 정직 캡션)
+    const PR = D.premium;
+    if (PR && $("#b-prem")) {
+      C.scatter($("#b-prem"), PR.pts.map(p => ({ ...p, y: Math.min(p.y, 40), label: false })),
+        { xName: "분양가/시세", yName: "경쟁률", xRef: 1.0, yRef: 1,
+          groups: { "수도권": "--s2", "지방": "--s4" },
+          xFmt: v => v.toFixed(1), yFmt: v => v.toFixed(0) + ":1", sizeK: 0.12, height: 480,
+          aria: "분양가 프리미엄 대 경쟁률" });
+      $("#b-prem-cap").textContent = `공고 ${PR.n}건(시세 매칭 실패·극단 ${PR.dropped}건 제외). ` +
+        `log-log 상관 r = ${PR.r_loglog} — 사실상 무상관이다. 시세 분모가 시도 "대표 시군구" 프록시라 입지 차이가 씻겨나간 결과로, ` +
+        "가격 적정성은 시군구 단위 시세 매칭(로드맵) 후에야 판정할 수 있다. 결과가 약하다는 것 자체를 기록해 둔다.";
+    }
     // ② 히트맵 (기준선 80% 발산)
     C.heatmap($("#b-heat"), {
       xs: D.heat.xs.map(q => q.replace("Q", "'")), ys: D.heat.ys,
@@ -131,9 +143,14 @@
       points: R.treasury.map((p, i) => ({ x: i, label: fmt.ym(p.ym), y: p.rate })) }],
       { aria: "국고채 10년 월평균", yFmt: v => v.toFixed(1) + "%", width: 560, height: 300, rightPad: 64 });
     $("#r-t10-cap").textContent = `최신 ${K.t10.toFixed(2)}% — 정상 리츠 배당 중위와의 간격 +${K.spread.toFixed(1)}%p가 리츠에 요구되는 위험 보상이다.`;
+    // ③-2 LTV 근사 (장부)
+    const byLtv = R.items.filter(it => it.ltv != null).sort((a, b) => b.ltv - a.ltv);
+    C.hbars($("#r-ltv"), byLtv.map(it => ({ name: it.name, value: it.ltv })),
+      { color: "--s3", emph: byLtv.filter(it => it.ltv >= 60).map(it => it.name),
+        fmt: v => v.toFixed(0) + "%", labelW: 170, width: 560, rowH: 24, aria: "리츠별 자산 대비 부채" });
     // ④ 섹터 표
-    $("#r-sector").innerHTML = "<thead><tr><th>섹터</th><th class='num'>종목</th><th class='num'>P/장부NAV</th><th class='num'>TTM 배당</th></tr></thead><tbody>" +
-      R.sectors.map(s => `<tr><td>${s.name}</td><td class="num">${s.n}</td><td class="num">${s.pb_med.toFixed(2)}</td><td class="num">${s.dy_med != null ? s.dy_med.toFixed(1) + "%" : "―"}</td></tr>`).join("") +
+    $("#r-sector").innerHTML = "<thead><tr><th>섹터</th><th class='num'>종목</th><th class='num'>P/장부NAV</th><th class='num'>TTM 배당</th><th class='num'>부채/자산</th></tr></thead><tbody>" +
+      R.sectors.map(s => { const ls = R.items.filter(i => i.ltv != null && sector(i.type) === s.name).map(i => i.ltv).sort((a, b) => a - b); const lm = ls.length ? ls[Math.floor(ls.length / 2)].toFixed(0) + "%" : "―"; return `<tr><td>${s.name}</td><td class="num">${s.n}</td><td class="num">${s.pb_med.toFixed(2)}</td><td class="num">${s.dy_med != null ? s.dy_med.toFixed(1) + "%" : "―"}</td><td class="num">${lm}</td></tr>`; }).join("") +
       "</tbody>";
   }
 

@@ -125,6 +125,11 @@
       <figcaption id="b-ladder-cap"></figcaption>
     </figure>
     <figure class="viz">
+      <div class="viz-head"><div class="viz-title">싸게 내놓으면 더 몰리는가 — 분양가 프리미엄 × 경쟁률</div><div class="viz-unit">가로 = 분양가 ÷ 시도 시세(1.0 = 동가) · 세로 = 경쟁률(40:1 상한 표기) · 원 = 공급세대</div></div>
+      <div id="b-prem"></div>
+      <figcaption id="b-prem-cap"></figcaption>
+    </figure>
+    <figure class="viz">
       <div class="viz-head"><div class="viz-title">초기분양률 관측지 — 시도 × 최근 12분기</div><div class="viz-unit">% · 기준선 80% (금=상회, 청=하회)</div></div>
       <div id="b-heat"></div>
       <figcaption>HUG 민간아파트 평균 초기분양률(분양 개시 3~6개월 시점, 30세대 이상). 지역·분기 평균이며 단지 단위가 아니다.
@@ -181,6 +186,13 @@
         <figcaption id="r-t10-cap"></figcaption>
       </figure>
       <figure class="viz">
+        <div class="viz-head"><div class="viz-title">부채는 어디가 무거운가 — 자산 대비 부채</div><div class="viz-unit">부채총계 ÷ 자산총계 (장부, LTV 근사)</div></div>
+        <div id="r-ltv"></div>
+        <figcaption>회계 장부 기준 근사 — 실무 LTV(감정가 대비 담보대출)와 다르다. 만기 구조·금리는 후속 수집.</figcaption>
+      </figure>
+    </div>
+    <div class="two-col">
+      <figure class="viz">
         <div class="viz-head"><div class="viz-title">섹터별 요약</div><div class="viz-unit">중위값</div></div>
         <div style="overflow-x:auto"><table id="r-sector"></table></div>
         <figcaption>섹터는 주 자산 기준 단순 분류. 재간접·복합은 성격이 섞여 있어 해석에 주의.</figcaption>
@@ -207,6 +219,19 @@
           <tr><td>한국은행 ECOS</td><td>국고채 10년 월평균 150개월</td><td>스프레드 기준선</td></tr>
         </tbody>
       </table></div>
+    </figure>
+    <figure class="viz">
+      <div class="viz-head"><div class="viz-title">커버리지 매트릭스 — 이 데이터를 어디까지 믿을 것인가</div></div>
+      <div style="overflow-x:auto"><table>
+        <thead><tr><th>데이터</th><th>지역 범위</th><th>기간</th><th>단위</th><th>커버리지</th></tr></thead>
+        <tbody>
+          <tr><td>청약 경쟁률</td><td>전국</td><td>2020-02~</td><td>공고·주택형</td><td class="num">경쟁률 85% · 분양가 98%</td></tr>
+          <tr><td>초기분양률(라벨)</td><td>23개 지역</td><td>2014Q3~</td><td>지역·분기 평균</td><td class="num">846셀 (실적 없는 분기 결측)</td></tr>
+          <tr><td>리츠 시세·재무</td><td>상장 24종</td><td>상장일~</td><td>일별·결산기</td><td class="num">시세 24/24 · 배당 24/24 · LTV 23/24</td></tr>
+          <tr><td>정비사업</td><td>대구·경기·부산 우선</td><td>지역별 상이</td><td>구역</td><td class="num">구축 중 (Ⅰ장)</td></tr>
+        </tbody>
+      </table></div>
+      <figcaption>프리미엄 산점의 시세 분모는 시도 대표 시군구 프록시 — 공고 소재 시군구와 다를 수 있어 상관을 희석한다(시군구 매칭이 로드맵 1순위인 이유).</figcaption>
     </figure>
     <figure class="viz">
       <div class="viz-head"><div class="viz-title">정직한 정의 — 오해하기 쉬운 것들</div></div>

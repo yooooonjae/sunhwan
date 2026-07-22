@@ -71,9 +71,40 @@ def bunyang_block():
     latest = [{"name": s, "value": next((x["rate"] for x in hug[s] if x["q"] == latest_q), None)}
               for s in sidos]
 
+    # ⑥ 분양가 프리미엄 × 경쟁률 산점 — 시세 = 수지 RTMS 시도 대표구 중위(공고월)
+    prem_pts, n_drop = [], 0
+    rtms = json.load(open("/Users/iseul/개발/data/rtms.json"))["trades"]
+    CAP_REGIONS = {"서울", "경기", "인천"}
+    med_cache = {}
+    for sido, gus in rtms.items():
+        gu = next(iter(gus))
+        med_cache[sido] = {p["ym"]: p["median_price_per_m2"] for p in gus[gu] if p.get("median_price_per_m2")}
+    for r in rows:
+        if r["price_m2"] is None or r["compet_total"] is None:
+            continue
+        ym = r["date"][:4] + r["date"][5:7]
+        base = med_cache.get(r["sido"], {}).get(ym)
+        if not base:
+            n_drop += 1
+            continue
+        prem = (r["price_m2"] * 1e4) / base  # 만원/㎡ → 원/㎡ 대비 배율
+        if not (0.4 <= prem <= 3.0) or r["compet_total"] > 80:
+            n_drop += 1
+            continue
+        prem_pts.append({"x": round(prem, 2), "y": round(min(r["compet_total"], 80), 2),
+                         "size": r["supply"] or 100,
+                         "group": "수도권" if r["sido"] in CAP_REGIONS else "지방",
+                         "name": (r["name"] or "")[:16]})
+    import math
+    xs_ = [math.log(p["x"]) for p in prem_pts]; ys_ = [math.log1p(p["y"]) for p in prem_pts]
+    n_ = len(prem_pts); mx_, my_ = sum(xs_) / n_, sum(ys_) / n_
+    r_prem = (sum((a - mx_) * (b - my_) for a, b in zip(xs_, ys_))
+              / (sum((a - mx_) ** 2 for a in xs_) ** .5 * sum((b - my_) ** 2 for b in ys_) ** .5))
+    premium = {"pts": prem_pts, "n": n_, "dropped": n_drop, "r_loglog": round(r_prem, 2)}
+
     return {"heat": heat, "ladder": ladder, "price_cap": price_cap,
             "pulse": pulse, "latest": {"q": latest_q, "rows": latest},
-            "meta": ds["meta"]}
+            "premium": premium, "meta": ds["meta"]}
 
 
 def reits_block():
@@ -99,12 +130,13 @@ def reits_block():
             tags.append("거래정지")
         if any(b.get("yld", 0) >= 6 for b in blocks):
             tags.append("특별배당")
+        ltv = round(eq["liab"] / eq["assets"] * 100, 1) if eq.get("liab") and eq.get("assets") else None
         items.append({
             "ticker": t, "name": meta["name"], "type": meta["asset_type"],
             "close": last["close"], "mcap_eok": round(last["mcap"] / 1e8),
             "pb": round(last["mcap"] / eq["equity"], 2),
             "dy": round(dps / last["close"] * 100, 1) if dps else None,
-            "tags": tags, "asof": last["d"],
+            "ltv": ltv, "tags": tags, "asof": last["d"],
         })
 
     normal = [i["dy"] for i in items if i["dy"] and not i["tags"]]
