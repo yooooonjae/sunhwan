@@ -840,5 +840,79 @@
     return svg;
   }
 
-  global.Charts = { line, smallMultiples, waterfall, tornado, heatmap, gauge, fan, hbars, phase, scatter, fmt, tipHide, alignByLabel };
+  /* ---------- 대한민국 시도 코로플레스 (초기분양률) ---------- */
+  // geo: [{name, d(svg path)}] (window.__KOREA__) · data: {시도명:{q,rate,prev_q,prev_rate,delta}}
+  // 채색 = --seq-100..700 순차 램프(높을수록 진하게) · 자료 없는 시도 = 중성(점선) · 탭 → 외곽선+판독.
+  // 순환 tip 시스템(bindTip) 재사용. 선택 상태는 root._mapSel 에 영속(테마 재렌더 방어).
+  function koreaMap(root, geo, data, opts) {
+    opts = opts || {};
+    root.innerHTML = "";
+    const SEQ = ["--seq-100", "--seq-200", "--seq-300", "--seq-400", "--seq-500", "--seq-600", "--seq-700"];
+    const THRESH = [30, 45, 60, 75, 85, 95];               // 6 컷 → 7 구간 (분양률 %)
+    const binOf = r => { let i = 0; while (i < THRESH.length && r >= THRESH[i]) i++; return i; };
+    const fq = q => (q ? q.replace("Q", " Q") : "");
+    const delTag = d => d == null ? "" : d > 0 ? "▲ +" + d.toFixed(1) + "%p"
+      : d < 0 ? "▼ " + Math.abs(d).toFixed(1) + "%p" : "± 0.0%p";
+    const delCol = d => d == null ? css("--ink-3") : d > 0 ? css("--pos") : d < 0 ? css("--neg") : css("--ink-3");
+
+    const wrap = document.createElement("div"); wrap.className = "korea-map"; root.appendChild(wrap);
+    const svg = el("svg", { viewBox: opts.viewBox || "0 0 520 690", role: "img",
+      "aria-label": opts.aria || "대한민국 시도별 최신 분기 초기분양률 지도" }, wrap);
+    const read = document.createElement("div"); read.className = "korea-read";
+    const paths = {}; let overlay = null;
+
+    function readHTML(name) {
+      if (!name) {
+        let lo = null;
+        geo.forEach(g => { const r = data[g.name]; if (r && r.rate != null && (!lo || r.rate < lo.rate)) lo = { name: g.name, ...r }; });
+        return '<span class="kr-hint">지역을 클릭·탭하면 최신 분기 초기분양률이 여기 표시된다.</span>'
+          + (lo ? ' <span class="kr-low">현재 최저 <b>' + lo.name + " " + lo.rate.toFixed(1) + "%</b> (" + fq(lo.q) + ")</span>" : "");
+      }
+      const r = data[name];
+      if (!r || r.rate == null) return "<b>" + name + "</b> — 최신 가용 분기 자료 없음";
+      return "<b>" + name + " · " + fq(r.q) + "</b> — 초기분양률 <b class='num'>" + r.rate.toFixed(1) + "%</b>"
+        + (r.delta == null ? ' <span class="kr-hint">(직전 관측 없음)</span>'
+          : ' <span style="color:' + delCol(r.delta) + '">· 직전(' + fq(r.prev_q) + ") 대비 " + delTag(r.delta) + "</span>");
+    }
+    function setSel(name) {
+      root._mapSel = name || null;
+      if (overlay) { overlay.remove(); overlay = null; }
+      for (const k in paths) paths[k].classList.toggle("is-sel", k === name);
+      const g = name && geo.find(x => x.name === name);
+      if (g) overlay = el("path", { d: g.d, fill: "none", stroke: css("--ink"),
+        "stroke-width": 2.2, "stroke-linejoin": "round", "pointer-events": "none" }, svg);
+      read.innerHTML = readHTML(name);
+    }
+
+    geo.forEach(g => {
+      const r = data[g.name], has = r && r.rate != null;
+      const p = el("path", { d: g.d, fill: has ? css(SEQ[binOf(r.rate)]) : css("--surface-2"),
+        stroke: has ? css("--surface") : css("--hairline-2"), "stroke-width": 1, "stroke-linejoin": "round" }, svg);
+      if (!has) p.setAttribute("stroke-dasharray", "3 3");
+      p.classList.add("kr-prov");
+      p.setAttribute("tabindex", "0"); p.setAttribute("role", "button");
+      p.setAttribute("aria-label", g.name + (has ? " 초기분양률 " + r.rate.toFixed(0) + "퍼센트 · " + fq(r.q) : " 자료 없음"));
+      paths[g.name] = p;
+      bindTip(p, () => has
+        ? "<div class='t-title'>" + g.name + " · " + fq(r.q) + "</div>초기분양률 <b class='num'>" + r.rate.toFixed(1) + "%</b>"
+          + (r.delta == null ? "<br><span style='opacity:.7'>직전 관측 없음</span>"
+            : "<br><span style='color:" + delCol(r.delta) + "'>직전(" + fq(r.prev_q) + ") 대비 " + delTag(r.delta) + "</span>")
+        : "<div class='t-title'>" + g.name + "</div>최신 가용 분기 자료 없음");
+      const pick = () => setSel(root._mapSel === g.name ? null : g.name);   // 재탭 = 해제
+      p.addEventListener("click", pick);
+      p.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
+    });
+
+    // 범례 (낮음→높음 램프 + 자료 없음)
+    const legend = document.createElement("div"); legend.className = "korea-legend";
+    legend.innerHTML = '<span class="kl-lab">낮음</span><div class="kl-ramp">'
+      + SEQ.map(s => '<i style="background:' + css(s) + '"></i>').join("")
+      + '</div><span class="kl-lab">높음 (분양률 %)</span><span class="kl-na"><i></i>자료 없음</span>';
+    wrap.appendChild(legend);
+    root.appendChild(read);
+    setSel(root._mapSel || null);   // 이전 선택 복원 (없으면 기본 판독)
+    return svg;
+  }
+
+  global.Charts = { line, smallMultiples, waterfall, tornado, heatmap, gauge, fan, hbars, phase, scatter, koreaMap, fmt, tipHide, alignByLabel };
 })(typeof window !== "undefined" ? window : globalThis);

@@ -71,6 +71,26 @@ def bunyang_block():
     latest = [{"name": s, "value": next((x["rate"] for x in hug[s] if x["q"] == latest_q), None)}
               for s in sidos]
 
+    # ⑦ 지도 채색용: 각 시도의 "지역별 최신 가용 분기" 초기분양률 + 직전 관측 대비.
+    #    집계 키(전국·수도권·지방·광역시 계열)는 지도에서 제외 — SIDO_ORDER 의 실제 17개 시도만.
+    def _qk(q):  # "2026Q1" → 정렬 키
+        return (int(q[:4]), int(q[5]))
+    geo_map = []
+    for s in SIDO_ORDER:
+        if s == "전국":
+            continue
+        ser = sorted(hug.get(s, []), key=lambda x: _qk(x["q"]))
+        if not ser:
+            geo_map.append({"name": s, "q": None, "rate": None,
+                            "prev_q": None, "prev_rate": None, "delta": None})
+            continue
+        last = ser[-1]
+        prev = ser[-2] if len(ser) >= 2 else None
+        geo_map.append({"name": s, "q": last["q"], "rate": last["rate"],
+                        "prev_q": prev["q"] if prev else None,
+                        "prev_rate": prev["rate"] if prev else None,
+                        "delta": round(last["rate"] - prev["rate"], 1) if prev else None})
+
     # ⑥ 분양가 프리미엄 × 경쟁률 산점 — 시세 = 수지 RTMS 시도 대표구 중위(공고월)
     prem_pts, n_drop = [], 0
     rtms = json.load(open("/Users/iseul/개발/data/rtms.json"))["trades"]
@@ -104,7 +124,7 @@ def bunyang_block():
 
     return {"heat": heat, "ladder": ladder, "price_cap": price_cap,
             "pulse": pulse, "latest": {"q": latest_q, "rows": latest},
-            "premium": premium, "meta": ds["meta"]}
+            "map": geo_map, "premium": premium, "meta": ds["meta"]}
 
 
 def jeongbi_block():

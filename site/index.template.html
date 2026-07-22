@@ -278,11 +278,18 @@
         <div id="b-pulse"></div>
       </figure>
     </div>
-    <figure class="viz">
-      <div class="viz-head"><div class="viz-title" id="b-latest-title">시도별 초기분양률 — 최신 분기</div><div class="viz-unit">%</div></div>
-      <div id="b-latest"></div>
-      <figcaption id="b-cap-latest"></figcaption>
-    </figure>
+    <div class="map-duo">
+      <figure class="viz">
+        <div class="viz-head"><div class="viz-title">지도로 보는 최신 분기 초기분양률</div><div class="viz-unit">% · 지역별 최신 가용 분기 · 클릭·탭하여 판독</div></div>
+        <div id="b-koreamap"></div>
+        <figcaption id="b-cap-map"></figcaption>
+      </figure>
+      <figure class="viz">
+        <div class="viz-head"><div class="viz-title" id="b-latest-title">시도별 초기분양률 — 최신 분기</div><div class="viz-unit">%</div></div>
+        <div id="b-latest"></div>
+        <figcaption id="b-cap-latest"></figcaption>
+      </figure>
+    </div>
   </div>
 </section>
 
@@ -513,6 +520,7 @@
 
 <script>
 window.__DATA_SUNHWAN = {{DATA}};
+window.__KOREA__ = {{KOREA}};
 </script>
 <script>
 {{JS:charts.js}}

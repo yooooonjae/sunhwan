@@ -128,6 +128,23 @@
     C.hbars($("#b-latest"), rows, { color: "--s2", emph: ["전국"], fmt: v => v.toFixed(0) + "%",
       labelW: 60, width: 1160, rowH: 27, aria: "시도별 초기분양률 최신 분기" });
     $("#b-cap-latest").textContent = "결측 시도는 해당 분기 30세대 이상 민간분양 실적이 없는 곳 — 공급 자체가 멈춘 시장이다.";
+
+    // ④-2 지도 코로플레스 (지역별 최신 가용 분기) — 기존 비교 막대와 병행. 집계 키는 D.map 단계에서 이미 제외.
+    if (window.__KOREA__ && $("#b-koreamap")) {
+      const mrows = (D.map || []).reduce((o, m) => (o[m.name] = m, o), {});
+      C.koreaMap($("#b-koreamap"), window.__KOREA__, mrows, { aria: "시도별 최신 분기 초기분양률 지도" });
+      const wr = (D.map || []).filter(m => m.rate != null);
+      if (wr.length) {
+        const lo = wr.reduce((a, b) => (b.rate < a.rate ? b : a), wr[0]);
+        const hi = wr.reduce((a, b) => (b.rate > a.rate ? b : a), wr[0]);
+        const hiNames = wr.filter(m => m.rate >= hi.rate - 1e-9).map(m => m.name);
+        $("#b-cap-map").textContent =
+          "채색 = 각 시도 최신 가용 분기의 민간아파트 평균 초기분양률(지역 평균 — 개별 단지가 아니다). " +
+          "최고 " + hi.rate.toFixed(1) + "%(" + hiNames.join("·") + ")와 최저 " + lo.rate.toFixed(1) +
+          "%(" + lo.name + " " + lo.q.replace("Q", " Q") + ")가 각 지역 최신 가용 분기 기준 약 " +
+          Math.round(hi.rate / lo.rate) + "배 벌어진다 — 색이 옅을수록(낮을수록) 초기 소진이 더딘 시장이다.";
+      }
+    }
   }
 
   /* ---------- Ⅲ. 운영 ---------- */
