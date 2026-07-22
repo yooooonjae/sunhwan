@@ -392,11 +392,11 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
       <a class="gate" href="#/ch1"><span class="st on">가동 중</span><div class="no">Ⅰ</div>
         <h4>공급 — 정비의 파이프라인</h4><p>대구·경기 단계 이력 + 부산 스냅샷, 1,061개 구역. 조합설립→사업시행 중위 3~4년의 실측.</p></a>
       <a class="gate" href="#/ch2"><span class="st on">가동 중</span><div class="no">Ⅱ</div>
-        <h4>분양 — 청약의 성적표</h4><p>공고 2,828건 · 경쟁률 5만 행 · 라벨 12년. 경쟁률 5:1과 완판의 상관을 실측했다.</p></a>
+        <h4>분양 — 청약의 성적표</h4><p>공고 2,828건 · 경쟁률 5만 행 · 초기분양률 12년. 경쟁률 구간과 다음 분기 지역 분양률의 관계를 분석했다.</p></a>
       <a class="gate" href="#/ch3"><span class="st on">가동 중</span><div class="no">Ⅲ</div>
         <h4>운영 — 임대시장의 체온</h4><p>오피스 공실률·임대지수·소득수익률 — 배당과 매각가치가 태어나는 곳.</p></a>
       <a class="gate" href="#/ch4"><span class="st on">가동 중</span><div class="no">Ⅳ</div>
-        <h4>자본 — 리츠의 가격표</h4><p>상장 리츠 24종의 할인율과 배당 — 완성된 부동산에 시장이 매기는 값.</p></a>
+        <h4>자본 — 리츠의 가격표</h4><p>상장 리츠 24종의 P/BV·배당 — 자산가치·부채 구조·배당 지속성에 대한 자본시장의 평가.</p></a>
     </div>
   </div>
 </section>
@@ -560,9 +560,9 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
         <figcaption id="r-t10-cap"></figcaption>
       </figure>
       <figure class="viz">
-        <div class="viz-head"><div class="viz-title">부채는 어디가 무거운가 — 자산 대비 부채</div><div class="viz-unit">부채총계 ÷ 자산총계 (장부, LTV 근사)</div></div>
+        <div class="viz-head"><div class="viz-title">부채는 어디가 무거운가 — 장부상 부채비율</div><div class="viz-unit">부채총계 ÷ 자산총계 (회계 기준)</div></div>
         <div id="r-ltv"></div>
-        <figcaption>회계 장부 기준 근사 — 실무 LTV(감정가 대비 담보대출)와 다르다. 만기 구조·금리는 후속 수집.</figcaption>
+        <figcaption>회계상 레버리지 지표(비금융부채 포함) — 담보대출÷감정가 기준의 실무 LTV와 다르다. 만기 구조·금리는 후속 수집.</figcaption>
       </figure>
     </div>
     <div class="two-col">
@@ -590,7 +590,7 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
     <div class="kpi-row" id="l-kpis"></div>
     <div class="two-col">
       <figure class="viz">
-        <div class="viz-head"><div class="viz-title">다리 ① 공급 → 분양: 알려진 파이프라인</div><div class="viz-unit">만 세대 · 공고로 확정된 향후 8분기 입주예정</div></div>
+        <div class="viz-head"><div class="viz-title">다리 ① 공급 → 분양: 공고 기준 향후 8분기 입주예정 물량</div><div class="viz-unit">만 세대 · 각 분기 시점에 공고로 확인 가능한 물량</div></div>
         <div id="l-pipe"></div>
       </figure>
       <figure class="viz">
@@ -602,7 +602,7 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
       <div class="viz-head"><div class="viz-title">다리 ② 금리 → 운영: 서울 오피스 스프레드의 소멸</div><div class="viz-unit">%p · 소득수익률 연환산 − 국고10년(분기 평균)</div></div>
       <div id="l-spread"></div>
       <figcaption>2016년 +3%p에 달했던 운영 스프레드가 금리 상승과 함께 0 부근까지 좁혀졌다 —
-      "임대료가 국채보다 겨우 나은 시대"가 리츠 할인(Ⅳ장)의 거시 배경이다.</figcaption>
+      오피스 소득수익률이 국고채 수익률 수준까지 좁혀진 시기 — 리츠 할인(Ⅳ장)의 거시 배경이다.</figcaption>
     </figure>
     <div class="two-col">
       <figure class="viz">
@@ -647,7 +647,7 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
         <thead><tr><th>데이터</th><th>지역 범위</th><th>기간</th><th>단위</th><th>커버리지</th></tr></thead>
         <tbody>
           <tr><td>청약 경쟁률</td><td>전국</td><td>2020-02~</td><td>공고·주택형</td><td class="num">경쟁률 85% · 분양가 98%</td></tr>
-          <tr><td>초기분양률(라벨)</td><td>23개 지역</td><td>2014Q3~</td><td>지역·분기 평균</td><td class="num">846셀 (실적 없는 분기 결측)</td></tr>
+          <tr><td>초기분양률(분석 대상값)</td><td>23개 지역</td><td>2014Q3~</td><td>지역·분기 평균</td><td class="num">846개 관측값 (실적 없는 분기 결측)</td></tr>
           <tr><td>오피스 임대동향(운영)</td><td>17개 시도</td><td>2016Q3~</td><td>시도·분기</td><td class="num">공실·임대지수·수익률 전 시도</td></tr>
           <tr><td>리츠 시세·재무</td><td>상장 24종</td><td>상장일~</td><td>일별·결산기</td><td class="num">시세 24/24 · 배당 24/24 · LTV 23/24</td></tr>
           <tr><td>정비사업</td><td>대구·경기·부산 (1,061구역)</td><td>지역별 상이</td><td>구역</td><td class="num">1차 구축 완료(대구·경기·부산) · 전국 확장 중</td></tr>
@@ -658,7 +658,7 @@ footer.colophon .hanja { font-family: var(--font-display); color: var(--blueprin
     <figure class="viz">
       <div class="viz-head"><div class="viz-title">정직한 정의 — 오해하기 쉬운 것들</div></div>
       <div style="padding:4px 2px 2px; font-size:14px; line-height:1.9; color:var(--ink-2)">
-        · <b>초기분양률 라벨은 시도·분기 "평균"</b>이다 — 개별 단지의 분양률이 아니며, 모델·차트 해석의 상한선이다.<br>
+        · <b>초기분양률 관측값은 시도·분기 "평균"</b>이다 — 개별 단지의 분양률이 아니며, 모델·차트 해석의 상한선이다.<br>
         · <b>P/BV의 분모는 회계 장부 순자산</b> — 감정평가 기반 실질 NAV와 다르다. 후속 고도화에서 국토부 투자보고서 기반으로 정밀화한다.<br>
         · <b>TTM 배당은 결산기별 배당의 합산</b> — 리츠마다 결산월이 달라 연도 합산은 왜곡된다. 특별배당(자산매각·청산성)은 태그로 분리.<br>
         · <b>리츠 표본은 상장 전수 24종</b> — 위탁관리 22 + 자기관리 2(케이탑·에이리츠). 거래정지(에이리츠)도 목록에 남기고 태그로 구분한다. 공식 집계(23개)와의 차이는 자기관리·거래정지 포함 기준 차이다.<br>
