@@ -14,6 +14,9 @@ body {
   color: var(--ink);
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  /* 한글 조판 — 낱말 중간 끊김 방지(keep-all), 긴 무공백 토큰(URL·숫자)만 분리 (시차와 동일 패턴) */
+  word-break: keep-all;
+  overflow-wrap: break-word;
   /* 관측지 눈금: 미세 점그리드 + 상단 대원(컴퍼스 자국) */
   background-image:
     radial-gradient(circle at 1px 1px, var(--grid) 1px, transparent 1.6px);

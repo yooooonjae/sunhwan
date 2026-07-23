@@ -31,7 +31,7 @@ nav.appbar .tabs a:hover:not(.active) { color: var(--blueprint-2); }
 .nav-menu-btn {
   display: none; flex: none; align-items: center; gap: 6px;
   border: 1px solid var(--hairline-2); background: none; color: var(--ink-2);
-  border-radius: 99px; padding: 7px 14px; font-size: 13.5px; font-weight: 700;
+  border-radius: 99px; padding: 7px 14px; min-height: 44px; font-size: 13.5px; font-weight: 700;
   cursor: pointer; font-family: inherit;
 }
 .nav-menu-btn:hover { border-color: var(--blueprint); color: var(--blueprint-2); }
@@ -128,6 +128,25 @@ nav.appbar .tabs a:hover:not(.active) { color: var(--blueprint-2); }
 /* 궤도 SVG */
 .orbit-box { display: flex; justify-content: center; }
 .orbit-box svg { width: min(420px, 78vw); height: auto; }
+/* 초소형(≤420px): 궤도 SVG 대신 2×2 관문 그리드 (동일 앵커·정적 마크업) */
+.orbit-mobile { display: none; }
+@media (max-width: 420px) {
+  .orbit-box svg { display: none; }
+  .orbit-mobile { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+  .orbit-mobile .om-node {
+    display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px;
+    min-height: 72px; padding: 14px 16px;
+    border: 1px solid var(--hairline-2); border-left-width: 3px; border-radius: var(--radius);
+    background: var(--surface); color: var(--ink);
+  }
+  .orbit-mobile .om-node:hover { color: var(--ink); }
+  .orbit-mobile .om-no { font-family: var(--font-display); font-size: 13px; color: var(--ink-3); }
+  .orbit-mobile .om-nm { font-size: 17px; font-weight: 800; }
+  .orbit-mobile .om-node:nth-child(1) { border-left-color: var(--stage-supply); }
+  .orbit-mobile .om-node:nth-child(2) { border-left-color: var(--stage-sale); }
+  .orbit-mobile .om-node:nth-child(3) { border-left-color: var(--stage-operation); }
+  .orbit-mobile .om-node:nth-child(4) { border-left-color: var(--stage-capital); }
+}
 /* 8차 리뷰 ⑥: 4노드를 각 장 링크로 (투명 히트원으로 터치영역 확대·시각 유지) */
 .orbit-node { cursor: pointer; }
 .orbit-node .node-ring { transition: stroke-width .2s ease; }
@@ -180,6 +199,7 @@ nav.appbar .tabs a:hover:not(.active) { color: var(--blueprint-2); }
 figure.viz {
   background: var(--surface); border: 1.5px solid var(--hairline-2); border-radius: var(--radius);
   box-shadow: var(--shadow-1); padding: 18px 20px 14px; margin: 0 0 var(--sp-4);
+  min-width: 0; /* 그리드/플렉스 항목이 트랙보다 커지지 않게 (keep-all 조판 시 min-content 오버플로 차단) */
 }
 .viz-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
 .viz-title { font-weight: 800; font-size: 16px; }
