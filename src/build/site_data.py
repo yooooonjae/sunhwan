@@ -341,15 +341,33 @@ def div_yield(dps, close):
 
 
 def debt_ratio(liab, assets):
-    """부채비율(총자산 대비, %) = 부채 / 자산 × 100. 결측이면 None (순수 함수)."""
-    return round(liab / assets * 100, 1) if liab and assets else None
+    """부채비율(총자산 대비, %) = 부채 / 자산 × 100 (순수 함수 — 계약 테스트 대상).
+
+    부채 0 은 유효한 0.0%(무차입) — 결측이 아니다. 부채·자산이 결측(None)이거나
+    자산이 0(분모 불능)이면 None.
+    """
+    if liab is None or not assets:
+        return None
+    return round(liab / assets * 100, 1)
 
 
-def reits_block():
+def reits_block(as_of=None):
     P = json.load(open(D / "reits_price.json"))["prices"]
     F = json.load(open(D / "reits_fin.json"))
     R = json.load(open(D / "reits_corp.json"))["reits"]
     tre = json.load(open(D / "treasury10y.json"))["series"]
+
+    # 거래정지(stale) 판정 기준일 — 하드코딩 금지. 명시 as_of 우선(ISO 문자열 허용),
+    # 없으면 데이터에서 유도 = 전 리츠 최신 종가일(시장 최근 거래일), 그마저 없으면 빌드 시점.
+    if as_of is None:
+        last_days = [pr[-1]["d"] for pr in P.values() if pr]
+        if last_days:
+            d = max(last_days)  # "YYYYMMDD" — 제로패딩이라 사전식 최대 = 최신
+            as_of = datetime.date(int(d[:4]), int(d[4:6]), int(d[6:8]))
+        else:
+            as_of = datetime.date.today()
+    elif isinstance(as_of, str):
+        as_of = datetime.date.fromisoformat(as_of)
 
     items = []
     for t, meta in R.items():
@@ -362,7 +380,7 @@ def reits_block():
         cut = (datetime.date.fromisoformat(asof) - datetime.timedelta(days=370)).isoformat()
         blocks = [b for b in fin["div"] if cut < b["stlm_dt"] <= asof]
         dps = sum(b.get("dps", 0) for b in blocks)
-        stale = (datetime.date(2026, 7, 22) - datetime.date.fromisoformat(asof)).days > 30
+        stale = (as_of - datetime.date.fromisoformat(asof)).days > 30
         tags = []
         if stale:
             tags.append("거래정지")

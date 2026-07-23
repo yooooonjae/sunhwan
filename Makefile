@@ -38,10 +38,22 @@ serve: build  ## 로컬 미리보기 (기본 http://localhost:8791)
 	@echo "→ http://localhost:$(PORT)  (Ctrl+C 종료)"
 	@cd web && $(PY) -m http.server $(PORT)
 
-check:  ## 스모크 검증 — Python 구문 + JS 구문 (CI 동등)
+check:  ## CI 동등 검증 — 구문·fixture 빌드·pytest·node 라우트 (추적 산출물 보존)
 	$(PY) -m py_compile src/build/*.py src/collect/*.py src/analysis/*.py
 	@for f in site/js/*.js; do node --check "$$f"; done
-	@echo "구문 검사 통과"
+	@bak=$$(mktemp -d); \
+	 cp DATA_MANIFEST.json out/site_bundle.json web/index.html "$$bak/" 2>/dev/null || true; \
+	 trap 'cp "$$bak/DATA_MANIFEST.json" DATA_MANIFEST.json 2>/dev/null || true; \
+	       cp "$$bak/site_bundle.json" out/site_bundle.json 2>/dev/null || true; \
+	       cp "$$bak/index.html" web/index.html 2>/dev/null || true; rm -rf "$$bak"' EXIT; \
+	 echo "→ fixture 빌드 (SUJI_DIR=tests/fixtures)"; \
+	 SUJI_DIR=tests/fixtures $(PY) src/build/site_data.py >/dev/null && \
+	 SUJI_DIR=tests/fixtures $(PY) src/build/assemble.py >/dev/null && \
+	 if $(PY) -c "import pytest" 2>/dev/null; then $(PY) -m pytest -q tests; \
+	 else echo "→ pytest 미설치 → 표준 실행기 폴백"; \
+	      $(PY) tests/test_bunyang.py && $(PY) tests/test_reits.py; fi && \
+	 node tests/test_routes.js
+	@echo "CI 동등 검증 통과 (구문·fixture 빌드·pytest·node 라우트)"
 
 clean:  ## 산출물 정리 (web/ out/ web.tmp/ __pycache__) — DATA_MANIFEST.json 은 보존(수집일 동결)
 	rm -rf web web.tmp out

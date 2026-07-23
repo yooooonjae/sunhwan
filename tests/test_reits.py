@@ -33,12 +33,13 @@ def test_div_yield():
 
 
 def test_debt_ratio():
-    """부채비율(총자산 대비, %) = 부채 / 자산 × 100. 결측/0 이면 None."""
+    """부채비율(총자산 대비, %) = 부채 / 자산 × 100. 부채 0 은 유효한 0.0%, 결측은 None."""
     assert debt_ratio(600, 1000) == 60.0
     assert debt_ratio(1, 3) == 33.3       # 33.333… → 33.3
-    assert debt_ratio(None, 1000) is None
-    assert debt_ratio(500, None) is None
-    assert debt_ratio(0, 1000) is None    # 부채 0(falsy) → None (원 코드 규약)
+    assert debt_ratio(None, 1000) is None  # 부채 결측 → None
+    assert debt_ratio(500, None) is None   # 자산 결측 → None
+    assert debt_ratio(0, 1000) == 0.0      # 부채 0(무차입) → 유효한 0.0% (결측 아님)
+    assert debt_ratio(600, 0) is None      # 자산 0(분모 불능) → None
 
 
 def test_reits_block_bundle_invariants():

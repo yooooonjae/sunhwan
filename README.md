@@ -27,7 +27,7 @@ make manifest   # 데이터 상태 명세만 재생성
 make build      # 단일 HTML 조립 (noindex 기본)
 make serve      # 로컬 미리보기 (http://localhost:8791)
 make og         # OG 이미지 재생성 (site/static/og.png · 1200×630)
-make check      # 스모크 검증 — Python·JS 구문 (CI 동등)
+make check      # CI 동등 검증 — 구문 + fixture 빌드 + pytest + node 라우트
 ```
 
 `make` 없이도 동일하다 — `python3 src/build/site_data.py && python3 src/build/assemble.py` → `web/index.html`

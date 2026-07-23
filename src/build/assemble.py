@@ -5,6 +5,7 @@
 
 import datetime
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -30,7 +31,11 @@ def minify_json(path: Path) -> str:
 
 
 def git_short_hash() -> str:
-    """빌드 스탬프용 커밋 短해시(읽기 전용). git 부재·비저장소면 'nogit'."""
+    """빌드 스탬프용 커밋 短해시. BUILD_SHA env 우선(CI 주입 — 12자로 단축),
+    없으면 git HEAD, git 부재·비저장소면 'nogit' (모두 읽기 전용)."""
+    env = os.environ.get("BUILD_SHA", "").strip()
+    if env:
+        return env[:12]
     try:
         r = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "--short", "HEAD"],
                            capture_output=True, text=True, timeout=5)
