@@ -77,7 +77,10 @@
   --neg: #b5453c;
   --seq-100: #f6ecd3; --seq-200: #ecd9a8; --seq-300: #ddc077;
   --seq-400: #c9a34a; --seq-500: #a97e1f; --seq-600: #8a6717; --seq-700: #6b4d0e;
-  --shadow: 0 1px 2px rgba(26, 42, 66, .08), 0 12px 36px rgba(26, 42, 66, .10);
+  /* 그림자 위계 3단 (shadow-0=none은 인라인) — 얕게(일반 차트)·중간(대표: 지도·궤도 카드)·깊게(예비). 청람 틴트 유지. */
+  --shadow-1: 0 1px 2px rgba(26, 42, 66, .05), 0 3px 8px rgba(26, 42, 66, .05);
+  --shadow-2: 0 1px 2px rgba(26, 42, 66, .06), 0 6px 18px rgba(26, 42, 66, .07);
+  --shadow: 0 1px 2px rgba(26, 42, 66, .06), 0 10px 32px rgba(26, 42, 66, .08), 0 28px 72px rgba(26, 42, 66, .05);
 
   /* 공통 */
   --font-body: "Apple SD Gothic Neo", "Pretendard", -apple-system, sans-serif;
@@ -87,7 +90,7 @@
   --t-caption: 12.5px;
   --radius: 12px;
   --radius-sm: 8px;
-  --col: 1200px;
+  --col: 1240px;
   --sp-1: 4px; --sp-2: 8px; --sp-3: 16px; --sp-4: 24px; --sp-5: 40px; --sp-6: 64px;
 }
 
@@ -122,7 +125,9 @@
   --neg: #d96a5f;
   --seq-100: #3a3010; --seq-200: #57431a; --seq-300: #7a5c22;
   --seq-400: #a67b2b; --seq-500: #cf9c3e; --seq-600: #e7bb63; --seq-700: #ffd98a;
-  --shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 12px 40px rgba(0, 0, 0, .35);
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, .30), 0 3px 8px rgba(0, 0, 0, .24);
+  --shadow-2: 0 1px 2px rgba(0, 0, 0, .34), 0 6px 18px rgba(0, 0, 0, .34);
+  --shadow: 0 1px 2px rgba(0, 0, 0, .32), 0 10px 32px rgba(0, 0, 0, .36), 0 28px 72px rgba(0, 0, 0, .28);
 }
 
 /* 순환 — 베이스: 관측지 지면, 타이포 위계, 리듬 */
@@ -339,7 +344,7 @@ nav.appbar .tabs a:hover:not(.active) { color: var(--blueprint-2); }
 .gauge-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--sp-3); margin-top: var(--sp-5); }
 .gauge {
   background: var(--surface); border: 1.5px solid var(--hairline-2); border-radius: var(--radius);
-  padding: 16px 18px; box-shadow: var(--shadow);
+  padding: 16px 18px; box-shadow: var(--shadow-1);
 }
 .gauge .v { font-family: var(--font-num); font-size: clamp(20px, 7.5vw, 30px); font-weight: 700; white-space: nowrap; letter-spacing: -.02em; }
 .gauge .v small { font-size: 14px; color: var(--ink-3); font-weight: 500; margin-left: 2px; }
@@ -349,7 +354,7 @@ nav.appbar .tabs a:hover:not(.active) { color: var(--blueprint-2); }
 .gates { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--sp-3); margin-top: var(--sp-5); }
 .gate {
   position: relative; background: var(--surface); border: 1.5px solid var(--hairline-2);
-  border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); display: block;
+  border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow-2); display: block;
   transition: transform .25s ease, border-color .25s ease;
 }
 .gate:hover { transform: translateY(-3px); border-color: var(--blueprint); color: inherit; }
@@ -373,7 +378,7 @@ nav.appbar .tabs a:hover:not(.active) { color: var(--blueprint-2); }
 /* ── figure(관측 기록) ── */
 figure.viz {
   background: var(--surface); border: 1.5px solid var(--hairline-2); border-radius: var(--radius);
-  box-shadow: var(--shadow); padding: 18px 20px 14px; margin: 0 0 var(--sp-4);
+  box-shadow: var(--shadow-1); padding: 18px 20px 14px; margin: 0 0 var(--sp-4);
 }
 .viz-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
 .viz-title { font-weight: 800; font-size: 16px; }
@@ -490,7 +495,7 @@ footer.colophon code { font-family: var(--font-num); font-size: 11px; padding: 0
 .stage-card {
   display: flex; flex-direction: column;
   background: var(--surface); border: 1.5px solid var(--hairline-2); border-radius: var(--radius);
-  padding: 18px; box-shadow: var(--shadow); transition: transform .25s ease, border-color .25s ease;
+  padding: 18px; box-shadow: var(--shadow-2); transition: transform .25s ease, border-color .25s ease;
 }
 .stage-card:hover { transform: translateY(-3px); border-color: var(--blueprint); color: inherit; }
 .stage-card .sc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
@@ -543,7 +548,7 @@ footer.colophon code { font-family: var(--font-num); font-size: 11px; padding: 0
 .bridge-card {
   display: flex; flex-direction: column;
   background: var(--surface); border: 1.5px solid var(--hairline-2); border-radius: var(--radius);
-  box-shadow: var(--shadow); padding: 18px 20px;
+  box-shadow: var(--shadow-1); padding: 18px 20px;
 }
 .bridge-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
 .bridge-no { font-family: var(--font-display); font-size: 22px; color: var(--blueprint); line-height: 1; }
@@ -562,7 +567,7 @@ footer.colophon code { font-family: var(--font-num); font-size: 11px; padding: 0
 /* ── 접힘 블록(부록·방법론) — 표/텍스트 전용, 차트 금지 ── */
 details.viz-details {
   background: var(--surface); border: 1.5px solid var(--hairline-2); border-radius: var(--radius);
-  box-shadow: var(--shadow); margin: 0 0 var(--sp-4); overflow: hidden;
+  box-shadow: none; margin: 0 0 var(--sp-4); overflow: hidden;
 }
 details.viz-details > summary {
   list-style: none; cursor: pointer; padding: 15px 20px;
@@ -583,6 +588,8 @@ figure.viz.viz-hero .viz-title { font-size: 18px; }
 /* ── Ⅱ분양: 지도(코로플레스) + 비교 막대 병행 ── */
 .map-duo { display: grid; grid-template-columns: 0.92fr 1.08fr; gap: var(--sp-4); align-items: start; }
 .map-duo > figure.viz { margin-bottom: 0; }
+/* 지도 figure = 대표 위계 — 일반 차트(--shadow-1)보다 한 단 깊은 --shadow-2 */
+.map-duo > figure.viz:first-child { box-shadow: var(--shadow-2); }
 @media (max-width: 860px) {
   .map-duo { grid-template-columns: 1fr; }
   .map-duo > figure.viz:first-child { margin-bottom: var(--sp-4); }
@@ -1186,7 +1193,7 @@ figure.viz.viz-hero .viz-title { font-size: 18px; }
   <div class="wrap">
     <span class="hanja">循環</span> — 부동산 자본의 생애주기 관측 · 개인 연구 포트폴리오<br>
     연구 시리즈 <a href="https://yoonjae.pages.dev">수지(收支)</a> · 순환(循環) · <a href="https://sicha.pages.dev">시차(時差)</a> · 모든 데이터는 로컬 내장, 외부 요청 없음<br>
-    <span class="build-stamp">빌드 <code>23c3d0f</code> · 데이터 컷오프 2026-07-20 · 빌드일 2026-07-23</span>
+    <span class="build-stamp">빌드 <code>cc40f81</code> · 데이터 컷오프 2026-07-20 · 빌드일 2026-07-23</span>
   </div>
 </footer>
 

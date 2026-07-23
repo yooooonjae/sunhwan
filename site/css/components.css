@@ -145,7 +145,7 @@ nav.appbar .tabs a:hover:not(.active) { color: var(--blueprint-2); }
 .gauge-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--sp-3); margin-top: var(--sp-5); }
 .gauge {
   background: var(--surface); border: 1.5px solid var(--hairline-2); border-radius: var(--radius);
-  padding: 16px 18px; box-shadow: var(--shadow);
+  padding: 16px 18px; box-shadow: var(--shadow-1);
 }
 .gauge .v { font-family: var(--font-num); font-size: clamp(20px, 7.5vw, 30px); font-weight: 700; white-space: nowrap; letter-spacing: -.02em; }
 .gauge .v small { font-size: 14px; color: var(--ink-3); font-weight: 500; margin-left: 2px; }
@@ -155,7 +155,7 @@ nav.appbar .tabs a:hover:not(.active) { color: var(--blueprint-2); }
 .gates { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--sp-3); margin-top: var(--sp-5); }
 .gate {
   position: relative; background: var(--surface); border: 1.5px solid var(--hairline-2);
-  border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); display: block;
+  border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow-2); display: block;
   transition: transform .25s ease, border-color .25s ease;
 }
 .gate:hover { transform: translateY(-3px); border-color: var(--blueprint); color: inherit; }
@@ -179,7 +179,7 @@ nav.appbar .tabs a:hover:not(.active) { color: var(--blueprint-2); }
 /* ── figure(관측 기록) ── */
 figure.viz {
   background: var(--surface); border: 1.5px solid var(--hairline-2); border-radius: var(--radius);
-  box-shadow: var(--shadow); padding: 18px 20px 14px; margin: 0 0 var(--sp-4);
+  box-shadow: var(--shadow-1); padding: 18px 20px 14px; margin: 0 0 var(--sp-4);
 }
 .viz-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
 .viz-title { font-weight: 800; font-size: 16px; }
@@ -296,7 +296,7 @@ footer.colophon code { font-family: var(--font-num); font-size: 11px; padding: 0
 .stage-card {
   display: flex; flex-direction: column;
   background: var(--surface); border: 1.5px solid var(--hairline-2); border-radius: var(--radius);
-  padding: 18px; box-shadow: var(--shadow); transition: transform .25s ease, border-color .25s ease;
+  padding: 18px; box-shadow: var(--shadow-2); transition: transform .25s ease, border-color .25s ease;
 }
 .stage-card:hover { transform: translateY(-3px); border-color: var(--blueprint); color: inherit; }
 .stage-card .sc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
@@ -349,7 +349,7 @@ footer.colophon code { font-family: var(--font-num); font-size: 11px; padding: 0
 .bridge-card {
   display: flex; flex-direction: column;
   background: var(--surface); border: 1.5px solid var(--hairline-2); border-radius: var(--radius);
-  box-shadow: var(--shadow); padding: 18px 20px;
+  box-shadow: var(--shadow-1); padding: 18px 20px;
 }
 .bridge-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
 .bridge-no { font-family: var(--font-display); font-size: 22px; color: var(--blueprint); line-height: 1; }
@@ -368,7 +368,7 @@ footer.colophon code { font-family: var(--font-num); font-size: 11px; padding: 0
 /* ── 접힘 블록(부록·방법론) — 표/텍스트 전용, 차트 금지 ── */
 details.viz-details {
   background: var(--surface); border: 1.5px solid var(--hairline-2); border-radius: var(--radius);
-  box-shadow: var(--shadow); margin: 0 0 var(--sp-4); overflow: hidden;
+  box-shadow: none; margin: 0 0 var(--sp-4); overflow: hidden;
 }
 details.viz-details > summary {
   list-style: none; cursor: pointer; padding: 15px 20px;
@@ -389,6 +389,8 @@ figure.viz.viz-hero .viz-title { font-size: 18px; }
 /* ── Ⅱ분양: 지도(코로플레스) + 비교 막대 병행 ── */
 .map-duo { display: grid; grid-template-columns: 0.92fr 1.08fr; gap: var(--sp-4); align-items: start; }
 .map-duo > figure.viz { margin-bottom: 0; }
+/* 지도 figure = 대표 위계 — 일반 차트(--shadow-1)보다 한 단 깊은 --shadow-2 */
+.map-duo > figure.viz:first-child { box-shadow: var(--shadow-2); }
 @media (max-width: 860px) {
   .map-duo { grid-template-columns: 1fr; }
   .map-duo > figure.viz:first-child { margin-bottom: var(--sp-4); }
