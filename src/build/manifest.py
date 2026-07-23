@@ -24,7 +24,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 D = ROOT / "data"
 MANIFEST = ROOT / "DATA_MANIFEST.json"
-# 운영(Ⅲ)·프리미엄 산점 분모는 자매 저장소 '수지' 산출을 재사용 (기본 ~/개발, SUJI_DIR 로 재정의).
+# 운영(Ⅲ)·프리미엄 산점 분모는 부속 저장소 '수지' 산출을 재사용 (기본 ~/개발, SUJI_DIR 로 재정의).
 SUJI = Path(os.path.expanduser(os.environ.get("SUJI_DIR", str(Path.home() / "개발"))))
 
 
