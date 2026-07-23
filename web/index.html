@@ -820,7 +820,7 @@ figure.viz.viz-hero .viz-title { font-size: 18px; }
         <span class="kl-title">핵심 연결</span>
         <span class="kl-item">공급 파이프라인 ↔ 초기분양률 <b>r = -0.43</b></span>
         <span class="kl-item">오피스 공실률 ↔ 리츠 P/BV <b>r = -0.73</b></span>
-        <span class="kl-note">상관 관측이며 인과가 아니다</span>
+        <span class="kl-note">관측된 상관관계이며 인과관계를 뜻하지 않는다</span>
         <span class="kl-cta">연결 분석 보기 →</span>
       </a>
     </div>
@@ -833,9 +833,7 @@ figure.viz.viz-hero .viz-title { font-size: 18px; }
   <div class="wrap">
     <div class="tobira"><div class="no">Ⅰ</div><h2>공급 — 정비의 파이프라인</h2>
       <div class="meta">상태 <b>Phase 1 가동 — 3개 시도</b><br>표본 <b>1,061개 정비구역</b></div></div>
-    <p class="lede">기성 시가지 신규주택 공급의 주요 상류 중 하나가 정비구역이다. 조합설립에서 준공까지 각 인가일을 시계열로
-    복원하면 <b>"어디서, 언제, 얼마나"의 공급 시점 추정</b>이 된다. 전국 통합 데이터가 없어 시도별로 분산된
-    데이터를 직접 통합했다 — <b>대구·경기(단계 이력)·부산(현황 스냅샷) 3개 시도, 1,061개 구역</b>이 첫 관측이다.
+    <p class="lede">기성 시가지에서 신규주택이 공급되는 주요 경로 중 하나는 정비사업이다. 각 사업의 인가일을 시계열로 정리하면 지역별 진행 속도와 향후 공급 시점을 가늠할 수 있다. 현재 분석 범위는 대구·경기의 단계 이력과 부산의 현황 자료를 합친 1,061개 구역이다.
     도시정비법 사업만 집계하며 소규모주택정비(별도 법령)는 분리 표기한다.</p>
     <div class="kpi-row" id="j-kpis"></div>
     <figure class="viz">
@@ -865,7 +863,7 @@ figure.viz.viz-hero .viz-title { font-size: 18px; }
           <tr><td>경기 추진현황</td><td>CSV 일간</td><td>4개 인가일</td><td class="num">중간</td><td>454구역</td></tr>
           <tr><td>인천·울산 파일</td><td>CSV/XLS</td><td>현 단계</td><td class="num">중간</td><td>날짜 없음 — 스냅샷 수용</td></tr>
           <tr><td><b>서울 정비사업 정보몽땅</b></td><td>목록 엑셀 + 구역별 상세</td><td><b>상세에 인가일 이력</b></td><td class="num">어려움(HTML 크롤링)</td><td>공식 개방 데이터셋은 2026-07 종료 — 상세 크롤이 유일 경로</td></tr>
-          <tr><td>시군구 고시·공고 PDF</td><td>문서</td><td>보충용</td><td class="num">최악</td><td>누락 인가일만 보강</td></tr>
+          <tr><td>시군구 고시·공고 PDF</td><td>문서</td><td>보충용</td><td class="num">매우 높음</td><td>누락 인가일만 보강</td></tr>
         </tbody>
       </table></div>
       <figcaption>수집 순서: API → 정형 파일 → HTML 크롤링 → PDF(보충). 모든 소스는 대구 스키마
@@ -884,7 +882,7 @@ figure.viz.viz-hero .viz-title { font-size: 18px; }
       <div class="meta">원천 <b>청약홈 · HUG(KOSIS)</b><br>기간 <b>2020-02 ~ 현재 · 초기분양률 2014~</b></div></div>
     <p class="lede"><span class="ev-badge ev-stat">통계적 관계</span> 청약 경쟁률과 다음 분기 초기분양률 사이에는 뚜렷한 선행상관이 관측된다 — 접수 강도가 3~6개월 뒤 분양률에 앞서 움직인다. 세부 시차와 국면별 안정성 검증은 부속 연구 <a href="https://sicha.pages.dev" rel="noopener"><b>시차(時差)</b></a>가 전담한다.
     공고 2,828건과 경쟁률 5만여 행을 HUG 초기분양률 12년 치에 이어 붙여 이 관계를 데이터로 검증했다.
-    경쟁률 5:1 이상을 기록한 지역·분기는 다음 분기 초기분양률이 중위 99%에 달했고, 미달 지역·분기는 중위 73%에 그쳤다 — 상관 관측이며 개별 단지의 완판 예측이 아니다.</p>
+    경쟁률 5:1 이상을 기록한 지역·분기는 다음 분기 초기분양률이 중위 99%에 달했고, 미달 지역·분기는 중위 73%에 그쳤다 — 관측된 상관관계이며 개별 단지의 완판 예측이 아니다.</p>
     <div class="kpi-row" id="b-kpis"></div>
     <figure class="viz viz-hero">
       <div class="viz-head"><div class="viz-title">싸게 내놓으면 더 몰리는가 — 분양가 프리미엄 × 경쟁률</div><div class="viz-unit">가로 = 분양가 ÷ 시도 시세(1.0 = 동가) · 세로 = 경쟁률(40:1 상한 표기) · 원 = 공급세대</div></div>
@@ -1015,7 +1013,7 @@ figure.viz.viz-hero .viz-title { font-size: 18px; }
     <div class="tobira"><div class="no">Ⅴ</div><h2>연결 — 순환은 실제로 도는가</h2>
       <div class="meta">방법 <b>단계 간 교차 상관</b><br>주의 <b>상관 ≠ 인과 · 표본 작음</b></div></div>
     <p class="lede">이 사이트의 이름값을 검증하는 장이다. 공급·분양·운영·자본이 정말 이어져 있다면 데이터에 흔적이 남아야 한다 —
-    자체 보유 데이터만으로 <b>세 개의 연결 경로</b>를 실측했다. 전부 상관 관측이며 인과 주장이 아니다 — 표본이 작은 경로는 그 사실을 함께 표기한다.</p>
+    자체 보유 데이터만으로 <b>세 개의 연결 경로</b>를 실측했다. 전부 관측된 상관관계이며 인과관계를 뜻하지 않는다 — 표본이 작은 경로는 그 사실을 함께 표기한다.</p>
     <div class="bridge-grid">
       <article class="bridge-card">
         <div class="bridge-head"><span class="bridge-no">연결 ①</span><span class="bridge-tag">공급 → 분양</span></div>
@@ -1108,7 +1106,7 @@ figure.viz.viz-hero .viz-title { font-size: 18px; }
       <div class="det-body">
       <div style="padding:4px 2px 2px; font-size:14px; line-height:2.1; color:var(--ink-2)">
         <span class="ev-badge ev-obs">관측</span> 공공 원자료에서 직접 집계·재현되는 사실 — 초기분양률 수치, 리츠 종가·P/BV, 단계 인가일 등.<br>
-        <span class="ev-badge ev-stat">통계적 관계</span> 표본에서 산출한 상관·부분상관·차분 — 방향과 세기를 수치로 제시하되 인과가 아니다.<br>
+        <span class="ev-badge ev-stat">통계적 관계</span> 표본에서 산출한 상관·부분상관·차분 — 방향과 세기를 수치로 제시하되 인과관계를 뜻하지 않는다.<br>
         <span class="ev-badge ev-interp">해석</span> 관측·통계에 근거해 붙인 서사적 읽기 — 검증된 사실이 아니라 읽는 틀이다.<br>
         <span class="ev-badge ev-unver">미검증</span> 아직 데이터로 확인하지 않은 가설·로드맵 — 후속 고도화 대상.
       </div>
@@ -1191,7 +1189,7 @@ figure.viz.viz-hero .viz-title { font-size: 18px; }
   <div class="wrap">
     <span class="hanja">循環</span> — 부동산 자본의 생애주기 관측 · 개인 연구 포트폴리오<br>
     연구 시리즈 <a href="https://yoonjae.pages.dev">수지(收支)</a> · 순환(循環) · <a href="https://sicha.pages.dev">시차(時差)</a> · 모든 데이터는 로컬 내장, 외부 요청 없음<br>
-    <span class="build-stamp">빌드 <code>08baf4c</code> · 데이터 컷오프 2026-07-20 · 빌드일 2026-07-23</span>
+    <span class="build-stamp">빌드 <code>fce82b7</code> · 데이터 컷오프 2026-07-20 · 빌드일 2026-07-23</span>
   </div>
 </footer>
 
@@ -2310,7 +2308,7 @@ window.__KOREA__ = [{"name":"제주","d":"M191.5 626.2L192.8 629.1L192.5 630.6L1
     C.hbars($("#b-ladder"), lad, { color: "--s2", emph: D.ladder.filter(x => (x.value || 0) >= 95).map(x => x.name),
       fmt: v => v + "%", labelW: 120, width: 1160, rowH: 40, aria: "경쟁률 구간별 초기분양률" });
     $("#b-ladder-cap").innerHTML = D.ladder.map(x => `${x.name} n=${x.n}`).join(" · ") +
-      " — 금 = 초기분양률 중위 95% 이상. 시도·분기 평균의 상관 관측이며 개별 단지 예측이 아니다.";
+      " — 금 = 초기분양률 중위 95% 이상. 시도·분기 평균의 관측된 상관관계이며 개별 단지 예측이 아니다.";
 
     // ①-2 프리미엄 산점 (시도 프록시 — 정직 캡션)
     const PR = D.premium;
@@ -2453,7 +2451,7 @@ window.__KOREA__ = [{"name":"제주","d":"M191.5 626.2L192.8 629.1L192.5 630.6L1
       "· 연결 ③은 분기 " + L.cap_link.length + "개·국내 오피스 리츠 " + L.office_n + "종의 짧은 표본 — 강한 상관(r=" + L.r_cap + ")이지만 두 변수 모두 금리라는 공통 원인의 영향을 받는다.<br>" +
       "· 강건성 검증 결과 — 연결 ①: 분기 차분 r = " + L.robust.supply_d1 + "(소멸), 연간 변화 r = " + L.robust.supply_yoy + "(유지) → 단기 잡음이 아닌 중기 수급 수준의 관계. " +
       "연결 ③: 금리 통제 부분상관 r = " + L.robust.cap_partial + "(유지), 분기 차분 r = " + L.robust.cap_d1 + "(소멸) → 금리만으로 설명되지 않는 수준 관계이나, 표본 13개로 단정할 수 없다.<br>" +
-      "· 세 연결 전부 상관 관측이다. 선행·후행(그레인저류) 검정과 시군구 단위 연결은 후속 고도화 대상이다.";
+      "· 세 연결 전부 관측된 상관관계이며 인과관계를 뜻하지 않는다. 선행·후행(그레인저류) 검정과 시군구 단위 연결은 후속 고도화 대상이다.";
   }
 
   /* ---------- 긴 순위 막대: 상위5+하위5 기본 + 전체 펼치기 (8차 리뷰 ④) ----------
