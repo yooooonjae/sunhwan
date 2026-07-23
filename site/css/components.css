@@ -7,7 +7,7 @@ nav.appbar {
   backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--hairline);
 }
-nav.appbar .bar { display: flex; align-items: center; gap: var(--sp-4); height: 54px; }
+nav.appbar .bar { display: flex; align-items: center; gap: var(--sp-4); height: 56px; }
 nav.appbar .brand { font-weight: 900; font-size: 17px; letter-spacing: 2px; display: flex; align-items: center; gap: 8px; }
 nav.appbar .brand .hanja { font-family: var(--font-display); color: var(--blueprint); font-size: 19px; }
 nav.appbar .tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; flex: 1; }

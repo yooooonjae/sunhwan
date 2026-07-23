@@ -8,7 +8,10 @@ export
 
 PY     ?= python3
 PORT   ?= 8791
-CHROME ?= /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+# Chrome/Chromium 자동 탐색(이식성) — PATH 우선, 없으면 macOS 앱 경로 폴백.
+CHROME ?= $(shell command -v google-chrome-stable || command -v google-chrome \
+	 || command -v chromium || command -v chromium-browser || command -v chrome \
+	 || echo "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
 
 .PHONY: help all data manifest build og serve check clean
 
@@ -27,10 +30,9 @@ manifest:  ## 데이터 상태 명세만 재생성 (DATA_MANIFEST.json)
 build:  ## 단일 HTML 조립 (web/index.html) — noindex 기본
 	$(PY) src/build/assemble.py
 
-og:  ## OG 이미지 재생성 (site/static/og.png · 1200×630)
-	"$(CHROME)" --headless=new --disable-gpu --hide-scrollbars --force-device-scale-factor=2 \
+og:  ## OG 이미지 재생성 (site/static/og.png · 뷰포트 정확 1200×630, sips 불요·이식성)
+	"$(CHROME)" --headless=new --disable-gpu --hide-scrollbars --force-device-scale-factor=1 \
 	  --window-size=1200,630 --screenshot=site/static/og.png "file://$(CURDIR)/src/build/og_card.html"
-	sips -z 630 1200 site/static/og.png >/dev/null
 
 serve: build  ## 로컬 미리보기 (기본 http://localhost:8791)
 	@echo "→ http://localhost:$(PORT)  (Ctrl+C 종료)"
